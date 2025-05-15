@@ -39,5 +39,13 @@ Next.js frontend for **Suplify Fitness**, a comprehensive platform that enables 
 
 1. Clone the repository  
 ```bash
-git clone https://github.com/yourusername/suplify-fitness-frontend.git
+https://github.com/bdCalling-Sdt-hub/supplify-websitee.git
 cd suplify-fitness-frontend
+
+```bash
+thsi link ```
+
+
+### helodfdod
+
+
