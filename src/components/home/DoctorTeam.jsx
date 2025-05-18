@@ -1,5 +1,5 @@
 // pages/doctor-team.js
-import Image from 'next/image'; // Import Next.js Image component
+import Image from 'next/image';
 
 const DoctorTeamPage = () => {
   return (
@@ -31,11 +31,11 @@ const DoctorTeamPage = () => {
           </div>
           <div>
             <Image
-              src="/images/doctor.png" // Replace with your image path
+              src="/images/doctor.png"
               alt="Doctor"
               width={600}
               height={700}
-              className="  shadow-xl md:h-[600px]"
+              className="shadow-xl md:h-[600px]"
             />
           </div>
         </div>

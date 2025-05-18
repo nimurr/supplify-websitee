@@ -53,10 +53,10 @@ export default function Sidebar() {
       path: "/dashboard/doctor",
     },
     {
-      key: "/dashboard/influencerlist",
-      icon: <UserOutlined />,
-      label: "Content Creator",
-      path: "/dashboard/influencerlist",
+      key: "/dashboard/specialist",
+      icon: <FaUserDoctor />,
+      label: "Spesialist",
+      path: "/dashboard/specialist",
     },
     {
       key: "/dashboard/campaigns",
@@ -89,10 +89,12 @@ export default function Sidebar() {
   return (
     <div className={`${collapsed ? 'w-20' : 'w-52'} transition-all duration-300 h-full shadow-md`}>
       <div className="flex justify-between items-center p-4">
-        <div className={`text-xl font-bold ${collapsed ? 'hidden' : 'block'}`}>
+        <div className={`text-xl flex font-bold text-center ${collapsed ? 'hidden' : 'block'}`}>
           <Link href="/" className="flex items-center">
-            <img src={logo} alt="App Logo" className="w-24" /> {/* App logo */}
+            <img src='/images/logod.png' alt="App Logo" className="w-20 rounded-full" />  
           </Link>
+          <img src='/images/logod1.png' alt="App Logo" className="w-20" /> 
+        
         </div>
         <button 
           onClick={toggleCollapsed} 
