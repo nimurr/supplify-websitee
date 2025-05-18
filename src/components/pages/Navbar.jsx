@@ -127,11 +127,13 @@
 // components/Navbar.tsx
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
+import { Button } from 'antd'
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const router = useRouter()
   const pathname = usePathname()
   const isHomePage = pathname === '/'
   
@@ -151,7 +153,10 @@ export default function Navbar() {
   // Determine navbar background
   // Black when: scrolled OR not on home page
   const showBlackBg = scrolled || !isHomePage
-
+  const handleDashboardClick = () => {
+    router.push('/dashboard/doctor');
+  };
+ const user = true;
   return (
     <nav className={`fixed w-full z-50 transition-all duration-300 ${showBlackBg ? 'bg-black/90 py-3' : 'bg-transparent py-4'}`}>
       <div className="container mx-auto px-4">
@@ -184,20 +189,37 @@ export default function Navbar() {
           </div>
 
           {/* CTA Buttons - Right side */}
-          <div className="hidden md:flex items-center space-x-4">
-            <Link 
-              href="/" 
-              className="text-white hover:text-primary transition font-medium"
-            >
-              Sign Up
-            </Link>
-            <Link 
-              href="/" 
-              className="bg-primary hover:bg-primary-dark text-white font-bold py-2 px-6 rounded-full transition"
-            >
-              Join Now
-            </Link>
+          <div className="hidden md:flex items-center md:gap-3 gap-1">
+            {user ? (
+              <Button 
+                onClick={handleDashboardClick}
+                style={{
+                  background: 'linear-gradient(to right, #3b82f6, #22c55e)',
+                  border: '1px solid white',
+                  color: 'white',
+                }}
+              >
+                Dashboard
+              </Button>
+            ) : (
+              <div className="hidden md:flex items-center space-x-4">
+              <Link 
+                href="/" 
+                className="text-white hover:text-primary transition font-medium"
+              >
+                Sign Up
+              </Link>
+              <Link 
+                href="/" 
+                className="bg-primary hover:bg-primary-dark text-white font-bold py-2 px-6 rounded-full transition"
+              >
+                Join Now
+              </Link>
+            </div>
+            )}
           </div>
+
+
 
           {/* Mobile Menu Button */}
           <button

@@ -43,8 +43,4 @@ https://github.com/bdCalling-Sdt-hub/supplify-websitee.git
 cd suplify-fitness-frontend
 
 ``` 
-## this tag
-```bash
- https://sayed8000.sobhoy.com/store 
  
- ```

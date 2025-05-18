@@ -2,8 +2,7 @@
 
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/pages/Navbar";
-import Footer from "@/components/pages/Footer";
+ 
 import { ConfigProvider } from "antd";
 import Providers from "@/redux/Providers";
  
@@ -35,9 +34,9 @@ export default function RootLayout({ children }) {
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased `}>
         <Providers>
           {/* <ProviderTheme> */}
-          <Navbar />
+         
           {children}
-          <Footer />
+    
           {/* </ProviderTheme> */}
         </Providers>
       </body>
