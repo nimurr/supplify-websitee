@@ -2,6 +2,13 @@
 "use client";
 import { useState, useEffect } from 'react';
 import { Menu } from 'antd';
+import { MdFlightClass } from "react-icons/md";
+import { TbPrescription } from "react-icons/tb";
+import { GrUserManager } from "react-icons/gr";
+import { GiSwipeCard } from "react-icons/gi";
+import { SlUserFollowing } from "react-icons/sl";
+
+
 import { FaUserDoctor } from "react-icons/fa6";
 import { 
   HomeOutlined, 
@@ -54,33 +61,34 @@ export default function Sidebar() {
     },
     {
       key: "/dashboard/specialist",
-      icon: <FaUserDoctor />,
+      icon: <SlUserFollowing />,
       label: "Spesialist",
       path: "/dashboard/specialist",
     },
     {
-      key: "/dashboard/campaigns",
-      icon: <AppstoreAddOutlined />,
-      label: "Campaigns",
-      path: "/dashboard/campaigns",
+      key: "/dashboard/workout-class",
+      icon: <MdFlightClass />,
+      label: "Workout Class",
+      path: "/dashboard/workout-class",
     },
     {
-      key: "/dashboard/payment",
-      icon: <WalletOutlined />,
-      label: "Payment",
-      path: "/dashboard/payment",
+      key: "/dashboard/protocol",
+      icon: <TbPrescription />,
+      label: "Protocol",
+      path: "/dashboard/protocol",
     },
     {
-      key: "/dashboard/withdraw",
-      icon: <FileSearchOutlined />,
-      label: "Withdraw Request",
-      path: "/dashboard/withdraw",
+      key: "/dashboard/suggest-specialist",
+      icon: <GrUserManager />
+      ,
+      label: "Specialist Suggestion",
+      path: "/dashboard/suggest-specialist",
     },
     {
-      key: "/dashboard/transaction",
-      icon: <FileSearchOutlined />,
-      label: "Transactions",
-      path: "/dashboard/transaction",
+      key: "/dashboard/subscription",
+      icon: <GiSwipeCard />,
+      label: "Subscription",
+      path: "/dashboard/subscription",
     },
   ];
 

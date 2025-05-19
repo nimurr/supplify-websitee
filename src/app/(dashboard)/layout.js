@@ -3,6 +3,7 @@
 import DashboardHeader from '@/Dashboard/layout/Header';
 import Sidebar from '@/Dashboard/layout/Sidebar';
 import { ConfigProvider } from 'antd';
+import "./../globals.css";
 
 export default function DashboardLayout({ children }) {
   return (

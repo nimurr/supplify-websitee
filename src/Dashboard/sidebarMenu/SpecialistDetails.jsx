@@ -1,317 +1,693 @@
-// pages/index.js
-import { useState } from 'react';
-import Head from 'next/head';
-import { Button } from 'antd';
-import { CheckOutlined, PlayCircleOutlined } from '@ant-design/icons';
 
-export default function FitnessApp() {
-  const [activeSession, setActiveSession] = useState(1);
+
+
+ 
+
+// "use client";
+
+// import React, { useState } from "react";
+// import { Avatar, Button, Tag, List, Modal, Image } from "antd";
+// import {
+//   CheckCircleOutlined,
+//   PlayCircleOutlined,
+//   CloseOutlined
+// } from "@ant-design/icons";
+
+// const user = {
+//   name: "Sakib Ahmed",
+//   location: "New York, America",
+//   roles: ["Protocol Name", "Trainer", "Body Trainer", "Protocol Name"],
+//   description:
+//     "Lorem ipsum dolor sit amet consectetur. Massa risus eget justo vel urna sapien posuere. Mauris magna eratest vestibulum cum egestas etiam pulvinar orci.",
+//   programCount: 10,
+//   price: "$199",
+//   duration: "5 month",
+//   avatar: "/images/trainer.png", // Replace with your actual avatar path
+// };
+
+// const sessions = [
+//   {
+//     id: 1,
+//     title: "Push-ups",
+//     duration: "30 min/day",
+//     status: "complete",
+//     tokens: 1,
+//     videoUrl: "/images/prac.mp4", // Replace with actual video URLs
+//   },
+//   {
+//     id: 2,
+//     title: "Push-ups",
+//     duration: "30 min/day",
+//     status: "active",
+//     remainingDays: 3,
+//     videoUrl: "/images/prac.mp4",
+//   },
+//   {
+//     id: 3,
+//     title: "Push-ups",
+//     unlockAfterDays: 3,
+//     status: "locked",
+//     videoUrl: "https://www.example.com/video3.mp4",
+//   },
+//   {
+//     id: 4,
+//     title: "Push-ups",
+//     unlockAfterDays: 3,
+//     status: "locked",
+//     videoUrl: "https://www.example.com/video4.mp4",
+//   },
+//   {
+//     id: 5,
+//     title: "Push-ups",
+//     unlockAfterDays: 3,
+//     status: "locked",
+//     videoUrl: "https://www.example.com/video5.mp4",
+//   },
+//   {
+//     id: 6,
+//     title: "Push-ups",
+//     unlockAfterDays: 3,
+//     status: "locked",
+//     videoUrl: "https://www.example.com/video6.mp4",
+//   },
+// ];
+
+// export default function SpecialistProgramDetails() {
+//   const [selectedId, setSelectedId] = useState(1);
+//   const [isModalOpen, setIsModalOpen] = useState(false);
   
-  // Mock data for user profile
-  const userProfile = {
-    name: "Sakib Ahmed",
-    location: "New York, America",
-    tags: ["Body trainer", "Protocol Name"],
-    stats: {
-      programs: 10,
-      price: "$199",
-      duration: "5 month"
-    }
-  };
-  
-  // Mock data for workout sessions
-  const workoutSessions = [
-    {
-      id: 1,
-      title: "Push-ups",
-      duration: "30 min/day",
-      status: "complete",
-      session: 1,
-      remainingDays: null,
-      image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?ixlib=rb-1.2.1&auto=format&fit=crop&w=120&q=80"
-    },
-    {
-      id: 2,
-      title: "Push-ups",
-      duration: "30 min/day",
-      status: "active",
-      session: 2,
-      remainingDays: 3,
-      image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?ixlib=rb-1.2.1&auto=format&fit=crop&w=120&q=80"
-    },
-    {
-      id: 3,
-      title: "Push-ups",
-      duration: "30 min/day",
-      status: "locked",
-      session: 3,
-      remainingDays: null,
-      unlockAfter: 3,
-      image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?ixlib=rb-1.2.1&auto=format&fit=crop&w=120&q=80"
-    },
-    {
-      id: 4,
-      title: "Push-ups",
-      duration: "30 min/day",
-      status: "locked",
-      session: 4,
-      remainingDays: null,
-      unlockAfter: 3,
-      image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?ixlib=rb-1.2.1&auto=format&fit=crop&w=120&q=80"
-    },
-    {
-      id: 5,
-      title: "Push-ups",
-      duration: "30 min/day",
-      status: "locked",
-      session: 5,
-      remainingDays: null,
-      unlockAfter: 3,
-      image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?ixlib=rb-1.2.1&auto=format&fit=crop&w=120&q=80"
-    },
-    {
-      id: 6,
-      title: "Push-ups",
-      duration: "30 min/day",
-      status: "locked",
-      session: 6,
-      remainingDays: null,
-      unlockAfter: 3,
-      image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?ixlib=rb-1.2.1&auto=format&fit=crop&w=120&q=80"
-    }
-  ];
-  
-  // Benefits for the active session
-  const sessionBenefits = [
-    "Strengthens the Chest",
-    "Improves Upper Body Strength",
-    "Increases Muscle Endurance",
-    "Enhances Posture",
-    "Boosts Metabolism"
-  ];
-  
-  return (
-    <div className="bg-gray-50 min-h-screen">
-      <Head>
-        <title>Fitness App</title>
-        <meta name="description" content="Your personal fitness coach" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="icon" href="/favicon.ico" />
-        {/* Ant Design CSS */}
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/5.1.7/reset.min.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/5.1.7/antd.min.css" />
-      </Head>
+//   const selectedSession = sessions.find((session) => session.id === selectedId);
+
+//   const showModal = () => {
+//     setIsModalOpen(true);
+//   };
+
+//   const handleCancel = () => {
+//     setIsModalOpen(false);
+//   };
+
+//   return (
+//     <div className="  bg-gray-50 p-4 md:p-8">
+//       <div className="grid md:grid-cols-4 gap-2">
+    
+//         <div className=" bg-white rounded-lg shadow p-6">
+//         <Image
+//                     src={user.avatar} alt={user.name} 
+//                       layout="fill"
+//                       objectFit="cover"
+//                     />
+         
+//           <h2 className="text-2xl font-semibold mt-4">{user.name}</h2>
+//           <p className="text-gray-500 mt-1">{user.location}</p>
+
+//           <div className="grid md:grid-cols-2 gap-2 ">
+//             {user.roles.map((role, i) => (
+//                 <div className="">
+
+//               <Tag
+//                 key={i} 
+//                 className="text-black text-xs font-medium rounded-lg py-1 border border-gray-300"
+//               >
+//                 {role}
+//               </Tag>
+//                 </div>
+//             ))}
+//           </div>
+
+//           <p className="text-gray-600 text-sm text-center mb-6">{user.description}</p>
+
+//           <div className="w-full space-y-3 text-sm font-semibold text-gray-800">
+//             <div className="flex justify-between border-b border-gray-200 pb-1">
+//               <span>Programs</span>
+//               <span>{user.programCount}</span>
+//             </div>
+//             <div className="flex justify-between border-b border-gray-200 pb-1">
+//               <span>Price</span>
+//               <span>{user.price}</span>
+//             </div>
+//             <div className="flex justify-between">
+//               <span>Duration</span>
+//               <span>{user.duration}</span>
+//             </div>
+//           </div>
+//         </div>
+
       
-      <div className="max-w-4xl mx-auto px-4 py-6">
-        {/* Profile Header */}
-        <div className="bg-white rounded-lg shadow-md p-4 mb-6">
-          <div className="flex flex-col sm:flex-row items-center sm:items-start">
-            <div className="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden sm:mr-4 flex-shrink-0">
+//         <div className=" md:col-span-2 bg-white rounded-lg shadow px-4">
+//           <div className="flex justify-between items-center mb-5">
+//             <h2 className="font-semibold text-xl">Gain chest</h2>
+//             <div className="text-xs text-gray-500">
+//               Total Session: {sessions.length} | Complete Session:{" "}
+//               {sessions.filter((s) => s.status === "complete").length}
+//             </div>
+//           </div>
+
+//           <List
+//             dataSource={sessions}
+//             itemLayout="horizontal"
+//             split={false}
+//             className="overflow-auto"
+//             renderItem={(item) => {
+//               const isSelected = item.id === selectedId;
+//               const baseBorder = "border rounded-lg p-3 cursor-pointer flex items-center";
+//               const borderColor = isSelected
+//                 ? "border-red-300 bg-red-50"
+//                 : "border-gray-200 hover:border-red-300";
+//               return (
+//                 <List.Item
+//                   key={item.id}
+//                   onClick={() => setSelectedId(item.id)}
+//                   className={`${baseBorder} ${borderColor} mb-3`}
+//                 >
+//                   <List.Item.Meta
+//    avatar={
+//     <div className="relative w-16 h-16 rounded-md overflow-hidden ml-4">
+//       <video 
+//         className="w-full h-full object-cover"
+//         src={item.videoUrl}
+//         muted
+//         poster="/images/vid.png"  // <-- Thumbnail image here
+//         preload="metadata"
+//         controls={false}
+//         // Add controls={false} to prevent showing controls if you want
+//       >
+//         Your browser does not support the video tag.
+//       </video>
+//       <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30">
+//         <PlayCircleOutlined className="text-white text-xl" />
+//       </div>
+//     </div>
+//   }  />
+
+//                   <div className="ml-auto text-xs mr-4">
+//                     {item.status === "complete" && (
+//                       <Tag
+//                         icon={<CheckCircleOutlined />}
+//                         color="success"
+//                         className="font-semibold"
+//                       >
+//                         Complete
+//                       </Tag>
+//                     )}
+//                     {item.status === "active" && (
+//                       <Button
+//                         type="primary"
+//                         danger
+//                         icon={<PlayCircleOutlined />}
+//                         size="small"
+//                         onClick={(e) => {
+//                           e.stopPropagation();
+//                           setSelectedId(item.id);
+//                           showModal();
+//                         }}
+//                       >
+//                         Play
+//                       </Button>
+//                     )}
+//                     {item.status === "locked" && (
+//                       <Button
+//                         type="default"
+//                         icon={<PlayCircleOutlined />}
+//                         size="small"
+//                         disabled
+//                       >
+//                         Play
+//                       </Button>
+//                     )}
+//                   </div>
+//                 </List.Item>
+//               );
+//             }}
+//           />
+//         </div>
+        
+
+//        {/* //// right panel */}
+//         <div className=" bg-white rounded-lg shadow px-6">
+//           <h3 className="font-semibold text-lg mb-5">Details Session {selectedSession?.id}</h3>
+
+//           <div className="relative mb-5">
+            
+//             <img
+//               src="/images/vid.png" // Replace with your image path
+//               alt={selectedSession?.title}
+//               className="rounded-md w-full h-48 object-cover"
+//             />
+//             {selectedSession?.status === "active" && (
+//               <Button
+//                 type="primary" 
+//                 danger
+//                 shape="circle" 
+//                 icon={<PlayCircleOutlined />} 
+//                 size="large"
+//                 className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+//                 onClick={showModal}
+//               />
+//             )}
+//           </div>
+
+//           <div className="mb-4">
+//             <h4 className="font-semibold">Session {selectedSession?.id}</h4>
+//             <p className="font-semibold">{selectedSession?.title}</p>
+//           </div>
+
+//           <div className="mb-4">
+//             <h4 className="font-semibold">Duration</h4>
+//             <p>{selectedSession?.duration || "30 minute/day"}</p>
+//           </div>
+
+//           <div className="mb-4">
+//             <h4 className="font-semibold">Benefits</h4>
+//             <ul className="list-disc list-inside text-gray-700 space-y-1 text-sm">
+//               <li>Strengthens the Chest</li>
+//               <li>Improves Upper Body Strength</li>
+//               <li>Increases Muscle Endurance</li>
+//               <li>Enhances Posture</li>
+//               <li>Boosts Metabolism</li>
+//             </ul>
+//           </div>
+
+//           <div>
+//             <h4 className="font-semibold mb-2">Got {selectedSession?.tokens || 0} Tokens</h4>
+//             <Button
+//               type="default"
+//               icon={<CheckCircleOutlined />}
+//               className="border border-green-300 text-green-600 rounded-md w-full"
+//             >
+//               Complete
+//             </Button>
+//           </div>
+//         </div>
+
+//       </div>
+
+ 
+
+
+
+//       {/* Video Modal */}
+//       <Modal
+//         title={`Session ${selectedSession?.id} - ${selectedSession?.title}`}
+//         open={isModalOpen}
+//         onCancel={handleCancel}
+//         footer={null}
+//         width={1200}
+//         closeIcon={<CloseOutlined />}
+//         centered
+//       >
+//         <div className="aspect-video bg-black rounded-lg w-full overflow-hidden">
+//           {/* Video Player */}
+//           <video 
+//             controls
+//             className="w-full h-full"
+//             autoPlay
+//           >
+//             <source src={selectedSession?.videoUrl} type="video/mp4" />
+//             Your browser does not support the video tag.
+//           </video>
+//         </div>
+//         <div className="mt-4">
+//           <h4 className="font-semibold text-lg mb-2">{selectedSession?.title}</h4>
+//           <p className="text-gray-700">
+//             Follow along with this {selectedSession?.duration} workout session to improve your chest strength and definition.
+//           </p>
+//         </div>
+//       </Modal>
+//     </div>
+//   );
+// }
+
+
+"use client";
+
+import React, { useState, useRef } from "react";
+import { Avatar, Button, Tag, List, Modal, Image } from "antd";
+import {
+  CheckCircleOutlined,
+  PlayCircleOutlined,
+  CloseOutlined,
+  LeftOutlined
+} from "@ant-design/icons";
+import { useRouter } from "next/navigation";
+
+const user = {
+  name: "Sakib Ahmed",
+  location: "New York, America",
+  roles: ["Protocol Name", "Trainer", "Body Trainer", "Protocol Name"],
+  description:
+    "Lorem ipsum dolor sit amet consectetur. Massa risus eget justo vel urna sapien posuere. Mauris magna eratest vestibulum cum egestas etiam pulvinar orci.",
+  programCount: 10,
+  price: "$199",
+  duration: "5 month",
+  avatar: "/images/trainer.png", // Replace with your actual avatar path
+};
+
+const sessions = [
+  {
+    id: 1,
+    title: "Push-ups",
+    duration: "30 min/day",
+    status: "complete",
+    tokens: 1,
+    videoUrl: "/images/prac.mp4", // Replace with actual video URLs
+  },
+  {
+    id: 2,
+    title: "Push-ups",
+    duration: "30 min/day",
+    status: "active",
+    remainingDays: 3,
+    tokens: 1,
+    videoUrl: "/images/prac.mp4",
+  },
+  {
+    id: 3,
+    title: "Push-ups",
+    unlockAfterDays: 3,
+    status: "locked",
+    tokens: 1,
+    videoUrl: "https://www.example.com/video3.mp4",
+  },
+  {
+    id: 4,
+    title: "Push-ups",
+    unlockAfterDays: 3,
+    status: "locked",
+    tokens: 1,
+    videoUrl: "https://www.example.com/video4.mp4",
+  },
+  {
+    id: 5,
+    title: "Push-ups",
+    unlockAfterDays: 3,
+    status: "locked",
+    tokens: 1,
+    videoUrl: "https://www.example.com/video5.mp4",
+  },
+  {
+    id: 6,
+    title: "Push-ups",
+    unlockAfterDays: 3,
+    status: "locked",
+    tokens: 1,
+    videoUrl: "https://www.example.com/video6.mp4",
+  },
+];
+
+export default function SpecialistProgramDetails() {
+    const router = useRouter()
+  const [selectedId, setSelectedId] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCongratsModalOpen, setIsCongratsModalOpen] = useState(false);
+  const videoRef = useRef(null);
+  
+  const selectedSession = sessions.find((session) => session.id === selectedId);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleVideoEnded = () => {
+    // Close the video modal and show the congratulations modal
+    setIsModalOpen(false);
+    setIsCongratsModalOpen(true);
+    
+    // Optional: Mark the session as complete if needed
+    // This would require state management for the sessions array
+  };
+
+  const handleCongratsClose = () => {
+    setIsCongratsModalOpen(false);
+  };
+
+  return (
+    <div className="bg-gray-50 p-4 md:p-8">
+         <h1  className='text-2xl font-semibold flex items-center gap-2 my-12'>
+        <LeftOutlined onClick={() => router.back()} className=' cursor-pointer' />
+        View Full Program Session
+        </h1>
+      <div className="grid md:grid-cols-4 gap-2">
+    
+        <div className="bg-white rounded-lg shadow p-6">
+          <Image
+            src={user.avatar} 
+            alt={user.name} 
+            layout="fill"
+            objectFit="cover"
+          />
+         
+          <h2 className="text-2xl font-semibold mt-4">{user.name}</h2>
+          <p className="text-gray-500 mt-1">{user.location}</p>
+
+          <div className="grid md:grid-cols-2 gap-2">
+            {user.roles.map((role, i) => (
+                <div key={i} className="">
+                  <Tag
+                    className="text-black text-xs font-medium rounded-lg py-1 border border-gray-300"
+                  >
+                    {role}
+                  </Tag>
+                </div>
+            ))}
+          </div>
+
+          <p className="text-gray-600 text-sm text-center mb-6">{user.description}</p>
+
+          <div className="w-full space-y-3 text-sm font-semibold text-gray-800">
+            <div className="flex justify-between border-b border-gray-200 pb-1">
+              <span>Programs</span>
+              <span>{user.programCount}</span>
+            </div>
+            <div className="flex justify-between border-b border-gray-200 pb-1">
+              <span>Price</span>
+              <span>{user.price}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Duration</span>
+              <span>{user.duration}</span>
+            </div>
+          </div>
+        </div>
+
+      
+        <div className="md:col-span-2 bg-white rounded-lg shadow px-4">
+          <div className="flex justify-between items-center mb-5">
+            <h2 className="font-semibold text-xl">Gain chest</h2>
+            <div className="text-xs text-gray-500">
+              Total Session: {sessions.length} | Complete Session:{" "}
+              {sessions.filter((s) => s.status === "complete").length}
+            </div>
+          </div>
+
+          <List
+            dataSource={sessions}
+            itemLayout="horizontal"
+            split={false}
+            className="overflow-auto"
+            renderItem={(item) => {
+              const isSelected = item.id === selectedId;
+              const baseBorder = "border rounded-lg p-3 cursor-pointer flex items-center";
+              const borderColor = isSelected
+                ? "border-red-300 bg-red-50"
+                : "border-gray-200 hover:border-red-300";
+              return (
+                <List.Item
+                  key={item.id}
+                  onClick={() => setSelectedId(item.id)}
+                  className={`${baseBorder} ${borderColor} mb-3`}
+                >
+                  <List.Item.Meta
+                    avatar={
+                      <div className="relative w-16 h-16 rounded-md overflow-hidden ml-4">
+                        <video 
+                          className="w-full h-full object-cover"
+                          src={item.videoUrl}
+                          muted
+                          poster="/images/vid.png"
+                          preload="metadata"
+                          controls={false}
+                        >
+                          Your browser does not support the video tag.
+                        </video>
+                        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30">
+                          <PlayCircleOutlined className="text-white text-xl" />
+                        </div>
+                      </div>
+                    }
+                  />
+
+                  <div className="ml-auto text-xs mr-4">
+                    {item.status === "complete" && (
+                      <Tag
+                        icon={<CheckCircleOutlined />}
+                        color="success"
+                        className="font-semibold"
+                      >
+                        Complete
+                      </Tag>
+                    )}
+                    {item.status === "active" && (
+                      <Button
+                        type="primary"
+                        danger
+                        icon={<PlayCircleOutlined />}
+                        size="small"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedId(item.id);
+                          showModal();
+                        }}
+                      >
+                        Play
+                      </Button>
+                    )}
+                    {item.status === "locked" && (
+                      <Button
+                        type="default"
+                        icon={<PlayCircleOutlined />}
+                        size="small"
+                        disabled
+                      >
+                        Play
+                      </Button>
+                    )}
+                  </div>
+                </List.Item>
+              );
+            }}
+          />
+        </div>
+        
+
+       {/* //// right panel */}
+        <div className="bg-white rounded-lg shadow px-6">
+          <h3 className="font-semibold text-lg mb-5">Details Session {selectedSession?.id}</h3>
+
+          <div className="relative mb-5">
+            
+            <img
+              src="/images/vid.png" // Replace with your image path
+              alt={selectedSession?.title}
+              className="rounded-md w-full h-48 object-cover"
+            />
+            {selectedSession?.status === "active" && (
+              <Button
+                type="primary" 
+                danger
+                shape="circle" 
+                icon={<PlayCircleOutlined />} 
+                size="large"
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                onClick={showModal}
+              />
+            )}
+          </div>
+
+          <div className="mb-4">
+            <h4 className="font-semibold">Session {selectedSession?.id}</h4>
+            <p className="font-semibold">{selectedSession?.title}</p>
+          </div>
+
+          <div className="mb-4">
+            <h4 className="font-semibold">Duration</h4>
+            <p>{selectedSession?.duration || "30 minute/day"}</p>
+          </div>
+
+          <div className="mb-4">
+            <h4 className="font-semibold">Benefits</h4>
+            <ul className="list-disc list-inside text-gray-700 space-y-1 text-sm">
+              <li>Strengthens the Chest</li>
+              <li>Improves Upper Body Strength</li>
+              <li>Increases Muscle Endurance</li>
+              <li>Enhances Posture</li>
+              <li>Boosts Metabolism</li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-semibold mb-2">Got {selectedSession?.tokens || 0} Tokens</h4>
+            <Button
+              type="default"
+              icon={<CheckCircleOutlined />}
+              className="border border-green-300 text-green-600 rounded-md w-full"
+            >
+              Complete
+            </Button>
+          </div>
+        </div>
+
+      </div>
+
+      {/* Video Modal */}
+      <Modal
+        title={`Session ${selectedSession?.id} - ${selectedSession?.title}`}
+        open={isModalOpen}
+        onCancel={handleCancel}
+        footer={null}
+        width={1200}
+        closeIcon={<CloseOutlined />}
+        centered
+      >
+        <div className="aspect-video bg-black rounded-lg w-full overflow-hidden">
+          {/* Video Player with onEnded event */}
+          <video 
+            ref={videoRef}
+            controls
+            className="w-full h-full"
+            autoPlay
+            onEnded={handleVideoEnded}
+          >
+            <source src={selectedSession?.videoUrl} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <div className="mt-4">
+          <h4 className="font-semibold text-lg mb-2">{selectedSession?.title}</h4>
+          <p className="text-gray-700">
+            Follow along with this {selectedSession?.duration} workout session to improve your chest strength and definition.
+          </p>
+        </div>
+      </Modal>
+
+      {/* Congratulations Modal */}
+      <Modal
+        open={isCongratsModalOpen}
+        onCancel={handleCongratsClose}
+        footer={[
+          <Button key="close" type="primary" onClick={handleCongratsClose}>
+            Continue
+          </Button>,
+        ]}
+        width={400}
+        centered
+        closable={false}
+      >
+        <div className="text-center py-6">
+          {/* Confetti Animation */}
+          <div className="flex justify-center mb-4">
+            <div className="relative w-24 h-24">
               <img 
-                src="https://randomuser.me/api/portraits/men/71.jpg" 
-                alt="Profile" 
-                className="w-full h-full object-cover"
+                src="/images/cong.png" 
+                alt="Confetti celebration" 
+                className="w-full h-full"
               />
             </div>
-            <div className="flex-1 mt-4 sm:mt-0 text-center sm:text-left">
-              <h1 className="text-xl md:text-2xl font-bold">{userProfile.name}</h1>
-              <p className="text-gray-500 text-sm">{userProfile.location}</p>
-              
-              <div className="mt-3 flex flex-wrap justify-center sm:justify-start gap-2">
-                {userProfile.tags.map((tag, index) => (
-                  <span key={index} className="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
           </div>
           
-          <div className="mt-4 pt-4 border-t border-gray-100">
-            <div className="grid grid-cols-3 gap-2">
-              <div className="text-center">
-                <p className="text-gray-500 text-xs">Programs</p>
-                <p className="font-bold">{userProfile.stats.programs}</p>
-              </div>
-              <div className="text-center">
-                <p className="text-gray-500 text-xs">Price</p>
-                <p className="font-bold">{userProfile.stats.price}</p>
-              </div>
-              <div className="text-center">
-                <p className="text-gray-500 text-xs">Duration</p>
-                <p className="font-bold">{userProfile.stats.duration}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        {/* Main Content */}
-        <div className="flex flex-col md:flex-row gap-6">
-          {/* Sessions List */}
-          <div className="w-full md:w-2/3">
-            <div className="bg-white rounded-lg shadow-md p-4">
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
-                <h2 className="text-lg font-bold">Gain chest</h2>
-                <div className="text-sm text-gray-500 mt-1 sm:mt-0">
-                  <span>Total Sessions: 10</span>
-                  <span className="ml-2">Complete Sessions: 1</span>
-                </div>
-              </div>
-              
-              {/* Session List */}
-              <div className="space-y-3">
-                {workoutSessions.map(session => (
-                  <div 
-                    key={session.id}
-                    className={`bg-white border rounded-lg overflow-hidden transition-all duration-200 hover:shadow-md cursor-pointer ${activeSession === session.id ? 'border-blue-400' : 'border-gray-200'}`}
-                    onClick={() => setActiveSession(session.id)}
-                  >
-                    <div className="flex items-center p-3">
-                      <div className="w-14 h-14 mr-3 flex-shrink-0">
-                        <img 
-                          src={session.image} 
-                          alt={session.title} 
-                          className="w-full h-full object-cover rounded-md"
-                        />
-                      </div>
-                      <div className="flex-1">
-                        <div className="text-xs text-gray-500">Session {session.session}</div>
-                        <div className="font-semibold">{session.title}</div>
-                        <div className="text-xs text-gray-500">{session.duration}</div>
-                        {session.remainingDays && (
-                          <div className="text-xs text-gray-500">Remain {session.remainingDays} days</div>
-                        )}
-                        {session.unlockAfter && (
-                          <div className="text-xs text-gray-500">Unlock · After {session.unlockAfter} days</div>
-                        )}
-                      </div>
-                      <div onClick={(e) => e.stopPropagation()}>
-                        {session.status === 'complete' && (
-                          <Button 
-                            type="primary"
-                            size="small"
-                            className="rounded-full flex items-center h-6 bg-green-500 hover:bg-green-600 border-green-500 hover:border-green-600"
-                            icon={<CheckOutlined className="text-xs" />}
-                          >
-                            <span className="text-xs ml-1">Complete</span>
-                          </Button>
-                        )}
-                        {session.status === 'active' && (
-                          <Button 
-                            danger
-                            size="small"
-                            ghost
-                            className="rounded-full flex items-center h-6"
-                            icon={<PlayCircleOutlined className="text-xs" />}
-                          >
-                            <span className="text-xs ml-1">Play</span>
-                          </Button>
-                        )}
-                        {session.status === 'locked' && (
-                          <Button 
-                            disabled
-                            size="small"
-                            className="rounded-full flex items-center h-6 bg-gray-100 text-gray-400"
-                            icon={<PlayCircleOutlined className="text-xs" />}
-                          >
-                            <span className="text-xs ml-1">Play</span>
-                          </Button>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+          <h3 className="font-bold text-xl mb-2">Congratulation</h3>
+          <p className="text-lg font-medium">You Got {selectedSession?.tokens || 1} Token</p>
           
-          {/* Session Details */}
-          <div className="w-full md:w-1/3 mt-6 md:mt-0">
-            {(() => {
-              const session = workoutSessions.find(s => s.id === activeSession);
-              if (!session) return null;
-              
-              return (
-                <div className="bg-white rounded-lg shadow-md p-4">
-                  <h2 className="text-lg font-bold mb-4">Details Session {session.session}</h2>
-                  
-                  <div className="mb-4">
-                    <img 
-                      src="https://images.unsplash.com/photo-1599058917765-a780eda07a3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" 
-                      alt="Push-up demonstration" 
-                      className="w-full h-40 object-cover rounded-md"
-                    />
-                  </div>
-                  
-                  <div className="mb-4">
-                    <div className="text-sm text-gray-500">Session {session.session}</div>
-                    <div className="text-lg font-semibold">{session.title}</div>
-                  </div>
-                  
-                  <div className="mb-4">
-                    <div className="text-sm text-gray-500">Duration</div>
-                    <div className="font-semibold">{session.duration}</div>
-                  </div>
-                  
-                  <div className="mb-6">
-                    <div className="text-sm text-gray-500 mb-2">Benefits</div>
-                    <ul className="space-y-1">
-                      {sessionBenefits.map((benefit, index) => (
-                        <li key={index} className="flex items-center text-sm">
-                          <CheckOutlined className="text-green-500 mr-2 text-sm" />
-                          {benefit}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  
-                  <div>
-                    <div className="text-sm text-gray-500 mb-2">Got 1 Tokens</div>
-                    <Button 
-                      type="default"
-                      block
-                      className="bg-green-50 hover:bg-green-100 text-green-600 border-green-100 hover:border-green-200 rounded-md h-10"
-                      icon={<CheckOutlined />}
-                    >
-                      Complete
-                    </Button>
-                  </div>
-                </div>
-              );
-            })()}
+          <div className="mt-6">
+            <p className="text-gray-600 text-sm">
+              Great job completing your session! Keep up the good work.
+            </p>
           </div>
         </div>
-      </div>
-      
-      <style jsx global>{`
-        body {
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-          background-color: #f5f5f5;
-        }
-        
-        /* Custom styles to manage Ant Design with Tailwind */
-        .ant-btn-primary {
-          background-color: #22c55e !important;
-        }
-        .ant-btn-primary:hover {
-          background-color: #16a34a !important;
-        }
-        .ant-btn-primary:focus {
-          background-color: #16a34a !important;
-        }
-        
-        /* Responsive tweaks */
-        @media (max-width: 640px) {
-          .profile-section {
-            flex-direction: column;
-            align-items: center;
-          }
-          .profile-section .profile-info {
-            text-align: center;
-            margin-top: 1rem;
-          }
-        }
-      `}</style>
+      </Modal>
     </div>
   );
 }

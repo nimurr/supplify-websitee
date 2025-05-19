@@ -3,8 +3,10 @@
 import React, { useState } from "react";
 import { Card, Button, Tooltip } from "antd";
 import { ClockCircleOutlined, CalendarOutlined, LeftOutlined } from "@ant-design/icons";
-import CustomButton from "@/components/customComponent/CustomButton";
+ 
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import CustomButton from "@/components/customComponent/CustomButton";
 
 const data = Array(12).fill({
   title: "Gain chest",
@@ -20,14 +22,17 @@ const SpecialistProgram = ({id}) => {
   const back = () => {
     router.push('/dashboard/specialist')
 }
+
+ 
+
   return (
     <div> 
-          <h1  className='text-2xl font-semibold flex items-center gap-2 mb-6 mt-6'>
-        <LeftOutlined onClick={() => back()} className=' cursor-pointer' />
+          <h1  className='text-2xl font-semibold items-center gap-2 mb-6 mt-6'>
+        <LeftOutlined onClick={() => back()} className='cursor-pointer' />
         View Full Program {id}
         </h1>
     <div className="p-4 border border-blue-200 rounded-lg overflow-auto">
-      <div className="grid md:grid-cols-4 grid-cols-1 gap-4">
+      <div className="grid md:grid-cols-6 grid-cols-1 gap-4">
         {data.map((item, index) => (
           <Card
             key={index}
@@ -41,7 +46,7 @@ const SpecialistProgram = ({id}) => {
               <img
                 alt="program"
                 src="/images/sprogram.png" // Replace with your actual image path
-                className="w-full h-24 object-cover rounded-t-md"
+                className="w-full object-cover rounded-t-md"
               />
             }
             onClick={() => setSelectedIndex(index)}
@@ -64,15 +69,16 @@ const SpecialistProgram = ({id}) => {
             </div>
 
             {index === selectedIndex ? (
-              <Button
-                type="default"
-                block
-                
-                className="border-red-300 mt-5 text-red-500 hover:text-white hover:bg-red-500"
-              >
-                Start
-                
-              </Button>
+              
+               <Button
+                 type="default"
+                 block
+                 onClick={() => router.push("/dashboard/specialist/specialist-details")}
+                 className="border-red-300 mt-5 text-red-500 hover:text-white hover:bg-red-500"
+               >
+                 Start
+               </Button>
+           
             ) : (
               <CustomButton
               text="Buy"

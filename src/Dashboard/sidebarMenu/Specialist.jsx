@@ -61,9 +61,9 @@ const SpecialistsPage = () => {
       <div className="flex gap-8 border-b mb-6">
         <button
           onClick={() => setActiveTab("your")}
-          className={`pb-2 border-b-2 font-medium ${
+          className={`pb-2 font-medium ${
             activeTab === "your"
-              ? "text-red-600 !underline border-b-2 border-red-600"
+              ? "text-red-600 border-b-2 border-red-600"
               : "text-gray-500"
           }`}
         >
@@ -92,7 +92,7 @@ const SpecialistsPage = () => {
               src={spec.image}
               alt={spec.name}
               width="100%"
-              height={240}
+              height={350}
               style={{ objectFit: "cover", borderRadius: "8px" }}
               preview={false}
             />

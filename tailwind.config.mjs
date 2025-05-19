@@ -1,9 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/pages/**/*.{js,ts,jsx,tsx}",     // Adjust if your source is not under src
+    "./src/components/**/*.{js,ts,jsx,tsx}",
+    "./src/app/**/*.{js,ts,jsx,tsx}",
+    "./src/Dashboard/**/*.{js,ts,jsx,tsx}",
   ],
   darkMode: 'class',
   theme: {
@@ -19,9 +20,9 @@ module.exports = {
       padding: "2rem",
     },
     extend: {
-      // backgroundColor: {
-      //   'custom-green': 'rgba(0, 191, 99, 0.5)',
-      // },
+      backgroundColor: {
+        'custom-green': 'rgba(0, 191, 99, 0.5)',
+      },
       fontSize: {
         small: "1rem", // Small size equivalent to text-lg
         medium: "1.5rem", // Medium size equivalent to text-2xl
