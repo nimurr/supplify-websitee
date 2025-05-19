@@ -85,10 +85,10 @@ export default function DoctorPage() {
         >
           <div className="grid md:grid-cols-4 grid-cols-1 gap-4">
             {yourDoctors.map((doc) => (
-                <Card
+              <Card
                 key={doc.id}
                 hoverable
-                className="rounded-lg shadow-md cursor-pointer"
+                className=" rounded-lg shadow-md cursor-pointer"
                 cover={
                   <div className="relative rounded-t-lg overflow-hidden">
                     <Image
@@ -96,10 +96,11 @@ export default function DoctorPage() {
                       alt={doc.name}
                       layout="fill"
                       objectFit="cover"
-                      className=" object-cover aspect-auto"
+                       className=" object-cover aspect-auto"
                     />
                   </div>
                 }
+              
               >
                 <h3 className="font-semibold text-lg mb-1">{doc.name}</h3>
                 <p className="text-gray-600 text-sm mb-1">
