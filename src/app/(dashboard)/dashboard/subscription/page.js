@@ -4,7 +4,7 @@ const page = () => {
     return (
         <div>
              <h1>
-                Subscription page now
+                Subscription page new  to the
              </h1>
         </div>
     );
