@@ -1,11 +1,13 @@
-import SpecialistDetails from '@/Dashboard/sidebarMenu/SpecialistDetails';
+ 
+import SpecialistProgram from '@/Dashboard/sidebarMenu/SpecialProgram';
 import React from 'react';
 
 const page = async ({params}) => {
     const {id} = await params;
     return (
         <div>
-            <SpecialistDetails  id= {id} />
+          
+            <SpecialistProgram id={id} />
         </div>
     );
 };

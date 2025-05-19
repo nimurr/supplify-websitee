@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import { Button, Image as AntImage } from "antd";
 import { LaptopOutlined } from "@ant-design/icons";
+import CustomButton from "@/components/customComponent/CustomButton";
+import { useRouter } from "next/navigation";
 
 const yourSpecialists = [
   {
@@ -42,10 +44,17 @@ const otherSpecialists = [
 ];
 
 const SpecialistsPage = () => {
+    const router = useRouter()
   const [activeTab, setActiveTab] = useState("your");
 
   const data = activeTab === "your" ? yourSpecialists : otherSpecialists;
 
+  const ViewFull = (id) => {
+    console.log('cliceddd')
+      console.log(id)
+      router.push(`/dashboard/specialist/${id}`)
+
+  }
   return (
     <div className="p-6">
       {/* Tabs */}
@@ -104,12 +113,10 @@ const SpecialistsPage = () => {
               <LaptopOutlined />
               {spec.programs} Programs
             </div>
-            <Button
-              type="primary"
-              className="w-full bg-red-600 border-red-600 hover:bg-red-700"
-            >
-              View Full
-            </Button>
+             <CustomButton
+               onClick={() => ViewFull(spec.id)}
+             text="View Full"
+             />
           </div>
         ))}
       </div>
