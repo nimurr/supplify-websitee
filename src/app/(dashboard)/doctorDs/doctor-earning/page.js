@@ -1,9 +1,10 @@
+import DoctorEarning from '@/Dashboard/sidebarMenu/doctor/DoctorEarning';
 import React from 'react';
 
 const page = () => {
     return (
         <div>
-            doctor Earning pagejdslf
+           <DoctorEarning />
         </div>
     );
 };

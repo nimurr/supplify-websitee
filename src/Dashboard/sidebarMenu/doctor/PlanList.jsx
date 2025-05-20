@@ -4,6 +4,7 @@ import React from 'react';
 import { Card, Button, Table, Typography, Avatar } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
+import CustomButton from '@/components/customComponent/CustomButton';
 
 const { Title, Text } = Typography;
 
@@ -70,6 +71,12 @@ export default function ProtocolsAndMealPlans() {
 
   return (
     <div className=" mx-auto p-4">
+          <div className="my-4 w-full flex justify-end">
+            <div> 
+  <CustomButton onClick={() => router.push('/doctorDs/create-plan/added-mealPlan')} className='' text="Create Plan" />
+            </div>
+</div>
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Protocols Table */}
         <div className="lg:col-span-1">
@@ -124,11 +131,7 @@ export default function ProtocolsAndMealPlans() {
       </div>
       
       {/* Create Plan Button */}
-      <div className="mt-4">
-        <Button type="primary" className="bg-blue-600 hover:bg-blue-700 border-blue-600">
-          CreatePlan
-        </Button>
-      </div>
+  
     </div>
   );
 }

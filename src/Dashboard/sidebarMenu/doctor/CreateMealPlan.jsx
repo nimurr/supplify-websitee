@@ -2,12 +2,13 @@
 
 import { useState } from 'react';
 import { Form, Input, Button, Typography, Tooltip } from 'antd';
-import { DeleteOutlined, PlusOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import { DeleteOutlined, PlusOutlined, InfoCircleOutlined, ArrowLeftOutlined } from '@ant-design/icons';
+import Link from 'next/link';
 
 const { Title } = Typography;
 const { TextArea } = Input;
 
-export default function MealPlanForm() {
+export default function CreateMealPlan() {
   const [form] = Form.useForm();
   const [keyPoints, setKeyPoints] = useState(['']);
 
@@ -42,6 +43,11 @@ export default function MealPlanForm() {
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
+         <Link href="/doctorDs/create-plan" className="mr-4">
+          <Button icon={<ArrowLeftOutlined />} className="flex items-center">
+            Back
+          </Button>
+        </Link>
       <Title level={2} className="mb-6 text-center">Meal Plan</Title>
       <div className="border-t border-gray-200 mb-6"></div>
       
