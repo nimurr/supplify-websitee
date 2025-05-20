@@ -1,4 +1,4 @@
-import ViewSuggestPage from '@/Dashboard/sidebarMenu/ViewSuggestPage';
+import ViewSuggestPage from '@/Dashboard/sidebarMenu/user/ViewSuggestPage';
 import React from 'react';
 
 const page = () => {

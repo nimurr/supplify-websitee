@@ -1,10 +1,10 @@
-import ProtocolPage from '@/Dashboard/sidebarMenu/user/Protocol';
+import ProtocolsAndMealPlans from '@/Dashboard/sidebarMenu/doctor/PlanList';
 import React from 'react';
 
 const page = () => {
     return (
         <div>
-              <ProtocolPage />
+           <ProtocolsAndMealPlans />
         </div>
     );
 };

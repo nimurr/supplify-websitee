@@ -1,4 +1,4 @@
-import MealPlanProtocol from '@/Dashboard/sidebarMenu/ProtocolDetails';
+import MealPlanProtocol from '@/Dashboard/sidebarMenu/user/ProtocolDetails';
 import React from 'react';
 
 const page = () => {

@@ -1,5 +1,5 @@
  
-import SpecialistProgram from '@/Dashboard/sidebarMenu/SpecialProgram';
+import SpecialistProgram from '@/Dashboard/sidebarMenu/user/SpecialProgram';
 import React from 'react';
 
 const page = async ({params}) => {

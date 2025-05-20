@@ -1,10 +1,10 @@
-import ProtocolPage from '@/Dashboard/sidebarMenu/user/Protocol';
+import EarningsSummary from '@/Dashboard/sidebarMenu/specialist/Earning';
 import React from 'react';
 
 const page = () => {
     return (
         <div>
-              <ProtocolPage />
+             <EarningsSummary />
         </div>
     );
 };

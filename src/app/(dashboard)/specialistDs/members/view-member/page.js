@@ -1,10 +1,10 @@
-import ProtocolPage from '@/Dashboard/sidebarMenu/user/Protocol';
+import ViewMember from '@/Dashboard/sidebarMenu/specialist/ViewMember';
 import React from 'react';
 
 const page = () => {
     return (
         <div>
-              <ProtocolPage />
+               <ViewMember />
         </div>
     );
 };

@@ -1,10 +1,10 @@
-import ProtocolPage from '@/Dashboard/sidebarMenu/user/Protocol';
+import CreateSession from '@/Dashboard/sidebarMenu/specialist/CreateSession';
 import React from 'react';
 
 const page = () => {
     return (
         <div>
-              <ProtocolPage />
+            <CreateSession />
         </div>
     );
 };

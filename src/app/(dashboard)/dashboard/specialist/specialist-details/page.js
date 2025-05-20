@@ -1,4 +1,4 @@
-import SpecialistDetails from '@/Dashboard/sidebarMenu/SpecialistDetails';
+import SpecialistDetails from '@/Dashboard/sidebarMenu/user/SpecialistDetails';
 import React from 'react';
 
 const page = () => {

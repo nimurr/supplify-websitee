@@ -1,4 +1,4 @@
-import DoctorFullView from '@/Dashboard/sidebarMenu/DoctorView';
+import DoctorFullView from '@/Dashboard/sidebarMenu/user/DoctorView';
 import React from 'react';
 
 const Page = async ({ params }) => {

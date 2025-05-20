@@ -1,4 +1,4 @@
-import WorkOutDetails from '@/Dashboard/sidebarMenu/WorkOutDetails';
+import WorkOutDetails from '@/Dashboard/sidebarMenu/user/WorkOutDetails';
 import React from 'react';
 
 const page = () => {

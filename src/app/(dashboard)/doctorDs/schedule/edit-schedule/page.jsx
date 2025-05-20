@@ -1,10 +1,10 @@
-import ProtocolPage from '@/Dashboard/sidebarMenu/user/Protocol';
+import EditSchedule from '@/Dashboard/sidebarMenu/doctor/EditSchedule';
 import React from 'react';
 
 const page = () => {
     return (
         <div>
-              <ProtocolPage />
+            <EditSchedule />
         </div>
     );
 };

@@ -1,4 +1,4 @@
-import SpecialistSuggest from '@/Dashboard/sidebarMenu/SpecialistSuggest';
+import SpecialistSuggest from '@/Dashboard/sidebarMenu/user/SpecialistSuggest';
 import React from 'react';
 
 const page = () => {

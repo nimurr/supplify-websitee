@@ -1,10 +1,10 @@
-import ProtocolPage from '@/Dashboard/sidebarMenu/user/Protocol';
+import ScheduleList from '@/Dashboard/sidebarMenu/doctor/ScheduleList';
 import React from 'react';
 
 const page = () => {
     return (
         <div>
-              <ProtocolPage />
+            <ScheduleList />
         </div>
     );
 };

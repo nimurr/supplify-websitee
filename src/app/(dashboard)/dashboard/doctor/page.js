@@ -1,4 +1,4 @@
-import DoctorPage from '@/Dashboard/sidebarMenu/DoctorPage';
+import DoctorPage from '@/Dashboard/sidebarMenu/user/DoctorPage';
 import React from 'react';
 
 const page = () => {

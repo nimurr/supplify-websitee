@@ -1,10 +1,10 @@
-import ProtocolPage from '@/Dashboard/sidebarMenu/user/Protocol';
+import ProgramView from '@/Dashboard/sidebarMenu/specialist/ProgramView';
 import React from 'react';
 
 const page = () => {
     return (
         <div>
-              <ProtocolPage />
+            <ProgramView />
         </div>
     );
 };

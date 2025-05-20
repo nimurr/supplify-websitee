@@ -1,5 +1,5 @@
  
-import WorkoutPage from '@/Dashboard/sidebarMenu/WorkoutClass';
+import WorkoutPage from '@/Dashboard/sidebarMenu/user/WorkoutClass';
 import React from 'react';
 
 const page = () => {
