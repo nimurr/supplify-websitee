@@ -71,10 +71,22 @@ export default function Login() {
             >
               <Input.Password placeholder="Type password" />
             </Form.Item> 
+            
+            {/* <Link href="/auth/forgotPassword" className="  text-gray-500 flex justify-end mb-2 hover:text-blue-600">
+                Forgot password?
+              </Link> */}
 
             <Form.Item>
             <CustomButton text="Login" />
             </Form.Item>
+            <div className=" text-center">
+            
+            <h1 className=''>
+           Don’t have an Account?  
+             <Link href="/auth/selectRole">
+               <span className="text-blue-500 hover:underline"> Create Account</span>               </Link>
+           </h1>
+          </div>
           </Form>
         </div>
       </div>
