@@ -1,177 +1,129 @@
-"use client"
-import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, Radio, Checkbox } from 'antd';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useSignUpMutation } from '@/redux/fetures/auth/signUp';
-import toast from 'react-hot-toast';
- 
- 
+"use client";
 
-const SignUp = () => {
+import { Form, Input, Button } from "antd";
+import { useRouter, useSearchParams } from "next/navigation";
+import BackHeader from "../customComponent/BackHeader";
 
+export default function Signup() {
   const router = useRouter()
+  const searchParams = useSearchParams();
+  const role = searchParams.get("role") || "Member";
 
-  const [pathName, setPathName] = useState("");
+  const [form] = Form.useForm();
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setPathName(window.location.pathname);
-    }
-  }, []);
-
-  // console.log(pathName)
-  // const {data: users} = useGetUsersQuery()
-  // console.log(users)
-
-  const [register, {isLoading}] =  useSignUpMutation()
-
-
-  const onFinish = async (values) => {
-    // Destructure to exclude confirmPassword
-    const { confirmPassword, agreement, ...formValues } = values;
-    console.log('Received values of form: ', formValues);
-
-   try{
-    const res = await register(formValues).unwrap();
-     console.log(res)
-     if(res.code == 201){
-      toast.success(res.message)
-     }
-     setTimeout(() => {
-      router.push(`/auth/sendOtp?email=${values.email}&path=${pathName}`)
-     }, 1000);
-   }catch(error){
-    toast.error(error.data.message)
-    console.log(error.data)
-   }
-
-
+  const onFinish = (values) => {
     
+    const fullData = {role, ...values}
+    console.log(fullData)
+  
+    // You can either pass data through query (not secure) or use state/localStorage
+    // Here’s a basic example using route
+    const queryParams = new URLSearchParams({
+      name: values.name,
+      email: values.email,
+      password: values.password,
+      role: role,
+    });
+  
+    router.push(`/auth/signup-nextpage?${queryParams.toString()}`);
   };
 
   return (
-    <div className="flex justify-center items-center lg:min-h-[700px] bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-[550Px]">
-        <h1 className="text-2xl font-bold mb-6 text-center">Create Your Account</h1>
-        <Form
-          name="signup_form"
-          initialValues={{ role: 'user' }}
-          onFinish={onFinish}
-        >
-          {/* Name and Email */}
-          <div className="flex space-x-4">
-            <Form.Item
-              name="fullName"
-              rules={[{ required: true, message: 'Please input your name!' }]}
-              className="flex-1"
-            >
-              <Input placeholder="fullName" className="w-full p-2 border rounded" />
-            </Form.Item>
-            <Form.Item
-              name="company"
-             
-              className="flex-1"
-            >
-              <Input placeholder="Company Name (Optional)" className="w-full p-2 border rounded" />
-            </Form.Item>
-          </div>
+    <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-black via-black to-[#2e0a0a] px-6">
+      {/* Left Side with Logo */}
+      <div className="hidden md:flex items-center justify-center mr-12 ">
+        <img
+          src="/images/logo2.png"
+          alt="Suplify Logo"
+          className=""
+        />
+      </div>
 
-          {/* Street and Steel Name */}
-          <div className="flex space-x-4">
-          <Form.Item
+      {/* Right Side Form */}
+      <div className="md:flex md:flex-col md:p-10 md:max-w-[600px] w-full">
+        <div className="bg-white rounded-xl shadow-lg p-10 w-full">
+        <BackHeader 
+  title={
+    <>
+      Sign up as a <b>{role.charAt(0).toUpperCase() + role.slice(1)}</b>
+    </>
+  } 
+/>
+
+
+       
+
+          <Form
+            form={form}
+            layout="vertical"
+            onFinish={onFinish}
+            requiredMark="optional"
+            autoComplete="off"
+            className="max-w-lg mx-auto"
+          >
+            <Form.Item
+              label="Name"
+              name="name"
+              rules={[{ required: true, message: "Please type your name" }]}
+            >
+              <Input placeholder="Type name" />
+            </Form.Item>
+
+            <Form.Item
+              label="Email"
               name="email"
-              rules={[{ required: true, message: 'Please input your email!' }]}
-              className="flex-1"
+              rules={[
+                { required: true, message: "Please input your email" },
+                { type: "email", message: "Please enter a valid email" },
+              ]}
             >
-              <Input placeholder="Email" className="w-full p-2 border rounded" />
+              <Input placeholder="example@gmail.com" />
             </Form.Item>
-           
-             
-          </div>
 
-          
-          {/* Password */}
-          <Form.Item
-            name="password"
-            rules={[{ required: true, message: 'Please input your password!' }]}
-          >
-            <Input.Password
-              placeholder="Password"
-              className="w-full p-2 border rounded"
-            />
-          </Form.Item>
-
-          {/* Confirm Password (not logged to console) */}
-          <Form.Item
-            name="confirmPassword"
-            dependencies={['password']}
-            rules={[
-              { required: true, message: 'Please confirm your password!' },
-              ({ getFieldValue }) => ({
-                validator(_, value) {
-                  if (!value || getFieldValue('password') === value) {
-                    return Promise.resolve();
-                  }
-                  return Promise.reject(new Error('The two passwords do not match!'));
-                },
-              }),
-            ]}
-          >
-            <Input.Password
-              placeholder="Confirm Password"
-              className="w-full p-2 border rounded"
-            />
-          </Form.Item>
-
-          {/* Role Selection */}
-          <Form.Item
-            name="role"
-            rules={[{ required: true, message: 'Please select your role!' }]}
-          >
-            <Radio.Group>
-              <Radio value="user">User</Radio>
-              <Radio value="landlord">Landlord</Radio>
-            </Radio.Group>
-          </Form.Item>
-
-          {/* Agreement Checkbox */}
-          <Form.Item
-            name="agreement"
-            valuePropName="checked"
-            rules={[
-              { validator: (_, value) => value ? Promise.resolve() : Promise.reject('Should accept agreement') },
-            ]}
-          >
-            <Checkbox>
-            Have read & agreed to Peared's Terms of Use and Privacy Policy.
-            </Checkbox>
-          </Form.Item>
-
-          {/* Submit Button */}
-          <Form.Item>
-            <Button
-           
-              htmlType="submit"
-            className="w-full !bg-[#2E7D32] text-white p-3 rounded "
+            <Form.Item
+              label="Password"
+              name="password"
+              rules={[{ required: true, message: "Please type password" }]}
             >
-              Create Account
-            </Button>
-          </Form.Item>
+              <Input.Password placeholder="Type password" />
+            </Form.Item>
 
-          {/* Already have an account? Log in */}
-          <div className="text-center">
-            <h1>
-            Already have an account?  
-            <Link href="/auth/login" className="text-blue-500 hover:underline">
-             Log in
-            </Link>
-            </h1>
-          </div>
-        </Form>
+            <Form.Item
+              label="Confirm Password"
+              name="confirmPassword"
+              dependencies={["password"]}
+              rules={[
+                { required: true, message: "Please confirm password" },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue("password") === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(
+                      new Error("Passwords do not match")
+                    );
+                  },
+                }),
+              ]}
+            >
+              <Input.Password placeholder="Re-type password" />
+            </Form.Item>
+
+            <Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                block
+                className="bg-red-700 border-red-700 hover:bg-red-800"
+              >
+
+                Next
+
+              </Button>
+            </Form.Item>
+          </Form>
+        </div>
       </div>
     </div>
   );
-};
-
-export default SignUp;
+}

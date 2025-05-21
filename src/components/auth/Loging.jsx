@@ -1,100 +1,83 @@
-"use client"
-import React, { useState } from 'react';
-import { Form, Input, Button, Checkbox } from 'antd';
-import Link from 'next/link';
-import { useLoginMutation } from '@/redux/fetures/auth/login';
-import { useRouter } from 'next/navigation';
-import toast, { Toaster } from 'react-hot-toast';
+"use client";
 
-const LoginPage = () => {
-const router = useRouter()
-const [error, setError] = useState(' ')
-const [logingData, {isLoading}] = useLoginMutation()
+import { Form, Input, Button } from "antd";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import BackHeader from "../customComponent/BackHeader";
+import CustomButton from "../customComponent/CustomButton";
+ 
+export default function Login() {
+  const router = useRouter()
+ 
 
-const onFinish = async (values) => {
-  const { remember, ...formValues } = values;
-  console.log("Received values of form: ", formValues);
+  const [form] = Form.useForm();
+
+  const onFinish = (values) => {
+ 
+  console.log(values)
+    // You can either pass data through query (not secure) or use state/localStorage
+    // Here’s a basic example using route
+ 
   
-  try {
-      const res = await logingData(formValues).unwrap();
-      console.log(res);
-
-      if (res?.code === 200) {
-          toast.success(res?.message);
-          localStorage.setItem("token", res?.data?.attributes?.tokens?.access?.token);
-          localStorage.setItem("user", JSON.stringify(res?.data));
-
-          // Force reload and redirect to root
-          setTimeout(() => {
-              window.location.href = "/";
-          }, 500);
-      }
-  } catch (error) {
-      setError(error?.data?.message || "An unexpected error occurred. Please try again.");
-  }
-};
-
+    router.push(`/`);
+  };
 
   return (
-    <div className="flex justify-center items-center lg:min-h-[700px] bg-gray-100">
-      <Toaster />
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full md:max-w-[500px]">
-        <h1 className="text-2xl font-bold mb-6 text-center">Log In</h1>
-        <Form
-          name="login_form"
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
-        >
-          <Form.Item
-            name="email"
-            rules={[{ required: true, message: 'Please input your email!' }]}
-          >
-            <Input placeholder="Email" className="w-full p-2 border rounded" />
-          </Form.Item>
 
-          <Form.Item
-            name="password"
-            rules={[{ required: true, message: 'Please input your password!' }]}
-          >
-            <Input.Password
-              placeholder="Password"
-              className="w-full p-2 border rounded"
-            />
-          </Form.Item>
-          <div className='flex justify-between items-center'>
-          <Form.Item name="remember" valuePropName="checked">
-            <Checkbox className="">Remember me</Checkbox>
-          </Form.Item>
-          <Link href="/auth/forgotPassword" className="text-blue-500 hover:underline">
-              Forgot password?
-            </Link>
+    <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-black via-black to-[#2e0a0a] px-6">
+      {/* Left Side with Logo */}
+      <div className="hidden md:flex items-center justify-center mr-12 ">
+        <Link href={'/'}>
+        
+        <img
+          src="/images/logo2.png"
+          alt="Suplify Logo"
+          className=""
+        />
+        </Link>
+      </div>
 
-          </div>
-          <p className=' text-red-500'>{error}</p>
-          <Form.Item>
-            <Button
+      {/* Right Side Form */}
+      <div className="md:flex md:flex-col md:p-10 md:max-w-[600px] w-full">
+        <div className="bg-white rounded-xl shadow-lg p-10 w-full"> 
+          <BackHeader
+          title={"Login Now"}
+          />
+
+          <Form
+            form={form}
+            layout="vertical"
+            onFinish={onFinish}
+            requiredMark="optional"
+            autoComplete="off"
+            className="max-w-lg mx-auto"
+          >
            
-              htmlType="submit"
-              className="w-full !bg-[#2E7D32] text-white p-3 rounded "
+            <Form.Item
+              label="Email"
+              name="email"
+              rules={[
+                { required: true, message: "Please input your email" },
+                { type: "email", message: "Please enter a valid email" },
+              ]}
             >
-              LOG IN
-            </Button>
-          </Form.Item>
+              <Input placeholder="example@gmail.com" />
+            </Form.Item>
 
-          <div className=" text-center">
-            
-            <h1 className=''>
-            Don’t have an Account?  
-              <Link href="/auth/singup">
+            <Form.Item
+              label="Password"
+              name="password"
+              rules={[{ required: true, message: "Please type password" }]}
+            >
+              <Input.Password placeholder="Type password" />
+            </Form.Item> 
 
-               <span className="text-blue-500 hover:underline"> Create Account</span> 
-              </Link>
-            </h1>
-          </div>
-        </Form>
+            <Form.Item>
+            <CustomButton text="Login" />
+            </Form.Item>
+          </Form>
+        </div>
       </div>
     </div>
   );
-};
-
-export default LoginPage;
+}
