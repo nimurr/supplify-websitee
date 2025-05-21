@@ -107,17 +107,7 @@ export default function DoctorPage() {
                   {doc.description}{" "}
                   <span className="font-semibold">...see more</span>
                 </p>
-                {/* <Button
-                  style={{
-                    backgroundColor: "#CC2124",
-                    borderColor: "#ef4444",
-                    color: "#FFFF",
-                  }} // #ef4444 is red-500
-                  className="w-full rounded-md"
-                  onClick={() => ViewFull(doc.id)}
-                >
-                  View Full
-                </Button> */}
+              
 
                   <CustomButton 
                    onClick={() => ViewFull(doc.id)}

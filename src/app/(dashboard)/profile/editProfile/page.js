@@ -1,3 +1,4 @@
+ 
 import EditProfile from '@/components/EditProfile';
 import React from 'react';
 

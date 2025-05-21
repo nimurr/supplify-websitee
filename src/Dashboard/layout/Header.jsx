@@ -72,7 +72,7 @@ export default function DashboardHeader({ collapsed}) {
       key: '1',
       label: 'Profile',
       icon: <UserOutlined />,
-      onClick: () => window.location.href = '/dashboard/profile',
+      onClick: () => window.location.href = '/profile',
     },
     {
       key: '2',
