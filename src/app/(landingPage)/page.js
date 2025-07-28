@@ -6,6 +6,8 @@ import Banner from "@/components/home/Banner";
 import DoctorTeamPage from "@/components/home/DoctorTeam";
 import FitnessPage from "@/components/home/FitnessPage";
 import HowItWorksPage from "@/components/home/HowItWorksPage";
+import IntroductionVideo from "@/components/home/IntroductionVideo";
+ 
 import PlansPage from "@/components/home/PlanPage";
 import TrainersTeam from "@/components/home/TrainersTeam";
 import TrainingProgram from "@/components/home/TrainingProgram";
@@ -24,6 +26,9 @@ export default function Home() {
     <div>
     
        <Banner />
+
+       <IntroductionVideo />
+
        <FitnessPage />
        <DoctorTeamPage />
        <TrainersTeam />

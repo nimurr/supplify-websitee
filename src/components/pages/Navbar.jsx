@@ -156,7 +156,7 @@ export default function Navbar() {
   const handleDashboardClick = () => {
     router.push('/dashboard/doctor');
   };
- const user = false;
+ const user = true;
   return (
     <nav className={`fixed w-full z-50 transition-all duration-300 ${showBlackBg ? 'bg-black/90 py-3' : 'bg-transparent py-4'}`}>
       <div className="container mx-auto px-4">
