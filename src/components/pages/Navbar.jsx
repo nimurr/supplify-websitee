@@ -153,9 +153,25 @@ export default function Navbar() {
   // Determine navbar background
   // Black when: scrolled OR not on home page
   const showBlackBg = scrolled || !isHomePage
-  const handleDashboardClick = () => {
-    router.push('/dashboard/doctor');
-  };
+
+
+  // const userRole = 'user';
+  // const userRole = "specialist";
+  const userRole = 'doctor';
+
+// Map role → dashboard route
+const dashboardRoutes = {
+  user: '/dashboard/doctor',
+  specialist: '/specialistDs/members',
+  doctor: '/doctorDs/upcoming-schedule',
+};
+
+const handleDashboardClick = () => {
+  const route = dashboardRoutes[userRole] || '/dashboard'; // fallback
+  router.push(route);
+};
+
+
  const user = true;
   return (
     <nav className={`fixed w-full z-50 transition-all duration-300 ${showBlackBg ? 'bg-black/90 py-3' : 'bg-transparent py-4'}`}>

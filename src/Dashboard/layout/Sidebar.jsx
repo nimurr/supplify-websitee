@@ -203,9 +203,9 @@ export default function Sidebar() {
   const toggleCollapsed = () => setCollapsed(!collapsed);
 
   // Example userRole - replace with actual auth/user role
-  const userRole = 'user';
+  // const userRole = 'user';
   // const userRole = "specialist";
-  // const userRole = 'doctor';
+  const userRole = 'doctor';
 
   const routesByRole = {
     user: [
