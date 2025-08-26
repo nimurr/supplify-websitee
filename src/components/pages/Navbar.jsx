@@ -155,9 +155,9 @@ export default function Navbar() {
   const showBlackBg = scrolled || !isHomePage
 
 
-  // const userRole = 'user';
+  const userRole = 'user';
   // const userRole = "specialist";
-  const userRole = 'doctor';
+  // const userRole = 'doctor';
 
 // Map role → dashboard route
 const dashboardRoutes = {
