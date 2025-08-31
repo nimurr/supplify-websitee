@@ -136,7 +136,7 @@ export default function Navbar() {
   const router = useRouter()
   const pathname = usePathname()
   const isHomePage = pathname === '/'
-  
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 10) {
@@ -155,24 +155,24 @@ export default function Navbar() {
   const showBlackBg = scrolled || !isHomePage
 
 
-  // const userRole = 'user';
+  const userRole = 'user';
   // const userRole = "specialist";
-  const userRole = 'doctor';
+  // const userRole = 'doctor';
 
-// Map role → dashboard route
-const dashboardRoutes = {
-  user: '/dashboard/doctor',
-  specialist: '/specialistDs/members',
-  doctor: '/doctorDs/upcoming-schedule',
-};
+  // Map role → dashboard route
+  const dashboardRoutes = {
+    user: '/dashboard/doctor',
+    specialist: '/specialistDs/members',
+    doctor: '/doctorDs/upcoming-schedule',
+  };
 
-const handleDashboardClick = () => {
-  const route = dashboardRoutes[userRole] || '/dashboard'; // fallback
-  router.push(route);
-};
+  const handleDashboardClick = () => {
+    const route = dashboardRoutes[userRole] || '/dashboard'; // fallback
+    router.push(route);
+  };
 
 
- const user = true;
+  const user = true;
   return (
     <nav className={`fixed w-full z-50 transition-all duration-300 ${showBlackBg ? 'bg-black/90 py-3' : 'bg-transparent py-4'}`}>
       <div className="container mx-auto px-4">
@@ -207,7 +207,7 @@ const handleDashboardClick = () => {
           {/* CTA Buttons - Right side */}
           <div className="hidden md:flex items-center md:gap-3 gap-1">
             {user ? (
-              <Button 
+              <Button
                 onClick={handleDashboardClick}
                 style={{
                   background: 'linear-gradient(to right, #3b82f6, #22c55e)',
@@ -219,19 +219,19 @@ const handleDashboardClick = () => {
               </Button>
             ) : (
               <div className="hidden md:flex items-center space-x-4">
-              {/* <Link 
+                {/* <Link 
                 href="/" 
                 className="text-white hover:text-primary transition font-medium"
               >
                 Sign Up
               </Link> */}
-              <Link 
-                href="/auth/login" 
-                className="bg-primary hover:bg-primary-dark text-white font-bold py-2 px-6 rounded-full transition"
-              >
-                Login
-              </Link>
-            </div>
+                <Link
+                  href="/auth/login"
+                  className="bg-primary hover:bg-primary-dark text-white font-bold py-2 px-6 rounded-full transition"
+                >
+                  Login
+                </Link>
+              </div>
             )}
           </div>
 
@@ -280,8 +280,8 @@ const handleDashboardClick = () => {
               >
                 Sign Up
               </Link> */}
-              <Link 
-                href="/auth/login" 
+              <Link
+                href="/auth/login"
                 className="block bg-primary hover:bg-primary-dark text-white font-bold py-2 px-6 rounded-full transition text-center mt-2"
               >
                 Login

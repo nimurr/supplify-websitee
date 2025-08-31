@@ -180,6 +180,9 @@ import { FaUserDoctor } from "react-icons/fa6";
 import { FaCalendarAlt, FaRegClock, FaSkating } from "react-icons/fa";
 import { HiOutlineCurrencyDollar } from "react-icons/hi2";
 import { AiFillEdit } from "react-icons/ai";
+import { LuShoppingCart } from "react-icons/lu";
+import { TiMessageTyping } from "react-icons/ti";
+
 
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import Link from "next/link";
@@ -203,9 +206,9 @@ export default function Sidebar() {
   const toggleCollapsed = () => setCollapsed(!collapsed);
 
   // Example userRole - replace with actual auth/user role
-  // const userRole = 'user';
+  const userRole = 'user';
   // const userRole = "specialist";
-  const userRole = 'doctor';
+  // const userRole = 'doctor';
 
   const routesByRole = {
     user: [
@@ -214,6 +217,12 @@ export default function Sidebar() {
         icon: <FaUserDoctor />,
         label: "Doctors",
         path: "/dashboard/doctor",
+      },
+      {
+        key: "/dashboard/order",
+        icon: <LuShoppingCart />,
+        label: "Order",
+        path: "/dashboard/order",
       },
       {
         key: "/dashboard/specialist",
@@ -245,6 +254,12 @@ export default function Sidebar() {
         label: "Subscription",
         path: "/dashboard/subscription",
       },
+      {
+        key: "/dashboard/message",
+        icon: <TiMessageTyping />,
+        label: "Message",
+        path: "/dashboard/message",
+      },
     ],
     specialist: [
       {
@@ -271,7 +286,7 @@ export default function Sidebar() {
         label: "Earning",
         path: "/specialistDs/earning",
       },
-      
+
     ],
     doctor: [
       {
@@ -315,15 +330,13 @@ export default function Sidebar() {
 
   return (
     <div
-      className={`${
-        collapsed ? "w-20" : "w-52"
-      } transition-all duration-300 h-full shadow-md`}
+      className={`${collapsed ? "w-20" : "w-52"
+        } transition-all duration-300 h-full shadow-md`}
     >
       <div className="flex justify-between items-center p-4">
         <div
-          className={`text-xl flex font-bold text-center ${
-            collapsed ? "hidden" : "block"
-          }`}
+          className={`text-xl flex font-bold text-center ${collapsed ? "hidden" : "block"
+            }`}
         >
           <Link href="/" className="flex items-center">
             <img
