@@ -171,7 +171,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { Menu } from "antd";
-import { MdFlightClass } from "react-icons/md";
+import { MdFlightClass, MdOutlineSupportAgent } from "react-icons/md";
 import { TbPrescription } from "react-icons/tb";
 import { GrUserManager } from "react-icons/gr";
 import { GiSwipeCard } from "react-icons/gi";
@@ -206,8 +206,8 @@ export default function Sidebar() {
   const toggleCollapsed = () => setCollapsed(!collapsed);
 
   // Example userRole - replace with actual auth/user role
-  const userRole = 'user';
-  // const userRole = "specialist";
+  // const userRole = 'user';
+  const userRole = "specialist";
   // const userRole = 'doctor';
 
   const routesByRole = {
@@ -285,6 +285,12 @@ export default function Sidebar() {
         icon: <HiOutlineCurrencyDollar />,
         label: "Earning",
         path: "/specialistDs/earning",
+      },
+      {
+        key: "/specialistDs/support",
+        icon: <MdOutlineSupportAgent />,
+        label: "Support",
+        path: "/specialistDs/support",
       },
 
     ],

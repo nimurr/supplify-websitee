@@ -76,17 +76,17 @@ const Page = () => {
                             <div key={msg._id} className={`flex ${msg.sender?.id === "user1" ? "justify-end" : "justify-start"}`}>
                                 <div
                                     className={`px-4 py-2 rounded-lg break-words ${msg.pending
-                                        ? "bg-gray-400 text-white"
+                                        ? "bg-gray-500 text-white"
                                         : msg.error
                                             ? "bg-red-500 text-white"
                                             : msg.sender?.id === "user1"
-                                                ? "bg-green-600 text-white"
+                                                ? "bg-red-100 text-black"
                                                 : "bg-gray-200 text-gray-800"
                                         }`}
                                 >
                                     <p>{msg.text}</p>
                                     <div className="flex justify-between items-center mt-1">
-                                        <p className={`text-xs ${msg.sender?.id === "user1" ? "text-gray-200" : "text-gray-500"}`}>
+                                        <p className={`text-xs ${msg.sender?.id === "user1" ? "text-gray-600" : "text-gray-500"}`}>
                                             {formatTime(msg?.createdAt)}
                                         </p>
                                         {msg.pending && (

@@ -2,10 +2,10 @@
 "use client";
 import React, { useState } from 'react';
 import { Button, Avatar, Dropdown, Modal, Form, Input } from 'antd';
-import { 
-  UserOutlined, 
-  BellOutlined, 
-  MenuUnfoldOutlined, 
+import {
+  UserOutlined,
+  BellOutlined,
+  MenuUnfoldOutlined,
   MenuFoldOutlined,
   SettingOutlined,
   LogoutOutlined,
@@ -16,7 +16,7 @@ import {
 } from '@ant-design/icons';
 import { Header } from 'antd/es/layout/layout';
 
-export default function DashboardHeader({ collapsed}) {
+export default function DashboardHeader({ collapsed }) {
   // State for modals and mobile menu
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
@@ -25,11 +25,11 @@ export default function DashboardHeader({ collapsed}) {
   // Modal handlers
   const openPasswordModal = () => setIsPasswordModalOpen(true);
   const closePasswordModal = () => setIsPasswordModalOpen(false);
-  
+
   const openLogoutModal = () => setIsLogoutModalOpen(true);
   const closeLogoutModal = () => setIsLogoutModalOpen(false);
-  
- 
+
+
 
   // Mobile menu toggle
   const toggleMobileMenu = () => {
@@ -59,7 +59,7 @@ export default function DashboardHeader({ collapsed}) {
     //     message.error('Failed to change password');
     //     console.error(err);
     //   });
-    
+
     // For now, just close the modal
     closePasswordModal();
   };
@@ -109,26 +109,26 @@ export default function DashboardHeader({ collapsed}) {
             onClick={toggleMobileMenu}
             className="md:hidden ml-4"
           />
-         
-        
-         
+
+
+
           <h1 className="text-lg font-bold ml-4">Dashboard</h1>
         </div>
-       
+
         {/* User profile */}
         <div className="mr-6">
-  <Dropdown
-    menu={{ items: userMenuItems }}
-    placement="bottomRight"
-    trigger={["click"]}
-  >
-    <div className="flex items-center cursor-pointer">
-      <Avatar src="/images/user4.jpg" className='h-12 w-12' icon={<UserOutlined />} />
-      <span className="ml-2 sm:inline">John Doe</span>
-    
-    </div>
-  </Dropdown>
-</div>
+          <Dropdown
+            menu={{ items: userMenuItems }}
+            placement="bottomRight"
+            trigger={["click"]}
+          >
+            <div className="flex items-center cursor-pointer">
+              <Avatar src="/images/user4.jpg" className='h-12 w-12' icon={<UserOutlined />} />
+              <span className="ml-2 sm:inline">John Doe</span>
+
+            </div>
+          </Dropdown>
+        </div>
 
       </Header>
 
