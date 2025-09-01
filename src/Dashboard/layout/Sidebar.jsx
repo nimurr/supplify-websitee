@@ -182,6 +182,7 @@ import { HiOutlineCurrencyDollar } from "react-icons/hi2";
 import { AiFillEdit } from "react-icons/ai";
 import { LuShoppingCart } from "react-icons/lu";
 import { TiMessageTyping } from "react-icons/ti";
+import { RiVideoDownloadLine } from "react-icons/ri";
 
 
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
@@ -285,6 +286,12 @@ export default function Sidebar() {
         icon: <HiOutlineCurrencyDollar />,
         label: "Earning",
         path: "/specialistDs/earning",
+      },
+      {
+        key: "/specialistDs/information-video",
+        icon: <RiVideoDownloadLine />,
+        label: "Information Video",
+        path: "/specialistDs/information-video",
       },
       {
         key: "/specialistDs/support",
