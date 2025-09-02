@@ -54,9 +54,9 @@ const Page = () => {
             </div>
 
             <div className='grid grid-cols-5 gap-5'>
-                {[...Array(10)].map((_, index) => {
+                {[...Array(10)].map((item, index) => {
                     return (
-                        <div className='border-2 border-gray-300 rounded-xl p-3' key={index}>
+                        <div onClick={() => handleEdit(item)} className='border-2 border-gray-300 rounded-xl p-3' key={index}>
                             <img className='w-full' src="/images/trainer.png" alt="" />
                             <div className='mt-5 space-y-3'>
                                 <h2 className='text-2xl font-semibold'>Video Name</h2>
