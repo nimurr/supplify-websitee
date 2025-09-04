@@ -99,7 +99,7 @@ const Page = () => {
                             <p className="text-sm text-gray-500">PNG, JPG, or JPEG up to 10MB</p>
                         </div>
 
-                        {/* Video Upload */}
+                        {/* Video Upload  */}
                         <div className="mb-5">
                             <label className="block mb-2">Video</label>
                             <input
