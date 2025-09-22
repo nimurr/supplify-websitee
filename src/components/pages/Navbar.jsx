@@ -213,6 +213,10 @@ export default function Navbar() {
                   background: 'linear-gradient(to right, #3b82f6, #22c55e)',
                   border: '1px solid white',
                   color: 'white',
+                  padding: '8px 16px',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  transition: 'background-color 0.3s ease',
                 }}
               >
                 Dashboard
