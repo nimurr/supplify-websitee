@@ -1,7 +1,8 @@
 "use client"
 
 import BackHeader from "@/components/customComponent/BackHeader";
-import React, { useState } from "react";
+import { useGetAllMealSuggestionQuery, useGetMealPlanByProtocolIdAndPatientIdQuery } from "@/redux/fetures/Specialist/specialist";
+import React, { useState, useEffect } from "react";
 
 const initialKeyPoints = [
   { id: 1, keyPoint: "Should have diet", solutionName: "eat 3 cope rice", suggestLink: 'https://linkis', editable: true },
@@ -16,6 +17,27 @@ const keyPointOptions = [
 
 export default function MealPlan() {
   const [rows, setRows] = useState(initialKeyPoints);
+  const [planByDoctorId, setPatientId] = useState(null);
+
+
+  // Get patientId and protocolId from URL, only on the client side
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const searchParams = new URLSearchParams(window.location.search);
+      setPatientId(searchParams.get("planByDoctorId"));
+    }
+  }, []); // This runs only once, after the component mounts on the client side
+
+  const { data, isLoading } = useGetAllMealSuggestionQuery({ protocolId: planByDoctorId });
+  const fullMealPlanData = data?.data?.attributes[0] || [];
+  console.log(fullMealPlanData);
+
+  if (isLoading) {
+    return <div className="flex justify-center items-center h-64">
+      <p>Loading...</p>
+    </div>
+  }
+
 
   const addNewRow = () => {
     setRows([...rows, { id: Date.now(), keyPoint: "", solutionName: "", suggestLink: "", editable: false }]);
@@ -30,9 +52,9 @@ export default function MealPlan() {
       rows.map((row) =>
         row.id === id
           ? {
-              ...row,
-              [field]: value,
-            }
+            ...row,
+            [field]: value,
+          }
           : row
       )
     );
@@ -45,27 +67,26 @@ export default function MealPlan() {
 
   return (
     <div className="max-w-4xl mx-auto bg-white rounded-lg shadow p-8">
-        <BackHeader title={"View full"} />
-      <h1 className="text-xl font-semibold mb-4">Meal Plan</h1>
+      <BackHeader title={"View full"} />
+      <h1 className="text-xl font-semibold mb-4">{fullMealPlanData?.planType || "No plan type available."}</h1>
 
       <div className="mb-6">
         <h2 className="font-semibold mb-2">Key Points</h2>
         <ul className="list-disc list-inside text-gray-700">
-          <li>Should have diet</li>
-          <li>should note eat on the brkafast</li>
+          {
+            fullMealPlanData?.keyPoints?.map((point, index) => (
+              <li key={index}>{point}</li>
+            ))
+          }
+          {/* <li>Should have diet</li>
+          <li>should note eat on the brkafast</li> */}
         </ul>
       </div>
 
       <div className="mb-8">
         <h2 className="font-semibold mb-2">Description</h2>
         <p className="text-gray-600 text-sm leading-relaxed">
-          Lorem ipsum dolor sit amet consectetur. Massa risus eget justo vel urna sapien posuere. Mauris magna egestas vestibulum cum egestas etiam
-          mollis dolor. Massa curabitur quis felis ultrices varius orci facilisi auctor nunc. Aliquam lacus sit quisque pulvinar vitae accumsan
-          pellentesque in. Congue ut luctus id proin in porttitor leo et. Libero proin euismod eget sed nulla ornare mattis. Ridiculus ac quam in
-          lacus. Ultricies sapien risus quam diam posuere mauris. Malesuada diam neque in adipiscing condimentum eros neque. Eget aliquet sit scelerisque
-          velit. Non felis congue gravida lobortis turpis pellentesque. Et consectetur sollicitudin blandit ridiculus sed. Nulla fermentum sit augue
-          nibh eros ultrices. Vitae tempor bibendum nunc sed in commodo interdum mi aliquet. Mattis molestie luctus in sed rutrum. Vulputate massa et diam
-          volutpat. Faucibus elementum magnis nam odio eu orci velit. Facilisi
+          {fullMealPlanData?.description || "No description available."}
         </p>
       </div>
 

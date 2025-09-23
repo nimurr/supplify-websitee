@@ -5,7 +5,7 @@ import { Table, Avatar } from "antd";
 import CustomButton from "@/components/customComponent/CustomButton";
 import Link from "next/link";
 import BackHeader from "@/components/customComponent/BackHeader";
-import { useSpacialistPatientByIdQuery } from "@/redux/fetures/Specialist/specialist";
+import { useSpacialistPatientByIdQuery, useSpacialistPotentialPatientQuery } from "@/redux/fetures/Specialist/specialist";
 import url from "@/redux/api/baseUrl";
 
 // Sample data for protocols
@@ -43,31 +43,25 @@ const protocolsData = [
 ];
 
 // Protocol card component
-const ProtocolCard = ({ protocol, selectedId }) => (
+const ProtocolCard = ({ protocol, selectedId, patientId }) => (
+
   <div
-    className={`bg-white rounded-md overflow-hidden shadow-sm ${selectedId === protocol.id ? "border-4 border-blue-500" : ""
+    className={`bg-white border rounded-md overflow-hidden shadow-sm ${selectedId === protocol.id ? "border-4 border-blue-500" : ""
       }`}
   >
-    {/* Protocol Image */}
-    <div className="w-full h-48 overflow-hidden">
-      <img
-        src={protocol.image}
-        alt={protocol.title}
-        className="w-full h-full object-cover"
-      />
-    </div>
-
     {/* Protocol Info */}
-    <div className="p-3">
-      <h3 className="font-medium text-base mb-1">{protocol.title}</h3>
-      <p className="text-gray-600 text-sm mb-3">Total Plan: {protocol.totalPlan}</p>
+    < div className="p-3" >
+      <h3 className="font-medium text-base mb-1">{protocol?.name}</h3>
+      <p className="text-gray-600 text-sm mb-3">Total Plan: {protocol?.totalPlanCount}</p>
 
       {/* View Full Button */}
-      <Link href="/specialistDs/members/mealplan">
+      <Link href={`/specialistDs/members/fat-loss-protocol?patientId=${patientId}&protocolId=${protocol._id}`} className="w-full">
         <CustomButton text="View Full" />
       </Link>
     </div>
-  </div>
+  </div >
+
+
 );
 
 export default function ViewMember() {
@@ -83,11 +77,17 @@ export default function ViewMember() {
 
   // State to store the selected protocol id
   const [selectedProtocolId, setSelectedProtocolId] = useState(null);
-  console.log(selectedProtocolId);
+  const [doctorId, setDoctorId] = useState(null);
+
+
+  const { data: protocols, isLoading: protocolsLoading } = useSpacialistPotentialPatientQuery({ patientId, doctorId });
+  const protocolsData = protocols?.data?.attributes || [];
+  console.log(protocolsData);
 
   // Handle row click
   const handleRowClick = (record) => {
     setSelectedProtocolId(record._id);
+    setDoctorId(record?.doctorId);
   };
 
   // Table columns configuration
@@ -149,14 +149,30 @@ export default function ViewMember() {
           {/* Right side - Protocol cards */}
           <div className="w-full md:w-2/3">
             <div className="bg-white rounded-lg shadow-sm p-6">
+              {
+                protocolsData?.length === 0 && (<div className="flex justify-center items-center w-full h-full">
+                  <span>No Protocols Available</span>
+                </div>
+                )
+              }
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                {protocolsData.map((protocol) => (
+
+                {protocolsData?.map((protocol) => (
                   <ProtocolCard
                     key={protocol.id}
                     protocol={protocol}
+                    patientId={patientId}
                     selectedId={selectedProtocolId} // Pass selectedId to highlight selected protocol
                   />
                 ))}
+
+                {
+                  protocolsLoading && (<div className="flex justify-center items-center h-full">
+                    <span>Loading...</span>
+                  </div>
+                  )
+                }
+
               </div>
             </div>
           </div>
