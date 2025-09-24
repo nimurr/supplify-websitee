@@ -68,7 +68,7 @@ export default function MealPlan() {
   return (
     <div className="max-w-4xl mx-auto bg-white rounded-lg shadow p-8">
       <BackHeader title={"View full"} />
-      <h1 className="text-xl font-semibold mb-4">{fullMealPlanData?.planType || "No plan type available."}</h1>
+      <h1 className="text-xl font-semibold mb-4">{fullMealPlanData?.planType == "mealPlan" && "Meal Plan" || "No plan type available."}</h1>
 
       <div className="mb-6">
         <h2 className="font-semibold mb-2">Key Points</h2>
