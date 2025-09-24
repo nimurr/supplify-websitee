@@ -3,6 +3,7 @@
 import BackHeader from "@/components/customComponent/BackHeader";
 import { useGetAllMealSuggestionQuery, useGetMealPlanByProtocolIdAndPatientIdQuery } from "@/redux/fetures/Specialist/specialist";
 import React, { useState, useEffect } from "react";
+import { FiPlus } from "react-icons/fi";
 
 const initialKeyPoints = [
   { id: 1, keyPoint: "Should have diet", solutionName: "eat 3 cope rice", suggestLink: 'https://linkis', editable: true },
@@ -11,14 +12,13 @@ const initialKeyPoints = [
 
 const keyPointOptions = [
   "Should have diet",
-  "should note eat on the brkafast",
+  "should note eat on the breakfast",
   // add more key points here if needed
 ];
 
 export default function MealPlan() {
   const [rows, setRows] = useState(initialKeyPoints);
   const [planByDoctorId, setPatientId] = useState(null);
-
 
   // Get patientId and protocolId from URL, only on the client side
   useEffect(() => {
@@ -38,8 +38,23 @@ export default function MealPlan() {
     </div>
   }
 
- 
- 
+  // Handle adding new specialist suggestion row
+  const addNewRow = () => {
+    setRows([...rows, { id: rows.length + 1, keyPoint: "", solutionName: "", suggestLink: "", editable: true }]);
+  };
+
+  // Handle editing a row
+  const handleChange = (index, field, value) => {
+    const updatedRows = [...rows];
+    updatedRows[index][field] = value;
+    setRows(updatedRows);
+  };
+
+  // Handle deleting a row
+  const handleDelete = (index) => {
+    const updatedRows = rows.filter((_, i) => i !== index);
+    setRows(updatedRows);
+  };
 
   return (
     <div className="max-w-4xl mx-auto bg-white rounded-lg shadow p-8">
@@ -54,8 +69,6 @@ export default function MealPlan() {
               <li key={index}>{point}</li>
             ))
           }
-          {/* <li>Should have diet</li> 
-          <li>should note eat on the brkafast</li> */}
         </ul>
       </div>
 
@@ -65,13 +78,79 @@ export default function MealPlan() {
           {fullMealPlanData?.description || "No description available."}
         </p>
       </div>
-      <div>
-        {/* show all specialistSuggestions */}
- 
+
+      {/* Specialist Suggestions Section */}
+      <div className="mb-8">
+        <h2 className="font-semibold mb-2">Specialist Suggestions</h2>
+        <div className="overflow-x-auto">
+          <table className="min-w-full table-auto border-collapse">
+            <thead>
+              <tr>
+                <th className="border px-4 py-2">SL No</th>
+                <th className="border px-4 py-2">Key Point</th>
+                <th className="border px-4 py-2">Solution Name</th>
+                <th className="border px-4 py-2">Suggest From Store</th>
+                <th className="border px-4 py-2">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((row, index) => (
+                <tr key={index}>
+                  <td className="border px-4 py-2">{row.id}</td>
+                  <td className="border px-4 py-2">
+                    {row.editable ? (
+                      <select
+                        className="w-full"
+                        value={row.keyPoint}
+                        onChange={(e) => handleChange(index, "keyPoint", e.target.value)}
+                      >
+                        {keyPointOptions.map((option, i) => (
+                          <option key={i} value={option}>
+                            {option}
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      row.keyPoint
+                    )}
+                  </td>
+                  <td className="border px-4 py-2">
+                    <input
+                      type="text"
+                      className="w-full"
+                      value={row.solutionName}
+                      onChange={(e) => handleChange(index, "solutionName", e.target.value)}
+                    />
+                  </td>
+                  <td className="border px-4 py-2">
+                    <input
+                      type="text"
+                      className="w-full"
+                      value={row.suggestLink}
+                      onChange={(e) => handleChange(index, "suggestLink", e.target.value)}
+                    />
+                  </td>
+                  <td className="border px-4 py-2">
+                    <button
+                      className="text-red-500"
+                      onClick={() => handleDelete(index)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <button
+          onClick={addNewRow}
+          className="mt-4 w-full flex items-center justify-center gap-2 bg-gray-200 text-black px-4 py-2 rounded"
+        >
+          <FiPlus />Add New Suggestion
+        </button>
+        <button className="mt-4 flex items-center justify-center gap-2 bg-green-600 text-white px-4 py-2 rounded">Save Changes</button>
       </div>
-
-
-
     </div>
   );
 }
