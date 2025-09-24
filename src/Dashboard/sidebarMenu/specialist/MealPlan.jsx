@@ -78,7 +78,7 @@ export default function MealPlan() {
               <li key={index}>{point}</li>
             ))
           }
-          {/* <li>Should have diet</li>
+          {/* <li>Should have diet</li> 
           <li>should note eat on the brkafast</li> */}
         </ul>
       </div>
