@@ -30,7 +30,7 @@ export default function MealPlan() {
 
   const { data, isLoading } = useGetAllMealSuggestionQuery({ protocolId: planByDoctorId });
   const fullMealPlanData = data?.data?.attributes[0] || [];
-  console.log(fullMealPlanData);
+  console.log(fullMealPlanData?.specialistSuggestions);
 
   if (isLoading) {
     return <div className="flex justify-center items-center h-64">
@@ -38,32 +38,8 @@ export default function MealPlan() {
     </div>
   }
 
-
-  const addNewRow = () => {
-    setRows([...rows, { id: Date.now(), keyPoint: "", solutionName: "", suggestLink: "", editable: false }]);
-  };
-
-  const deleteRow = (id) => {
-    setRows(rows.filter((row) => row.id !== id));
-  };
-
-  const updateRow = (id, field, value) => {
-    setRows(
-      rows.map((row) =>
-        row.id === id
-          ? {
-            ...row,
-            [field]: value,
-          }
-          : row
-      )
-    );
-  };
-
-  const handleSubmit = () => {
-    // handle form submission here
-    console.log("Submit:", rows);
-  };
+ 
+ 
 
   return (
     <div className="max-w-4xl mx-auto bg-white rounded-lg shadow p-8">
@@ -89,113 +65,13 @@ export default function MealPlan() {
           {fullMealPlanData?.description || "No description available."}
         </p>
       </div>
+      <div>
+        {/* show all specialistSuggestions */}
+ 
+      </div>
 
-      <table className="w-full table-auto border-collapse border border-gray-300">
-        <thead>
-          <tr className="bg-gray-100">
-            <th className="border border-gray-300 px-3 py-2 text-left">Sl No</th>
-            <th className="border border-gray-300 px-3 py-2 text-left">Key Point</th>
-            <th className="border border-gray-300 px-3 py-2 text-left">Solution Name</th>
-            <th className="border border-gray-300 px-3 py-2 text-left">Suggest From Store</th>
-            <th className="border border-gray-300 px-3 py-2 w-16"></th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row, idx) => (
-            <tr key={row.id} className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-              <td className="border border-gray-300 px-3 py-2">{idx + 1}</td>
-              <td className="border border-gray-300 px-3 py-2">
-                {row.editable ? (
-                  <select
-                    className="border border-gray-300 rounded px-2 py-1 w-full"
-                    value={row.keyPoint}
-                    onChange={(e) => updateRow(row.id, "keyPoint", e.target.value)}
-                  >
-                    <option value="">Select key point name</option>
-                    {keyPointOptions.map((kp) => (
-                      <option key={kp} value={kp}>
-                        {kp}
-                      </option>
-                    ))}
-                  </select>
-                ) : (
-                  row.keyPoint
-                )}
-              </td>
-              <td className="border border-gray-300 px-3 py-2">
-                {row.editable ? (
-                  <input
-                    type="text"
-                    placeholder="type solution name"
-                    className="border border-gray-300 rounded px-2 py-1 w-full"
-                    value={row.solutionName}
-                    onChange={(e) => updateRow(row.id, "solutionName", e.target.value)}
-                  />
-                ) : (
-                  row.solutionName
-                )}
-              </td>
-              <td className="border border-gray-300 px-3 py-2 flex items-center gap-1">
-                {row.editable ? (
-                  <input
-                    type="text"
-                    placeholder="paste the product link"
-                    className="border border-gray-300 rounded px-2 py-1 flex-grow"
-                    value={row.suggestLink}
-                    onChange={(e) => updateRow(row.id, "suggestLink", e.target.value)}
-                  />
-                ) : (
-                  <>
-                    <a href={row.suggestLink} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">
-                      {row.suggestLink}
-                    </a>
-                    <button
-                      type="button"
-                      className="text-blue-600 hover:text-blue-800"
-                      onClick={() => alert("Edit link clicked")}
-                      aria-label="Edit link"
-                    >
-                      ✏️
-                    </button>
-                  </>
-                )}
-              </td>
-              <td className="border border-gray-300 px-1 py-2 text-center">
-                {row.editable && (
-                  <button
-                    type="button"
-                    className="text-red-600 hover:text-red-800"
-                    onClick={() => deleteRow(row.id)}
-                    aria-label="Delete row"
-                  >
-                    🗑️
-                  </button>
-                )}
-              </td>
-            </tr>
-          ))}
 
-          <tr>
-            <td colSpan={5} className="border border-gray-300 px-3 py-2 text-center">
-              <button
-                type="button"
-                onClick={addNewRow}
-                className="border border-gray-400 rounded px-4 py-1 hover:bg-gray-100"
-              >
-                + Add New
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
 
-      <button
-        type="button"
-        onClick={handleSubmit}
-        className="mt-6 bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700"
-      >
-        Send
-      </button>
     </div>
   );
 }
