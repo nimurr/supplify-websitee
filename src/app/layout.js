@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "suplify-website",
+  title: "Suplify Website",
   description: "suplify-fitness",
 };
 
