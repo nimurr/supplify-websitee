@@ -147,7 +147,7 @@ export default function MealPlan() {
           onClick={addNewRow}
           className="mt-4 w-full flex items-center justify-center gap-2 bg-gray-200 text-black px-4 py-2 rounded"
         >
-          <FiPlus />Add New Suggestion
+          <FiPlus />Add New Suggestion 
         </button>
         <button className="mt-4 flex items-center justify-center gap-2 bg-green-600 text-white px-4 py-2 rounded">Save Changes</button>
       </div>
