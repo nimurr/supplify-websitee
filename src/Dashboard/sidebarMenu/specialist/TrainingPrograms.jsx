@@ -14,7 +14,6 @@ export default function TrainingPrograms() {
   const { data } = useGetAllTrainingProgramQuery(pageNumber);
   const programs = data?.data?.attributes?.results || [];
 
-
   const router = useRouter()
 
   return (
