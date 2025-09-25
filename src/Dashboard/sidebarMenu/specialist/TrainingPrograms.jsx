@@ -13,7 +13,6 @@ export default function TrainingPrograms() {
 
   const { data } = useGetAllTrainingProgramQuery(pageNumber);
   const programs = data?.data?.attributes?.results || [];
-  console.log(programs);
 
 
   const router = useRouter()
