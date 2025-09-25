@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Table, Avatar } from "antd";
 import CustomButton from "@/components/customComponent/CustomButton";
 import Link from "next/link";
@@ -44,53 +44,44 @@ const protocolsData = [
 
 // Protocol card component
 const ProtocolCard = ({ protocol, selectedId, patientId }) => (
-
   <div
-    className={`bg-white border rounded-md overflow-hidden shadow-sm ${selectedId === protocol.id ? "border-4 border-blue-500" : ""
-      }`}
+    className={`bg-white border rounded-md overflow-hidden shadow-sm ${selectedId === protocol.id ? "border-4 border-blue-500" : ""}`}
   >
-    {/* Protocol Info */}
-    < div className="p-3" >
+    <div className="p-3">
       <h3 className="font-medium text-base mb-1">{protocol?.name}</h3>
       <p className="text-gray-600 text-sm mb-3">Total Plan: {protocol?.totalPlanCount}</p>
-
-      {/* View Full Button */}
       <Link href={`/specialistDs/members/fat-loss-protocol?patientId=${patientId}&protocolId=${protocol._id}`} className="w-full">
         <CustomButton text="View Full" />
       </Link>
     </div>
-  </div >
-
-
+  </div>
 );
 
 export default function ViewMember() {
-  // get data from search params patientId
   const patientId =
-    typeof window !== "undefined"
-      ? new URLSearchParams(window.location.search).get("patientId")
-      : null;
+    typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("patientId") : null;
 
   // Fetch patient data using patientId
-  const { data: patientData, isLoading } = useSpacialistPatientByIdQuery(patientId);
+  const { data: patientData, isLoading: isPatientLoading } = useSpacialistPatientByIdQuery(patientId);
   const assignedProtocols = patientData?.data?.attributes?.results || [];
 
-  // State to store the selected protocol id
   const [selectedProtocolId, setSelectedProtocolId] = useState(null);
   const [doctorId, setDoctorId] = useState(null);
 
-
   const { data: protocols, isLoading: protocolsLoading } = useSpacialistPotentialPatientQuery({ patientId, doctorId });
   const protocolsData = protocols?.data?.attributes || [];
-  console.log(protocolsData);
 
-  // Handle row click
+  useEffect(() => {
+    if (patientData) {
+      // Logic to handle data updates when patientData is fetched
+    }
+  }, [patientData]);
+
   const handleRowClick = (record) => {
     setSelectedProtocolId(record._id);
     setDoctorId(record?.doctorId);
   };
 
-  // Table columns configuration
   const columns = [
     {
       title: "ID",
@@ -119,60 +110,62 @@ export default function ViewMember() {
     },
   ];
 
+  // Handle loading state
+  if (isPatientLoading || protocolsLoading) {
+    return (
+      <div className="p-4 md:p-6 bg-gray-50">
+        <BackHeader title={"View full"} />
+        <div className="flex justify-center items-center w-full h-full">
+          <span>Loading...</span>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="p-4 md:p-6 bg-gray-50">
       <BackHeader title={"View full"} />
       <div className=" mx-auto">
         <div className="flex flex-col md:flex-row gap-6">
-          {/* Left side - Protocol assignments table */}
           <div className="w-full md:w-1/3 lg:w-1/4">
             <div className="bg-white rounded-lg shadow-sm p-4">
               <h2 className="text-lg font-medium mb-4">Protocols</h2>
-
               <Table
                 dataSource={assignedProtocols}
                 columns={columns}
                 pagination={false}
                 size="small"
-                rowClassName={(record, index) =>
-                  index === 0 ? "bg-red-50" : ""
-                }
+                rowClassName={(record, index) => (index === 0 ? "bg-red-50" : "")}
                 rowKey="id"
                 onRow={(record) => ({
-                  onClick: () => handleRowClick(record), // Handle row click
+                  onClick: () => handleRowClick(record),
                 })}
-                style={{ cursor: "pointer" }} // Add pointer cursor to rows
+                style={{ cursor: "pointer" }}
               />
             </div>
           </div>
 
-          {/* Right side - Protocol cards */}
           <div className="w-full md:w-2/3">
             <div className="bg-white rounded-lg shadow-sm p-6">
-              {
-                protocolsData?.length === 0 && (<div className="flex justify-center items-center w-full h-full">
-                  <span>No Protocols Available</span>
+              {protocolsData?.length === 0 && (
+                <div className="flex justify-center items-center w-full h-full">
+                  <span>No Protocols Available Select a Protocol</span>
                 </div>
-                )
-              }
+              )}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-
                 {protocolsData?.map((protocol) => (
                   <ProtocolCard
                     key={protocol.id}
                     protocol={protocol}
                     patientId={patientId}
-                    selectedId={selectedProtocolId} // Pass selectedId to highlight selected protocol
+                    selectedId={selectedProtocolId}
                   />
                 ))}
-
-                {
-                  protocolsLoading && (<div className="flex justify-center items-center h-full">
+                {protocolsLoading && (
+                  <div className="flex justify-center items-center h-full">
                     <span>Loading...</span>
                   </div>
-                  )
-                }
-
+                )}
               </div>
             </div>
           </div>

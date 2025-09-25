@@ -1,24 +1,32 @@
-"use client"
+"use client";
 
 import BackHeader from "@/components/customComponent/BackHeader";
-import { useGetAllMealSuggestionQuery, useGetMealPlanByProtocolIdAndPatientIdQuery } from "@/redux/fetures/Specialist/specialist";
+import { useAddSpecialistKeyPointMutation, useGetAllMealSuggestionQuery } from "@/redux/fetures/Specialist/specialist";
 import React, { useState, useEffect } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import { FiPlus } from "react-icons/fi";
 
-const initialKeyPoints = [
-  { id: 1, keyPoint: "Should have diet", solutionName: "eat 3 cope rice", suggestLink: 'https://linkis', editable: true },
-  { id: 2, keyPoint: "", solutionName: "", suggestLink: "", editable: false },
-];
-
+// Sample key points for selection
 const keyPointOptions = [
   "Should have diet",
-  "should note eat on the breakfast",
-  // add more key points here if needed
+  "should not eat on the breakfast",
+  // Add more key points here if needed
 ];
 
 export default function MealPlan() {
-  const [rows, setRows] = useState(initialKeyPoints);
+  const [rows, setRows] = useState([]); // To store the existing fetched suggestions
+  const [newSuggestions, setNewSuggestions] = useState([]); // To store new suggestions added by the user
   const [planByDoctorId, setPatientId] = useState(null);
+
+  // New data for adding new suggestions
+  const [newData, setNewData] = useState({
+    keyPoint: "",
+    solutionName: "",
+    suggestLink: "",
+  });
+
+  // Always call hooks at the top level, and never inside conditionals
+  const [createSpecialistKeyPoint] = useAddSpecialistKeyPointMutation();
 
   // Get patientId and protocolId from URL, only on the client side
   useEffect(() => {
@@ -30,45 +38,102 @@ export default function MealPlan() {
 
   const { data, isLoading } = useGetAllMealSuggestionQuery({ protocolId: planByDoctorId });
   const fullMealPlanData = data?.data?.attributes[0] || [];
-  console.log(fullMealPlanData?.specialistSuggestions);
+
+  useEffect(() => {
+    if (fullMealPlanData?.specialistSuggestions) {
+      // Setting rows with specialist suggestions fetched from the server
+      const formattedRows = fullMealPlanData.specialistSuggestions.map((suggestion, index) => ({
+        id: index + 1,
+        keyPoint: suggestion?.suggestionDetails?.keyPoint || "",
+        solutionName: suggestion?.suggestionDetails?.solutionName || "",
+        suggestLink: suggestion?.suggestionDetails?.suggestFromStore || "",
+        editable: false, // Initially, these are not editable
+      }));
+      setRows(formattedRows);
+    }
+  }, [fullMealPlanData?.specialistSuggestions]);
 
   if (isLoading) {
-    return <div className="flex justify-center items-center h-64">
-      <p>Loading...</p>
-    </div>
+    return (
+      <div className="flex justify-center items-center h-64">
+        <p>Loading...</p>
+      </div>
+    );
   }
 
-  // Handle adding new specialist suggestion row
+  // Handle adding a new row to the newSuggestions state
   const addNewRow = () => {
-    setRows([...rows, { id: rows.length + 1, keyPoint: "", solutionName: "", suggestLink: "", editable: true }]);
+    setNewSuggestions([
+      ...newSuggestions,
+      { keyPoint: "", solutionName: "", suggestLink: "" }, // New empty row
+    ]);
   };
 
-  // Handle editing a row
-  const handleChange = (index, field, value) => {
-    const updatedRows = [...rows];
-    updatedRows[index][field] = value;
-    setRows(updatedRows);
+  // Handle input change for new suggestion rows
+  const handleNewInputChange = (index, field, value) => {
+    const updatedNewSuggestions = [...newSuggestions];
+    updatedNewSuggestions[index][field] = value;
+    setNewSuggestions(updatedNewSuggestions);
   };
 
-  // Handle deleting a row
-  const handleDelete = (index) => {
-    const updatedRows = rows.filter((_, i) => i !== index);
-    setRows(updatedRows);
+  // Handle deleting a new suggestion row
+  const handleDeleteNewRow = (index) => {
+    const updatedNewSuggestions = newSuggestions.filter((_, i) => i !== index);
+    setNewSuggestions(updatedNewSuggestions);
+  };
+
+  // Handle saving changes to merge the new data with the existing data
+  const handleSaveChanges = async () => {
+    try {
+      // Prepare the new suggestion data
+      const formattedNewData = newSuggestions.map((row) => ({
+        keyPoint: row.keyPoint,
+        solutionName: row.solutionName,
+        suggestFromStore: row.suggestLink,
+      }));
+
+      // Combine the existing rows with the new rows
+      const allSuggestions = [
+        ...formattedNewData,
+      ];
+
+
+      // Call API to save data
+      const res = await createSpecialistKeyPoint({
+        body: allSuggestions,
+        planByDoctorId,
+      });
+
+      console.log("API Response:", res);
+      if (res?.data?.code === 200) {
+        // alert("Data saved successfully!");
+        toast.success("New Suggestions Added Successfully");
+        setNewSuggestions([]); 
+      }
+
+
+    } catch (error) {
+      console.error("Error saving changes:", error);
+    }
   };
 
   return (
     <div className="max-w-4xl mx-auto bg-white rounded-lg shadow p-8">
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+      />
       <BackHeader title={"View full"} />
-      <h1 className="text-xl font-semibold mb-4">{fullMealPlanData?.planType == "mealPlan" && "Meal Plan" || "No plan type available."}</h1>
+      <h1 className="text-xl font-semibold mb-4">
+        {fullMealPlanData?.planType === "mealPlan" ? "Meal Plan" : "No plan type available."}
+      </h1>
 
       <div className="mb-6">
         <h2 className="font-semibold mb-2">Key Points</h2>
         <ul className="list-disc list-inside text-gray-700">
-          {
-            fullMealPlanData?.keyPoints?.map((point, index) => (
-              <li key={index}>{point}</li>
-            ))
-          }
+          {fullMealPlanData?.keyPoints?.map((point, index) => (
+            <li key={index}>{point}</li>
+          ))}
         </ul>
       </div>
 
@@ -79,7 +144,7 @@ export default function MealPlan() {
         </p>
       </div>
 
-      {/* Specialist Suggestions Section */}
+      {/* Existing Specialist Suggestions Section */}
       <div className="mb-8">
         <h2 className="font-semibold mb-2">Specialist Suggestions</h2>
         <div className="overflow-x-auto">
@@ -97,43 +162,70 @@ export default function MealPlan() {
               {rows.map((row, index) => (
                 <tr key={index}>
                   <td className="border px-4 py-2">{row.id}</td>
+                  <td className="border px-4 py-2">{row.keyPoint}</td>
+                  <td className="border px-4 py-2">{row.solutionName}</td>
+                  <td className="border px-4 py-2">{row.suggestLink}</td>
                   <td className="border px-4 py-2">
-                    {row.editable ? (
-                      <select
-                        className="w-full"
-                        value={row.keyPoint}
-                        onChange={(e) => handleChange(index, "keyPoint", e.target.value)}
-                      >
-                        {keyPointOptions.map((option, i) => (
-                          <option key={i} value={option}>
-                            {option}
-                          </option>
-                        ))}
-                      </select>
-                    ) : (
-                      row.keyPoint
-                    )}
+                    <button className="text-red-500" disabled>
+                      Delete
+                    </button>
                   </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* New Specialist Suggestions Section */}
+      <div className="mb-8">
+        <h2 className="font-semibold mb-2">New Specialist Suggestions</h2>
+        <div className="overflow-x-auto">
+          <table className="min-w-full table-auto border-collapse">
+            <thead>
+              <tr>
+                <th className="border px-4 py-2">SL No</th>
+                <th className="border px-4 py-2">Key Point</th>
+                <th className="border px-4 py-2">Solution Name</th>
+                <th className="border px-4 py-2">Suggest From Store</th>
+                <th className="border px-4 py-2">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {newSuggestions.map((row, index) => (
+                <tr key={index}>
+                  <td className="border px-4 py-2">{index + 1}</td>
                   <td className="border px-4 py-2">
                     <input
                       type="text"
-                      className="w-full"
-                      value={row.solutionName}
-                      onChange={(e) => handleChange(index, "solutionName", e.target.value)}
+                      placeholder="Enter key point"
+                      className="w-full border border-gray-50 focus:outline-none px-2 py-1 focus:ring-1 focus:ring-blue-500 rounded-md"
+                      value={row.keyPoint}
+                      onChange={(e) => handleNewInputChange(index, "keyPoint", e.target.value)}
                     />
                   </td>
                   <td className="border px-4 py-2">
                     <input
                       type="text"
-                      className="w-full"
+                      placeholder="Enter solution name"
+                      className="w-full border border-gray-50 focus:outline-none px-2 py-1 focus:ring-1 focus:ring-blue-500 rounded-md"
+                      value={row.solutionName}
+                      onChange={(e) => handleNewInputChange(index, "solutionName", e.target.value)}
+                    />
+                  </td>
+                  <td className="border px-4 py-2">
+                    <input
+                      type="text"
+                      placeholder="Paste link here"
+                      className="w-full border border-gray-50 focus:outline-none px-2 py-1 focus:ring-1 focus:ring-blue-500 rounded-md"
                       value={row.suggestLink}
-                      onChange={(e) => handleChange(index, "suggestLink", e.target.value)}
+                      onChange={(e) => handleNewInputChange(index, "suggestLink", e.target.value)}
                     />
                   </td>
                   <td className="border px-4 py-2">
                     <button
                       className="text-red-500"
-                      onClick={() => handleDelete(index)}
+                      onClick={() => handleDeleteNewRow(index)}
                     >
                       Delete
                     </button>
@@ -147,10 +239,16 @@ export default function MealPlan() {
           onClick={addNewRow}
           className="mt-4 w-full flex items-center justify-center gap-2 bg-gray-200 text-black px-4 py-2 rounded"
         >
-          <FiPlus />Add New Suggestion 
+          <FiPlus /> Add New Suggestion
         </button>
-        <button className="mt-4 flex items-center justify-center gap-2 bg-green-600 text-white px-4 py-2 rounded">Save Changes</button>
       </div>
+
+      <button
+        onClick={handleSaveChanges}
+        className="mt-4 flex items-center justify-center gap-2 bg-green-600 text-white px-4 py-2 rounded"
+      >
+        Save Changes
+      </button>
     </div>
   );
 }

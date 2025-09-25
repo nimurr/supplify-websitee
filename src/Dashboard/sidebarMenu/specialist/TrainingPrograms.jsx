@@ -5,18 +5,19 @@ import { EditOutlined, ClockCircleOutlined, DollarOutlined, CalendarOutlined } f
 import Image from 'next/image';
 import CustomButton from '@/components/customComponent/CustomButton';
 import { useRouter } from 'next/navigation';
-
-const programs = Array(12).fill({
-  title: 'Gain chest',
-  sessions: '10 Session',
-  price: '$50',
-  duration: '5 month',
-  image: '/images/sprogram.png', // Put your image inside public folder with this name
-});
+import { useGetAllTrainingProgramQuery } from '@/redux/fetures/Specialist/traningProgram';
 
 export default function TrainingPrograms() {
-    const router = useRouter()
-    
+
+  const pageNumber = 1; // Example page number
+
+  const { data } = useGetAllTrainingProgramQuery(pageNumber);
+  const programs = data?.data?.attributes?.results || [];
+  console.log(programs);
+
+
+  const router = useRouter()
+
   return (
     <div className="p-6">
       {/* Header */}
@@ -28,15 +29,15 @@ export default function TrainingPrograms() {
       </div>
 
       {/* Cards grid */}
-      <div className="grid grid-cols-6 gap-4">
-        {programs.map((program, idx) => (
+      <div className="grid xl:grid-cols-6 md:grid-cols-4 sm:grid-cols-2 gap-4">
+        {programs?.map((program, idx) => (
           <Card
             key={idx}
             hoverable
             cover={
               <Image
-                src={program.image}
-                alt={program.title}
+                src={program?.trailerContents[0]?.attachment}
+                alt={program.programName}
                 width={280}
                 height={180}
                 className="rounded-t-md object-cover"
@@ -45,11 +46,11 @@ export default function TrainingPrograms() {
             className="rounded-md shadow-sm"
             bodyStyle={{ padding: '12px' }}
           >
-            <h4 className="font-semibold text-gray-800 mb-2">{program.title}</h4>
+            <h4 className="font-semibold text-gray-800 mb-2">{program.programName}</h4>
 
             <div className="flex items-center text-gray-600 text-sm gap-3 mb-1">
               <ClockCircleOutlined />
-              <span>{program.sessions}</span>
+              <span>{program.totalSessionCount}</span>
             </div>
 
             <div className="flex items-center text-gray-600 text-sm gap-3 mb-1">
@@ -59,21 +60,21 @@ export default function TrainingPrograms() {
 
             <div className="flex items-center text-gray-600 text-sm gap-3 mb-3">
               <CalendarOutlined />
-              <span>{program.duration}</span>
+              <span>{program.durationInMonths}</span>
             </div>
-         <div className='flex items-center justify-between gap-4'>
-            <CustomButton 
-            text='Edit'
+            <div className='flex items-center justify-between gap-4'>
+              <CustomButton
+                text='Edit'
 
-            />
+              />
 
-            <CustomButton 
-            text='View'
-            onClick={() => router.push('/specialistDs/program/view')}
+              <CustomButton
+                text='View'
+                onClick={() => router.push('/specialistDs/program/view')}
 
-            />
+              />
 
-         </div>
+            </div>
 
           </Card>
         ))}
