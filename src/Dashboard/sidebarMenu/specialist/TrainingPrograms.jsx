@@ -22,7 +22,7 @@ export default function TrainingPrograms() {
     <div className="p-6">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
-        <h3 className="text-gray-700 font-semibold text-base">Training Program : 12</h3>
+        <h3 className="text-gray-700 font-semibold text-base">Training Program : {programs?.length}</h3>
         <Button type="primary" danger>
           Create New
         </Button>
