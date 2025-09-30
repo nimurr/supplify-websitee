@@ -6,6 +6,7 @@ import Image from 'next/image';
 import CustomButton from '@/components/customComponent/CustomButton';
 import { useRouter } from 'next/navigation';
 import { useGetAllTrainingProgramQuery } from '@/redux/fetures/Specialist/traningProgram';
+import Link from 'next/link';
 
 export default function TrainingPrograms() {
 
@@ -21,9 +22,9 @@ export default function TrainingPrograms() {
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h3 className="text-gray-700 font-semibold text-base">Training Program : {programs?.length}</h3>
-        <Button type="primary" danger>
+        <Link className="bg-primary hover:bg-primary-dark text-white font-bold py-2 px-6 rounded-full transition" href="/specialistDs/program/create-training-program" type="primary" danger>
           Create New
-        </Button>
+        </Link>
       </div>
 
       {/* Cards grid */}
