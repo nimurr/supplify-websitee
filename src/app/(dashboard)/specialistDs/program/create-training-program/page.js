@@ -1,5 +1,7 @@
 'use client'
+import { useCreateTrainingProgramMutation } from '@/redux/fetures/Specialist/traningProgram';
 import React, { useState } from 'react';
+import toast from 'react-hot-toast';
 import { MdOutlineCancel } from 'react-icons/md';
 
 const Page = () => {
@@ -14,7 +16,6 @@ const Page = () => {
         const file = event.target.files[0];
         if (file) {
             setPhoto(file);
-            alert(`${file.name} uploaded successfully`);
         } else {
             alert("Failed to upload the file.");
         }
@@ -24,7 +25,10 @@ const Page = () => {
         setPhoto(null); // Reset the photo state to remove the image
     }
 
-    const handleSubmit = () => {
+
+    const [createTraningPrograms] = useCreateTrainingProgramMutation();
+
+    const handleSubmit = async () => {
         // Handle form submission
         console.log({
             photo,
@@ -34,13 +38,39 @@ const Page = () => {
             price,
             duration
         });
+        const formData = new FormData();
+        formData.append("attachments", photo);
+        formData.append("programName", name);
+        formData.append("description", description);
+        formData.append("totalSessionCount", totalSessions);
+        formData.append("price", price);
+        formData.append("durationInMonths", duration);
+
+        try {
+            const response = await createTraningPrograms(formData).unwrap();
+            console.log(response);
+            if (response?.code == 200) {
+                toast.success(response?.message)
+                photo = null;
+                name = '';
+                description = '';
+                totalSessions = '';
+                price = '';
+                duration = '';
+            }
+
+
+        } catch (error) {
+            console.log(error);
+            toast.error(error?.data?.message || "Something went wrong!");
+        }
 
         // Show success message
         alert('Training Program Created Successfully!');
     }
 
     return (
-        <div style={{ padding: '30px', maxWidth: '800px', margin: '0 auto', backgroundColor: '#f7f7f7', borderRadius: '8px' }}>
+        <div className='lg:m-0 m-5' style={{ padding: '30px', maxWidth: '800px', margin: '0 auto', backgroundColor: '#f7f7f7', borderRadius: '8px' }}>
             <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '20px' }}>Training Program</h1>
 
             {/* Photo Upload Section */}

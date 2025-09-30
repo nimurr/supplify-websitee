@@ -3,7 +3,7 @@ import React from 'react';
 
 const CustomButton = ({ 
   onClick, 
-  text = 'Click Me', 
+  text = 'Click Me',
   style = {}, 
   className = '' 
 }) => {

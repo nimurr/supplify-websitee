@@ -12,8 +12,9 @@ export default function TrainingPrograms() {
 
   const pageNumber = 1; // Example page number
 
-  const { data } = useGetAllTrainingProgramQuery(pageNumber);
+  const { data, isLoading } = useGetAllTrainingProgramQuery(pageNumber);
   const programs = data?.data?.attributes?.results || [];
+  console.log(programs);
 
   const router = useRouter()
 
@@ -22,24 +23,29 @@ export default function TrainingPrograms() {
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h3 className="text-gray-700 font-semibold text-base">Training Program : {programs?.length}</h3>
-        <Link className="bg-primary hover:bg-primary-dark text-white font-bold py-2 px-6 rounded-full transition" href="/specialistDs/program/create-training-program" type="primary" danger>
+        <Link className="bg-red-600 hover:bg-primary-dark text-white font-bold py-2 px-6 rounded-full transition" href="/specialistDs/program/create-training-program" type="primary" danger>
           Create New
         </Link>
       </div>
+      {
+        isLoading && (
+          <p className='text-center text-xl text-blue-500'>Loading...</p>
+        )
+      }
 
       {/* Cards grid */}
-      <div className="grid xl:grid-cols-6 md:grid-cols-4 sm:grid-cols-2 gap-4">
+      <div className="grid xl:grid-cols-5 md:grid-cols-3 sm:grid-cols-2 gap-4">
         {programs?.map((program, idx) => (
           <Card
             key={idx}
             hoverable
             cover={
               <Image
-                src={program?.trailerContents[0]?.attachment}
+                src={program?.attachments[0]?.attachment}
                 alt={program.programName}
                 width={280}
                 height={180}
-                className="rounded-t-md object-cover"
+                className="rounded-t-md w-full object-cover"
               />
             }
             className="rounded-md shadow-sm"
@@ -54,7 +60,7 @@ export default function TrainingPrograms() {
 
             <div className="flex items-center text-gray-600 text-sm gap-3 mb-1">
               <DollarOutlined />
-              <span>{program.price}</span>
+              <span>{program.price}$</span>
             </div>
 
             <div className="flex items-center text-gray-600 text-sm gap-3 mb-3">
@@ -69,7 +75,7 @@ export default function TrainingPrograms() {
 
               <CustomButton
                 text='View'
-                onClick={() => router.push('/specialistDs/program/view')}
+                onClick={() => router.push(`/specialistDs/program/view?programId=${program._TrainingProgramId}&specialistId=${program.createdBy}`)}
 
               />
 
