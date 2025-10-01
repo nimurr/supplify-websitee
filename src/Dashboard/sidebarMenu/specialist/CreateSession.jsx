@@ -37,10 +37,11 @@ export default function CreateSession() {
     const fromData = new FormData();
 
     fromData.append('trainingProgramId', programId);
-    fromData.append('title', values.title);
+    fromData.append('title', values.name);
     fromData.append('duration', values.duration);
     fromData.append('durationUnit', values.durationUnit);
-    fromData.append('external_link', videoLink);
+
+
 
     // Append each benefit separately
     benefits.forEach((benefit, index) => {
@@ -52,13 +53,17 @@ export default function CreateSession() {
       fromData.append('coverPhotos', values.photo[0].originFileObj);
     }
 
-    if (values.video && values.video[0]) {
+    if (values?.video[0]?.originFileObj) {
       fromData.append('attachments', values.video[0].originFileObj);
     }
-    if (!values.video && !values.video[0]) {
-      return toast.error('Add Video Link');
+
+    if (!values.video) {
+      fromData.append('external_link', values.videoLink);
     }
 
+    if (!values.video && !values.video && !videoLink) {
+      return toast.error('Add Video Link');
+    }
 
 
 
