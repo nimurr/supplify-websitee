@@ -1,150 +1,112 @@
-"use client";
+'use client'
+import React from 'react';
+import { Button, Card, Typography, Space } from 'antd';
+import { PlusCircleOutlined } from '@ant-design/icons';
+import { LuMonitorPlay } from 'react-icons/lu';
+import { IoDocumentTextOutline } from 'react-icons/io5';
+import { useGetAllWorkoutClassQuery } from '@/redux/fetures/Specialist/workoutClass';
 
-import React, { useState } from "react";
-import { Button, Tabs } from "antd";
-import CustomButton from "@/components/customComponent/CustomButton";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
- 
+const { p, Text, Paragraph } = Typography;
 
-const { TabPane } = Tabs;
+const WorkoutSpecialistClass = () => {
 
-// Sample data for specialists
-const specialists = [
-  {
-    id: 1,
-    name: "Sakib Ahmed",
-    description: "Description for this item is very important for the user",
-    protocol: "Protocol Name",
-    protocolCount: 2,
-    image: "/images/trainer.png", // Replace with actual image path
-  },
-  {
-    id: 2,
-    name: "Sakib Ahmed",
-    description: "Description for this item is very important for the user",
-    protocol: "Protocol Name",
-    protocolCount: 2,
-    image: "/images/trainer.png",
-  },
-  {
-    id: 3,
-    name: "Sakib Ahmed",
-    description: "Description for this item is very important for the user",
-    protocol: "Protocol Name",
-    protocolCount: 2,
-    image: "/images/trainer.png",
-  },
-  {
-    id: 4,
-    name: "Sakib Ahmed",
-    description: "Description for this item is very important for the user",
-    protocol: "Protocol Name",
-    protocolCount: 2,
-    image: "/images/trainer.png",
-  },
-];
+  const { data } = useGetAllWorkoutClassQuery();
+  console.log(data);
 
 
-// Card component for each specialist
-const SpecialistCard = ({ specialist }) => (
-
-    
-
-  <div className="bg-white rounded-lg shadow overflow-hidden">
-    {/* Specialist Image */}
-    <div className="w-full overflow-hidden">
-      <img
-        src={specialist.image}
-        alt={specialist.name}
-        className="  object-cover"
-      />
-    </div>
-    
-    {/* Specialist Info */}
-    <div className="p-4">
-      <h3 className="text-lg font-semibold">{specialist.name}</h3>
-      <p className="text-gray-600 text-sm mt-1">
-        {specialist.description}
-        <span className="text-red-600 cursor-pointer">...see more</span>
-      </p>
-      
-      {/* Protocol Badge */}
-      <div className="flex items-center mt-3">
-        <span className="text-sm text-gray-800 border border-gray-300 px-3 py-1 rounded-md">
-          {specialist.protocol}
-        </span>
-        <span className="ml-2 text-gray-600 font-medium">+{specialist.protocolCount}</span>
-      </div>
-      
-      {/* View Full Button */}
-      <Link href='/specialistDs/workoutClass/view'>
-      
-      <CustomButton 
-       text="View Full"
-       className="mt-2"
-      
-      />
-      </Link>
-    
-   
-    </div>
-  </div>
-);
-
-export default function WorkoutSpecialistClass() {
-
-  
-  const [activeTab, setActiveTab] = useState("1");
-
-  const handleTabChange = (key) => {
-    setActiveTab(key);
-  };
 
   return (
-    <div className="bg-gray-50 p-4 md:p-6">
-      <div className=" mx-auto">
-        {/* Custom Tabs */}
-        <div className="mb-6">
-          <div className="flex border-b border-gray-200">
-            <div 
-              className={`cursor-pointer px-8 py-3 font-medium text-base ${
-                activeTab === "1" 
-                  ? "text-red-600 border-b-2 border-red-600" 
-                  : "text-gray-500"
-              }`}
-              onClick={() => handleTabChange("1")}
-            >
-              Your Specialists
-            </div>
-            <div 
-              className={`cursor-pointer px-8 py-3 font-medium text-base ${
-                activeTab === "2" 
-                  ? "text-red-600 border-b-2 border-red-600" 
-                  : "text-gray-500"
-              }`}
-              onClick={() => handleTabChange("2")}
-            >
-              Others Specialists
-            </div>
+    <div className="min-h-screen bg-gray-50 p-6">
+      <div className="flex lg:flex-row flex-col items-start gap-6">
+        {/* Left Panel: Trainer Info */}
+        <div className="w-64 bg-white rounded-md shadow p-4">
+          <img
+            src="trainer_image_url_here" // Update with actual trainer image URL
+            alt="Trainer"
+            className="w-full h-40 object-cover rounded-md mb-4"
+          />
+          <div className="text-center mb-4">
+            <p level={5}>Sakib Ahmed</p>
+            <p type="secondary" className="text-xs">New Yorke, America</p>
           </div>
+          <div className="flex flex-wrap justify-center gap-2 mb-4">
+            {/* Replaced Ant Design Tag with raw <tag> */}
+            <tag className="text-xs bg-gray-200 px-2 py-1 rounded-md">Trainer</tag>
+            <tag className="text-xs bg-gray-200 px-2 py-1 rounded-md">Body trainer</tag>
+          </div>
+          <p className="text-xs text-gray-600 mb-4">
+            Lorem ipsum dolor sit amet consectetur. Massa risus eget justo vel urna sapien posuere.
+          </p>
         </div>
 
-        {/* Specialists Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {activeTab === "1" && (
-            specialists.map(specialist => (
-              <SpecialistCard key={specialist.id} specialist={specialist} />
-            ))
-          )}
-          
-          {activeTab === "2" && (
-            specialists.map(specialist => (
-              <SpecialistCard key={specialist.id} specialist={specialist} />
-            ))
-          )}
+        {/* Right Panel: Available Workouts */}
+        <div className="flex-1 bg-white rounded-md shadow p-6">
+          <div className="flex justify-between items-center mb-4">
+            <p className="text-2xl font-semibold">Available Workout Schedule</p>
+            <button className="bg-red-500 text-white px-4 py-2 rounded-full flex items-center gap-2 hover:bg-red-600 transition-colors"
+            >
+              <PlusCircleOutlined />
+              Create New
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+            {/* Workout Session Card */}
+            <div className="space-y-5 border border-gray-200 rounded-md p-6 bg-white shadow-lg hover:shadow-xl transition-all duration-300">
+              {/* Icon Placeholder */}
+              <div className="mb-4">
+                <LuMonitorPlay className="text-6xl text-gray-800" />
+              </div>
+
+              {/* Workout Title */}
+              <div className="flex justify-between items-center">
+                <p className="text-xl font-semibold text-center">Push-up Workout</p>
+                <p className="text-lg text-gray-900 font-semibold">
+                  $180 <span className="line-through text-gray-500">$200</span>
+                </p>
+              </div>
+
+              {/* Session and Duration Info */}
+              <div className="flex justify-between mb-4">
+                <p className="text-sm text-gray-600">Total Session: <strong>4</strong></p>
+                <p className="text-sm text-gray-600">Total Duration: <strong>4h</strong></p>
+              </div>
+
+              {/* Start Date and Platform */}
+              <div className="grid grid-cols-2 gap-4 text-sm text-gray-600 mb-4">
+                <p><strong>Start Date:</strong> 12-Jan-2025, Saturday</p>
+                <p><strong>Platform:</strong> Zoom</p>
+              </div>
+
+              {/* Start and End Time */}
+              <div className="grid grid-cols-2 gap-4 text-sm text-gray-600 mb-4">
+                <p><strong>Start Time:</strong> 10:00 PM</p>
+                <p><strong>End Time:</strong> 11:00 PM</p>
+              </div>
+
+              {/* Description */}
+              <p className="text-xs text-gray-500 mb-4">
+                This description is very important for a user, they can acknowledge the full program on this schedule.
+                This description is very important for the user to understand the details.
+              </p>
+
+              {/* Booking Info */}
+              <div className="flex justify-between items-center mb-4">
+                <p className=" text-red-600 text-xl font-semibold underline">1 booked</p>
+                <tag className="text-xs bg-red-200 px-2 py-1 rounded-md">Private</tag>
+              </div>
+
+              <p className="text-xl flex items-center cursor-pointer gap-2 text-purple-400  mb-4">
+                <IoDocumentTextOutline /> rtiyoit57ortiyoit57ortiyoit57o
+              </p>
+
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default WorkoutSpecialistClass;
