@@ -145,7 +145,7 @@ export default function ProgramView() {
 
               <CustomButton
                 text="Create new"
-                onClick={() => router.push('/specialistDs/program/create-session')}
+                onClick={() => router.push(`/specialistDs/program/create-session?programId=${programId}`)}
               />
             </div>
           </div>

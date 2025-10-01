@@ -53,4 +53,4 @@ export const {
     useCreateTrainingProgramMutation,
     useGetAllTrainingProgramQuery,
     useUpdateTrainingProgramMutation,
-    useDeleteTrainingProgramMutation, useGetAllProgramBySpecialistIdQuery } = traningProgram;
+    useDeleteTrainingProgramMutation, useGetAllProgramBySpecialistIdQuery , useCreateTrainingSessionMutation } = traningProgram;
