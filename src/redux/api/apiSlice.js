@@ -11,6 +11,10 @@ export const apiSlice = createApi({
       // console.log("9 baseApi", token);
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
+        
+        const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone; // Gets the user's current time zone (e.g., "Asia/Dhaka")
+        // Set the X-Time-Zone header
+        headers.set("X-Time-Zone", timeZone);
       }
       return headers;
     },
