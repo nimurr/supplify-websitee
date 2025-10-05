@@ -57,7 +57,8 @@ export default function CreateSchedule() {
       const res = await createSchedule(payload).unwrap();
       console.log(res);
       toast.success("Schedule created");
-      // form.resetFields();
+      form.resetFields();
+      
     } catch (err) {
       console.log(err);
       // message.error(err?.data?.message || "Failed to create schedule");
