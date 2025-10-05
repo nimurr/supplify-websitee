@@ -208,11 +208,13 @@ export default function Sidebar() {
 
   // Example userRole - replace with actual auth/user role
   // const userRole = 'user';
-  const userRole = "specialist";
+  const user = JSON.parse(localStorage.getItem('user'));
+  const userRole = user?.role;
   // const userRole = 'doctor';
 
+
   const routesByRole = {
-    user: [
+    patient: [
       {
         key: "/dashboard/doctor",
         icon: <FaUserDoctor />,

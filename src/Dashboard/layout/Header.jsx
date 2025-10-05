@@ -41,7 +41,8 @@ export default function DashboardHeader({ collapsed }) {
     // Add your logout logic here
     console.log('Logging out...');
     // Example: Clear localStorage, cookies, etc.
-    // localStorage.removeItem('token');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
     window.location.href = '/';
   };
 

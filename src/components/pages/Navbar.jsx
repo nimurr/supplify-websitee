@@ -159,20 +159,23 @@ export default function Navbar() {
   const userRole = "specialist";
   // const userRole = 'doctor';
 
+
+  const user = JSON.parse(localStorage.getItem('user'));
+  console.log(user?.role);
+
   // Map role → dashboard route
   const dashboardRoutes = {
-    user: '/dashboard/doctor',
+    patient: '/dashboard/doctor',
     specialist: '/specialistDs/members',
     doctor: '/doctorDs/upcoming-schedule',
   };
 
   const handleDashboardClick = () => {
-    const route = dashboardRoutes[userRole] || '/dashboard'; // fallback
+    const route = dashboardRoutes[user?.role] || '/'; // fallback
     router.push(route);
   };
 
 
-  const user = true;
   return (
     <nav className={`fixed w-full z-50 transition-all duration-300 ${showBlackBg ? 'bg-black/90 py-3' : 'bg-transparent py-4'}`}>
       <div className="container mx-auto px-4">
@@ -278,18 +281,37 @@ export default function Navbar() {
               Pricing
             </Link>
             <div className="pt-4 border-t border-white/20">
-              {/* <Link 
-                href="/signup" 
-                className="block text-white hover:text-primary transition font-medium py-2"
+              {user ? (
+                <Button
+                  onClick={handleDashboardClick}
+                  style={{
+                    background: 'linear-gradient(to right, #3b82f6, #22c55e)',
+                    border: '1px solid white',
+                    color: 'white',
+                    padding: '8px 16px',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    transition: 'background-color 0.3s ease',
+                  }}
+                >
+                  Dashboard
+                </Button>
+              ) : (
+                <div className="hidden md:flex items-center space-x-4">
+                  {/* <Link 
+                href="/" 
+                className="text-white hover:text-primary transition font-medium"
               >
                 Sign Up
               </Link> */}
-              <Link
-                href="/auth/login"
-                className="block bg-primary hover:bg-primary-dark text-white font-bold py-2 px-6 rounded-full transition text-center mt-2"
-              >
-                Login
-              </Link>
+                  <Link
+                    href="/auth/login"
+                    className="bg-primary hover:bg-primary-dark text-white font-bold py-2 px-6 rounded-full transition"
+                  >
+                    Login
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         )}
