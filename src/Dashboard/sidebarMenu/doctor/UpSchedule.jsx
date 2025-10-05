@@ -3,6 +3,8 @@
 import React from 'react';
 import { Card, Typography, Badge, Tooltip } from 'antd';
 import { CalendarOutlined, ClockCircleOutlined, LinkOutlined, CopyOutlined } from '@ant-design/icons';
+import { useGetUpcommingSchedulesQuery } from '@/redux/fetures/doctor/doctor';
+import moment from 'moment';
 
 const { Title, Text } = Typography;
 
@@ -49,6 +51,10 @@ export default function UpcomingSchedule() {
     }
   ];
 
+  const { data, isLoading } = useGetUpcommingSchedulesQuery();
+  const upcomingSchedules = data?.data?.attributes || [];
+  console.log(upcomingSchedules);
+
   const handleCopyLink = (link) => {
     navigator.clipboard.writeText(link);
     // You could add a notification here
@@ -56,48 +62,56 @@ export default function UpcomingSchedule() {
 
   return (
     <div className="max-w-6xl mx-auto p-4">
+      {
+        isLoading && (
+          <div className="flex justify-center items-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+          </div>
+        )
+      }
+
       <div className="flex justify-between items-center mb-4">
         <Title level={4} className="m-0">Upcoming Schedule</Title>
-        <Text className="font-medium">Total Upcoming Schedule : {schedules.length}</Text>
+        <Text className="font-medium">Total Upcoming Schedule : {upcomingSchedules?.length}</Text>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {schedules.map((schedule) => (
-          <Card 
+        {upcomingSchedules?.map((schedule) => (
+          <Card
             key={schedule.id}
             className="border border-red-100 rounded-lg bg-red-50"
             bodyStyle={{ padding: '1rem' }}
           >
             <div className="flex justify-between items-start mb-1">
-              <Title level={5} className="m-0">{schedule.title}</Title>
-              <Badge 
-                count={schedule.price} 
+              <Title level={5} className="m-0 capitalize">{schedule?.doctorSchedule?.scheduleName}</Title>
+              <Badge
+                count={schedule.price}
                 className="font-medium"
-                style={{ 
-                  backgroundColor: 'transparent', 
-                  color: '#ef4444', 
+                style={{
+                  backgroundColor: 'transparent',
+                  color: '#ef4444',
                   boxShadow: 'none',
                   fontSize: '16px'
-                }} 
+                }}
               />
             </div>
-            
+
             <div className="mb-2">
-              <Text className="text-red-500 font-medium">{schedule.status}</Text>
+              <Text className={`font-semibold capitalize ${schedule.paymentStatus !== 'unpaid' ? 'text-green-600' : 'text-red-600'}`}>{schedule.paymentStatus}</Text>
             </div>
-            
+
             <div className="mb-4">
-              <Text className="block">Booked by {schedule.bookedBy}</Text>
+              <Text className="block">Booked by {schedule?.patient?.name}</Text>
             </div>
-            
+
             <div className="flex items-center mb-2">
               <CalendarOutlined className="text-gray-500 mr-2" />
               <Text className="text-gray-500">Date</Text>
             </div>
             <div className="ml-6 mb-3">
-              <Text>{schedule.date}</Text>
+              <Text>{moment(schedule.scheduleDate).format('DD-MM-YYYY')}</Text>
             </div>
-            
+
             <div className="flex mb-2">
               <div className="flex items-center mr-6">
                 <ClockCircleOutlined className="text-gray-500 mr-2" />
@@ -108,29 +122,29 @@ export default function UpcomingSchedule() {
                 <Text className="text-gray-500">End Time</Text>
               </div>
             </div>
-            
+
             <div className="flex mb-4">
-              <Text className="mr-10 ml-6">{schedule.startTime}</Text>
-              <Text className="ml-6">{schedule.endTime}</Text>
+              <Text className="mr-10 ml-6">{moment(schedule.startTime).format('hh:mm A')}</Text>
+              <Text className="ml-6">{moment(schedule.endTime).format('hh:mm A')}</Text>
             </div>
-            
+
             <div className="mb-4">
               <Text className="text-gray-700 text-sm">{schedule.description}</Text>
             </div>
-            
+
             <div className="mb-2">
-              <Text className="text-gray-500 text-sm">Type of link : {schedule.meetingType}</Text>
+              <Text className="text-gray-500 text-sm">Type of link : {schedule?.doctorSchedule?.typeOfLink}</Text>
             </div>
-            
+
             <div className="flex items-center">
               <Text className="text-blue-500 text-sm mr-1">link : </Text>
               <Text className="text-blue-500 text-sm truncate flex-1">
-                {schedule.link}
+                {schedule?.doctorSchedule?.meetingLink}
               </Text>
               <Tooltip title="Copy link">
-                <CopyOutlined 
-                  className="text-gray-500 cursor-pointer ml-2" 
-                  onClick={() => handleCopyLink(schedule.link)}
+                <CopyOutlined
+                  className="text-gray-500 cursor-pointer ml-2"
+                  onClick={() => handleCopyLink(schedule?.doctorSchedule?.meetingLink)}
                 />
               </Tooltip>
             </div>

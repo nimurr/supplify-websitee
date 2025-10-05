@@ -14,7 +14,22 @@ const doctor = apiSlice.injectEndpoints({
                 method: "POST",
                 body: data
             }),
-        })
+        }),
+        getUpcommingSchedules: builder.query({
+            query: () => ({
+                url: `/doctor-appointments/bookings/upcoming`,
+                method: "GET"
+            }),
+        }),
+
+        getAllProtocals: builder.query({
+            query: () => ({
+                url: `/doctor-patient/paginate/protocol`,
+                method: "GET"
+            }),
+        }),
+
+
     }),
 });
-export const { useGetAllschedulesQuery , useCreateScheduleMutation } = doctor;
+export const { useGetAllschedulesQuery, useCreateScheduleMutation, useGetUpcommingSchedulesQuery , useGetAllProtocalsQuery } = doctor;
