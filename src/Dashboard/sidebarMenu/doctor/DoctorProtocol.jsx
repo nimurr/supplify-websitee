@@ -5,11 +5,19 @@ import { Table, Button, Avatar, Typography } from 'antd';
 import { PlusCircleOutlined } from '@ant-design/icons';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useGetAllProtocalsQuery } from '@/redux/fetures/doctor/doctor';
+import url from '@/redux/api/baseUrl';
+
 
 const { Title, Text } = Typography;
 
 export default function DoctorProtocol() {
-    const router = useRouter()
+
+  const { data } = useGetAllProtocalsQuery()
+  const fullData = data?.data?.attributes?.results;
+  console.log(fullData);
+
+  const router = useRouter()
   // Sample data for the table
   const protocolData = [
     {
@@ -17,7 +25,7 @@ export default function DoctorProtocol() {
       id: '01',
       memberName: 'Mahmud',
       avatar: '/images/user4.jpg',
-      lastConsultationDate: '5 Jan, 2025',
+      subscriptName: 'subscriptName',
       protocol: 10,
       action: 'View'
     },
@@ -26,30 +34,13 @@ export default function DoctorProtocol() {
       id: '02',
       memberName: 'Mahmud',
       avatar: '/images/user4.jpg',
-      lastConsultationDate: '5 Jan, 2025',
+      subscriptName: 'subscriptName',
       protocol: 2,
       action: 'View'
     },
-    {
-      key: '3',
-      id: '03',
-      memberName: 'Mahmud',
-      avatar: '/images/user4.jpg',
-      lastConsultationDate: '5 Jan, 2025',
-      protocol: 1,
-      action: 'View'
-    },
-    {
-      key: '4',
-      id: '04',
-      memberName: 'Mahmud',
-      avatar: '/images/user4.jpg',
-      lastConsultationDate: '5 Jan, 2025',
-      protocol: 0,
-      action: 'View'
-    },
-  ];
 
+  ];
+  let idx = 1;
   // Table columns definition
   const columns = [
     {
@@ -57,30 +48,45 @@ export default function DoctorProtocol() {
       dataIndex: 'id',
       key: 'id',
       width: '10%',
+      render: (index, text) => (
+        <div className="flex items-center">
+          <Text>{idx++}</Text>
+        </div>
+      ),
     },
     {
       title: 'Member Name',
       dataIndex: 'memberName',
       key: 'memberName',
       width: '25%',
-      render: (text, record) => (
+      render: (_, text) => (
         <div className="flex items-center">
-          <Avatar src={record.avatar} size={36} className="mr-3" />
-          <Text>{text}</Text>
+          <Avatar src={url + text?.patientId?.profileImage?.imageUrl} size={36} className="mr-3" />
+          <Text>{text?.patientId?.name}</Text>
         </div>
       ),
     },
     {
-      title: 'Last Consultation Date',
-      dataIndex: 'lastConsultationDate',
-      key: 'lastConsultationDate',
+      title: 'Subscription',
+      dataIndex: 'subscriptName',
+      key: 'subscriptName',
       width: '25%',
+      render: (_, text) => (
+        <div className="flex items-center">
+          <Text>{text?.patientId?.subscriptionType}</Text>
+        </div>
+      )
     },
     {
       title: 'Protocol',
       dataIndex: 'protocol',
       key: 'protocol',
       width: '20%',
+      render: (_, text) => (
+        <div className="flex items-center">
+          <Text>{text?.patientId?.profileId?.howManyProtocol}</Text>
+        </div>
+      )
     },
     {
       title: 'Action',
@@ -88,14 +94,12 @@ export default function DoctorProtocol() {
       key: 'action',
       width: '20%',
       render: (text) => (
-       
-        
         <Button type="link"
-        onClick={() => router.push('/doctorDs/doctor-protocol/view')}
-         className="text-blue-500 p-0">
-          {text}
+          onClick={() => router.push('/doctorDs/doctor-protocol/view')}
+          className="text-blue-500 p-0">
+          View
         </Button>
-       
+
       ),
     },
   ];
@@ -106,9 +110,9 @@ export default function DoctorProtocol() {
         <Title level={4} className="m-0">Protocol</Title>
         <div className="flex items-center">
           <Text className="mr-4 font-medium">Total Schedule : 10</Text>
-          <Button 
-            type="primary" 
-            icon={<PlusCircleOutlined />} 
+          <Button
+            type="primary"
+            icon={<PlusCircleOutlined />}
             className="bg-red-600 hover:bg-red-700 border-red-600"
           >
             Create New
@@ -116,9 +120,9 @@ export default function DoctorProtocol() {
         </div>
       </div>
 
-      <Table 
-        columns={columns} 
-        dataSource={protocolData} 
+      <Table
+        columns={columns}
+        dataSource={fullData}
         pagination={false}
         className="border border-gray-200 rounded-lg"
         rowClassName="hover:bg-gray-50"

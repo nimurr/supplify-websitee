@@ -24,7 +24,7 @@ const doctor = apiSlice.injectEndpoints({
 
         getAllProtocals: builder.query({
             query: () => ({
-                url: `/doctor-patient/paginate/protocol`,
+                url: `/doctor-patients/paginate/protocol`,
                 method: "GET"
             }),
         }),
