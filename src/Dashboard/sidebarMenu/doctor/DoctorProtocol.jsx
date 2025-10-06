@@ -28,7 +28,7 @@ export default function DoctorProtocol() {
       subscriptName: 'subscriptName',
       protocol: 10,
       action: 'View'
-    },
+    }, 
     {
       key: '2',
       id: '02',
