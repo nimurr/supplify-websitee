@@ -8,6 +8,7 @@ const createPlane = apiSlice.injectEndpoints({
                 method: "POST",
                 body: data,
             }),
+            invalidatesTags: ["DoctorCreatePlane"],
         }),
         updatePlane: builder.mutation({
             query: ({ submissionData, id }) => ({
@@ -15,18 +16,21 @@ const createPlane = apiSlice.injectEndpoints({
                 method: "PUT",
                 body: submissionData,
             }),
+            invalidatesTags: ["DoctorCreatePlane"],
         }),
         getAllPlanes: builder.query({
             query: (planType) => ({
                 url: `/doctor-plans/paginate?planType=${planType || "mealPlan"}`,
                 method: "GET",
             }),
+            providesTags: ["DoctorCreatePlane"],
         }),
         getSinglePlane: builder.query({
             query: (id) => ({
                 url: `/doctor-plans/paginate?_id=${id}`,
                 method: "GET",
             }),
+            providesTags: ["DoctorCreatePlane"],
         }),
     }),
 });

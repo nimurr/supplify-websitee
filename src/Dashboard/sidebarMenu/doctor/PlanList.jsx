@@ -82,7 +82,8 @@ export default function ProtocolsAndMealPlans() {
               dataSource={protocolData}
               pagination={false}
               size="small"
-              rowClassName={() => "bg-pink-50"}
+              rowClassName={() => "bg-pink-50 py-2 cursor-pointer"}
+
               onRow={(record) => ({
                 onClick: () => handleRowClick(record), // Add the row click handler
               })}
@@ -112,14 +113,14 @@ export default function ProtocolsAndMealPlans() {
               </Card>
             ))
           }
+          {
+            allPlane?.length == 0 && (
+              <div className='flex justify-center w-full'>
+                <p className='text-2xl font-semibold text-red-600 capitalize'>No Plan Found !</p>
+              </div>
+            )
+          }
         </div>
-        {
-          allPlane.length == 0 && (
-            <div className='flex justify-center items-center py-20 w-full'>
-              <p className='text-2xl font-semibold text-red-600 capitalize'>No Plan Found of {planType} Type !!</p>
-            </div>
-          )
-        }
       </div>
     </div>
   );
