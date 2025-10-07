@@ -28,7 +28,7 @@ export default function DoctorProtocol() {
       subscriptName: 'subscriptName',
       protocol: 10,
       action: 'View'
-    }, 
+    },
     {
       key: '2',
       id: '02',
@@ -93,9 +93,9 @@ export default function DoctorProtocol() {
       dataIndex: 'action',
       key: 'action',
       width: '20%',
-      render: (text) => (
+      render: (_, text) => (
         <Button type="link"
-          onClick={() => router.push('/doctorDs/doctor-protocol/view')}
+          onClick={() => router.push(`/doctorDs/doctor-protocol/view?patientId=${text?.patientId?._userId}`)}
           className="text-blue-500 p-0">
           View
         </Button>
@@ -109,14 +109,14 @@ export default function DoctorProtocol() {
       <div className="flex justify-between items-center mb-4">
         <Title level={4} className="m-0">Protocol</Title>
         <div className="flex items-center">
-          <Text className="mr-4 font-medium">Total Schedule : 10</Text>
-          <Button
+          <Text className="mr-4 font-medium">Total Schedule : {fullData?.length}</Text>
+          {/* <Button
             type="primary"
             icon={<PlusCircleOutlined />}
             className="bg-red-600 hover:bg-red-700 border-red-600"
           >
             Create New
-          </Button>
+          </Button> */}
         </div>
       </div>
 

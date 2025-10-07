@@ -29,7 +29,30 @@ const doctor = apiSlice.injectEndpoints({
             }),
         }),
 
+        getAllProtocalsByPatientId: builder.query({
+            query: (id) => ({
+                url: `/protocols/paginate?patientId=${id}`,
+                method: "GET"
+            }),
+        }),
+        assignProtocolToPatient: builder.mutation({
+            query: (data) => ({
+                url: `/protocols`,
+                method: "POST",
+                body: data
+            }),
+        }),
+
+
+
 
     }),
 });
-export const { useGetAllschedulesQuery, useCreateScheduleMutation, useGetUpcommingSchedulesQuery , useGetAllProtocalsQuery } = doctor;
+export const { 
+    useGetAllschedulesQuery, 
+    useCreateScheduleMutation, 
+    useGetUpcommingSchedulesQuery , 
+    useGetAllProtocalsQuery , 
+    useGetAllProtocalsByPatientIdQuery,
+    useAssignProtocolToPatientMutation
+} = doctor;
