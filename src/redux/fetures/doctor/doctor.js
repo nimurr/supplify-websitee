@@ -42,17 +42,48 @@ const doctor = apiSlice.injectEndpoints({
                 body: data
             }),
         }),
+        getSingleProtocol: builder.query({
+            query: (id) => ({
+                url: `/protocols/paginate?_id=${id}`,
+                method: "GET"
+            }),
+        }),
+        updateProtocol: builder.mutation({
+            query: ({ id, data }) => ({
+                url: `/protocols/update/${id}`,
+                method: "PATCH",
+                body: data
+            }),
+        }),
 
+
+        assignSpecialistPatient: builder.mutation({
+            query: (data) => ({
+                url: `/specialist-patients`,
+                method: "POST",
+                body: data
+            }),
+        }),
+        getAllSpacialist: builder.query({
+            query: (id) => ({
+                url: `/specialist-patients/specialist/${id}`,
+                method: "GET"
+            }),
+        }),
 
 
 
     }),
 });
-export const { 
-    useGetAllschedulesQuery, 
-    useCreateScheduleMutation, 
-    useGetUpcommingSchedulesQuery , 
-    useGetAllProtocalsQuery , 
+export const {
+    useGetAllschedulesQuery,
+    useCreateScheduleMutation,
+    useGetUpcommingSchedulesQuery,
+    useGetAllProtocalsQuery,
     useGetAllProtocalsByPatientIdQuery,
-    useAssignProtocolToPatientMutation
+    useAssignProtocolToPatientMutation,
+    useGetSingleProtocolQuery,
+    useUpdateProtocolMutation,
+    useAssignSpecialistPatientMutation,
+    useGetAllSpacialistQuery
 } = doctor;

@@ -6,7 +6,9 @@ import { EditOutlined } from "@ant-design/icons";
 import CustomButton from "@/components/customComponent/CustomButton";
 import BackHeader from "@/components/customComponent/BackHeader";
 import { FiPlusCircle } from "react-icons/fi";
-import { useAssignProtocolToPatientMutation, useGetAllProtocalsByPatientIdQuery } from "@/redux/fetures/doctor/doctor";
+import { useAssignProtocolToPatientMutation, useAssignSpecialistPatientMutation, useGetAllProtocalsByPatientIdQuery, useGetAllSpacialistQuery } from "@/redux/fetures/doctor/doctor";
+import toast, { Toaster } from "react-hot-toast";
+import Link from "next/link";
 
 const { TextArea } = Input;
 
@@ -48,26 +50,73 @@ const DoctorProtocolPage = () => {
   const urlParams = new URLSearchParams(window.location.search);
   const patientId = urlParams.get("patientId");
 
-  const [assignProtocol] = useAssignProtocolToPatientMutation();
+
 
   const { data } = useGetAllProtocalsByPatientIdQuery(patientId);
   const protocolData = data?.data?.attributes?.results || [];
-  console.log(protocolData);
+  // console.log(protocolData);
 
   // State for modal visibility
   const [isModalVisible, setIsModalVisible] = useState(false);
 
+  const { data: specialistData } = useGetAllSpacialistQuery(patientId);
+  const fullSpecialistData = specialistData?.data?.attributes || [];
+
+  const [assignSpecialist] = useAssignSpecialistPatientMutation();
   // State for selected specialist
   const [specialist, setSpecialist] = useState();
 
-  const handleAssignSpecialist = () => {
-    // Logic to assign specialist (can be integrated with API)
-    console.log("Assigned Specialist:", specialist);
-    setIsModalVisible(false);  // Close the modal after assigning
+  const handleAssignSpecialist = async () => {
+
+    const data = {
+      patientId: patientId,
+      specialistId: specialist
+    }
+
+    try {
+      const res = await assignSpecialist(data)
+      console.log(res);
+      if (res?.data?.code == 200) {
+        toast.success(res?.data?.message)
+        setIsModalVisible(false);
+      }
+      else {
+        toast.error(res?.data?.message)
+      }
+    } catch (error) {
+      console.error("Error assigning specialist:", error);
+      toast.error("Failed to assign specialist");
+    }
   };
+  const [assignProtocol] = useAssignProtocolToPatientMutation();
+
+  const handleCreateNewProtocol = async () => {
+    const data = {
+      patientId: patientId
+    }
+    try {
+      const res = await assignProtocol(data)
+      console.log(res);
+      if (res?.data?.code == 200) {
+        toast.success(res?.data?.message)
+        window.location.href = `/doctorDs/doctor-protocol/create-plane?protocolId=${res?.data?.data?.attributes?._protocolId}`
+
+      }
+      else {
+        toast.error(res?.data?.message)
+      }
+
+    } catch (error) {
+      console.error("Error assigning specialist:", error);
+      toast.error("Failed to assign specialist");
+    }
+
+
+  }
 
   return (
     <div>
+      <Toaster />
       <BackHeader title={"Back"} />
 
       <div className="flex lg:flex-row flex-col gap-6 p-6 bg-gray-50 min-h-screen">
@@ -104,7 +153,7 @@ const DoctorProtocolPage = () => {
               >
                 Assign a Specialist
               </button>
-              <button className="bg-red-600 text-white py-2 px-6 rounded-lg flex items-center gap-2">
+              <button onClick={handleCreateNewProtocol} className="bg-red-600 text-white py-2 px-6 rounded-lg flex items-center gap-2">
                 <FiPlusCircle /> Create New
               </button>
             </div>
@@ -146,14 +195,19 @@ const DoctorProtocolPage = () => {
       >
         <div>
           <div className="mb-4">
-            <label className="block text-sm font-semibold">Select Name</label>
             <Select
               value={specialist}
               onChange={(value) => setSpecialist(value)}
               style={{ width: "100%" }}
               placeholder="Select Specialist"
             >
-              <Select.Option value="Mahmud">Mahmud</Select.Option>
+              {
+                fullSpecialistData?.map((specialist) => (
+                  <Select.Option key={specialist?.profile._id} value={specialist?.profile._id} >
+                    {specialist.name}
+                  </Select.Option>
+                ))
+              }
               {/* Add other options here */}
             </Select>
           </div>
