@@ -28,6 +28,7 @@ const Page = () => {
         }
     }, [mealPlanData]);
 
+
     // Handle Edit mode toggle
     const handleEdit = () => {
         setIsEditing(true);  // Enable edit mode
@@ -111,7 +112,6 @@ const Page = () => {
     const { data: searchData, isLoading } = useSearchPlaneQuery({ type: selectedPlan, title: search });
     const fullData = searchData?.data?.attributes?.results || [];
 
-    console.log(fullData);
 
     const handleSearch = (value) => {
         if (!selectedPlan) {
@@ -119,6 +119,7 @@ const Page = () => {
         }
         setSearch(value);
     };
+
 
     return (
         <div className="flex lg:flex-row flex-col py-10">
@@ -131,7 +132,7 @@ const Page = () => {
                             type="text"
                             value={mealPlanName}
                             onChange={(e) => setMealPlanName(e.target.value)}
-                            className="border-b-2 border-gray-300 focus:outline-none"
+                            className="border-b-2 w-full border-gray-300 focus:outline-none"
                         />
                     ) : (
                         <>
@@ -140,7 +141,7 @@ const Page = () => {
                     )}
                     {isEditing && (
                         <button
-                            className="px-4 py-2 bg-blue-500 text-white rounded-lg mt-4"
+                            className="xl:px-4 xl:py-2 p-1 bg-blue-500 text-white rounded-lg mt-4"
                             onClick={handleSave}
                         >
                             Save
