@@ -17,7 +17,7 @@ const Page = () => {
 
     const [newMealPlan, setNewMealPlan] = useState({
         planName: '',
-        mealPlan: '',
+        planType: '',
         keyPoints: [''],  // To store multiple key points
         description: ''
     });
@@ -94,10 +94,13 @@ const Page = () => {
             keyPoints: updatedKeyPoints
         }));
     };
+    const [selectedPlan, setSelectedPlan] = useState('mealPlan');
 
     // Handle form submission
     const handleCreateMealPlan = (e) => {
         e.preventDefault();
+
+        if (!selectedPlan) return toast.error("Please select a plan type");
         // Here you can call an API to create the new meal plan
         console.log('New Meal Plan Data:', newMealPlan);
         toast.success("Meal Plan Created Successfully!");
@@ -105,13 +108,15 @@ const Page = () => {
     };
 
     const [search, setSearch] = useState('');
-    const [selectedPlan, setSelectedPlan] = useState('');
-    const { data: searchData } = useSearchPlaneQuery({ type: selectedPlan, title: search });
+    const { data: searchData, isLoading } = useSearchPlaneQuery({ type: selectedPlan, title: search });
     const fullData = searchData?.data?.attributes?.results || [];
 
     console.log(fullData);
 
     const handleSearch = (value) => {
+        if (!selectedPlan) {
+            return toast.error("Please select a plan type");
+        }
         setSearch(value);
     };
 
@@ -143,13 +148,24 @@ const Page = () => {
                     )}
                 </h2>
                 {/* Static Plan Types */}
-                {['Meal plan', 'Workout', 'Supplement', 'Life style changes'].map((plan, index) => (
-                    <div onclieck={() => setSelectedPlan(plan)} key={index} className="py-2 px-5 rounded-lg cursor-pointer my-2 flex items-center gap-5 hover:bg-gray-100">
+                {[{
+                    name: 'Meal plan',
+                    type: 'mealPlan'
+                }, {
+                    name: 'Workout plan',
+                    type: 'workOut'
+                }, {
+                    name: 'Supplement plan',
+                    type: 'suppliment'
+                }, {
+                    name: 'Life style plan',
+                    type: 'lifeStyleChanges'
+                }].map((plan, index) => (
+                    <div key={index} onClick={() => setSelectedPlan(plan.type)} className="py-2 px-5 rounded-lg cursor-pointer my-2 flex items-center gap-5 hover:bg-gray-100">
                         <div className="text-sm font-semibold">{index + 1}</div>
-                        <div className="rounded mt-1 w-full">{plan}</div>
+                        <div className="rounded mt-1 w-full">{plan.name}</div>
                     </div>
                 ))}
-
             </div>
 
             {/* Right Content */}
@@ -179,11 +195,14 @@ const Page = () => {
                 <div className='mt-4'>
                     {
                         fullData?.map((item, index) => (
-                            <div key={index} className='flex flex-col p-2 rounded bg-slate-100 my-2'>
+                            <div key={index} className='flex capitalize justify-between p-2 rounded bg-slate-50 my-2'>
                                 <h3>{item?.title}</h3>
-                                <p>{item?.description}</p>
+                                <p>{item?.totalKeyPoints} key points</p>
                             </div>
                         ))
+                    }
+                    {
+                        isLoading && <p className='text-center my-2'>Loading...</p>
                     }
                 </div>
             </div>
@@ -192,7 +211,7 @@ const Page = () => {
             {isModalOpen && (
                 <div className="fixed inset-0 z-[999999] bg-gray-600 bg-opacity-50 px-10 flex justify-center items-center">
                     <div className="bg-white p-8 rounded-lg lg:w-1/3 w-full ">
-                        <h3 className="text-2xl font-semibold mb-4">Create New Meal Plan</h3>
+                        <h3 className="text-2xl font-semibold mb-4">Create New Plan</h3>
                         <form onSubmit={handleCreateMealPlan}>
                             <div className="mb-4">
                                 <label className="block text-sm font-medium mb-2" htmlFor="planName">Plan Name *</label>
