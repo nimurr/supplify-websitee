@@ -1,5 +1,5 @@
 'use client'
-import { useGetSingleProtocolQuery, useUpdateProtocolMutation } from '@/redux/fetures/doctor/doctor';
+import { useGetSingleProtocolQuery, useSearchPlaneQuery, useUpdateProtocolMutation } from '@/redux/fetures/doctor/doctor';
 import React, { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { CiCirclePlus, CiEdit, CiSearch } from 'react-icons/ci';
@@ -104,6 +104,17 @@ const Page = () => {
         toggleModal(); // Close the modal after submission
     };
 
+    const [search, setSearch] = useState('');
+    const [selectedPlan, setSelectedPlan] = useState('');
+    const { data: searchData } = useSearchPlaneQuery({ type: selectedPlan, title: search });
+    const fullData = searchData?.data?.attributes?.results || [];
+
+    console.log(fullData);
+
+    const handleSearch = (value) => {
+        setSearch(value);
+    };
+
     return (
         <div className="flex lg:flex-row flex-col py-10">
             <Toaster />
@@ -133,11 +144,12 @@ const Page = () => {
                 </h2>
                 {/* Static Plan Types */}
                 {['Meal plan', 'Workout', 'Supplement', 'Life style changes'].map((plan, index) => (
-                    <div key={index} className="py-2 px-5 rounded-lg cursor-pointer my-2 flex items-center gap-5 hover:bg-gray-100">
+                    <div onclieck={() => setSelectedPlan(plan)} key={index} className="py-2 px-5 rounded-lg cursor-pointer my-2 flex items-center gap-5 hover:bg-gray-100">
                         <div className="text-sm font-semibold">{index + 1}</div>
                         <div className="rounded mt-1 w-full">{plan}</div>
                     </div>
                 ))}
+
             </div>
 
             {/* Right Content */}
@@ -157,18 +169,28 @@ const Page = () => {
                     <div className="mt-2 relative">
                         <input
                             type="text"
+                            onChange={(e) => handleSearch(e.target.value)} // Pass the value of the input to the handler
                             className="py-2 px-10 border border-gray-200 rounded w-full"
                             placeholder="Search meal plan that you already create"
                         />
                         <CiSearch className="absolute text-[#b8b8b8] top-2 text-2xl left-2" />
                     </div>
                 </div>
-                {/* More content... */}
+                <div className='mt-4'>
+                    {
+                        fullData?.map((item, index) => (
+                            <div key={index} className='flex flex-col p-2 rounded bg-slate-100 my-2'>
+                                <h3>{item?.title}</h3>
+                                <p>{item?.description}</p>
+                            </div>
+                        ))
+                    }
+                </div>
             </div>
 
             {/* Modal for Creating New Meal Plan */}
             {isModalOpen && (
-                <div  className="fixed inset-0 z-[999999] bg-gray-600 bg-opacity-50 px-10 flex justify-center items-center">
+                <div className="fixed inset-0 z-[999999] bg-gray-600 bg-opacity-50 px-10 flex justify-center items-center">
                     <div className="bg-white p-8 rounded-lg lg:w-1/3 w-full ">
                         <h3 className="text-2xl font-semibold mb-4">Create New Meal Plan</h3>
                         <form onSubmit={handleCreateMealPlan}>

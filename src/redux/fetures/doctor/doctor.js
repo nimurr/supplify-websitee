@@ -59,6 +59,12 @@ const doctor = apiSlice.injectEndpoints({
             }),
             providesTags: ["DoctorProtocol"]
         }),
+        searchPlane: builder.query({
+            query: ({ type, title }) => ({
+                url: `/doctor-plans/paginate?planType=${type}&title=${title}`,
+                method: "GET"
+            }),
+        }),
 
         // comment : assign specialist to patient
         assignSpecialistPatient: builder.mutation({
@@ -88,6 +94,7 @@ export const {
     useAssignProtocolToPatientMutation,
     useGetSingleProtocolQuery,
     useUpdateProtocolMutation,
+    useSearchPlaneQuery,
     useAssignSpecialistPatientMutation,
     useGetAllSpacialistQuery
 } = doctor;
