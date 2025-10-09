@@ -35,28 +35,32 @@ const doctor = apiSlice.injectEndpoints({
                 method: "GET"
             }),
         }),
+        // comment : assign protocol to patient
         assignProtocolToPatient: builder.mutation({
             query: (data) => ({
                 url: `/protocols`,
                 method: "POST",
                 body: data
             }),
+            invalidatesTags: ["DoctorProtocol"]
         }),
         getSingleProtocol: builder.query({
             query: (id) => ({
                 url: `/protocols/paginate?_id=${id}`,
                 method: "GET"
             }),
+            providesTags: ["DoctorProtocol"]
         }),
         updateProtocol: builder.mutation({
-            query: ({ id, data }) => ({
-                url: `/protocols/update/${id}`,
-                method: "PATCH",
+            query: ({ protocolId, data }) => ({
+                url: `/protocols/update/${protocolId}`,
+                method: "PUT",
                 body: data
             }),
+            providesTags: ["DoctorProtocol"]
         }),
 
-
+        // comment : assign specialist to patient
         assignSpecialistPatient: builder.mutation({
             query: (data) => ({
                 url: `/specialist-patients`,

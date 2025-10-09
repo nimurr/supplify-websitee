@@ -1,6 +1,7 @@
 'use client'
-import { useGetSingleProtocolQuery } from '@/redux/fetures/doctor/doctor';
+import { useGetSingleProtocolQuery, useUpdateProtocolMutation } from '@/redux/fetures/doctor/doctor';
 import React, { useEffect, useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 import { CiCirclePlus, CiEdit, CiSearch } from 'react-icons/ci';
 
 const Page = () => {
@@ -12,28 +13,100 @@ const Page = () => {
     const mealPlanData = data?.data?.attributes?.results[0] || [];
     const [isEditing, setIsEditing] = useState(false); // State to track editing mode
     const [mealPlanName, setMealPlanName] = useState(''); // State to hold the edited value
+    const [isModalOpen, setIsModalOpen] = useState(false); // State to handle modal visibility
+
+    const [newMealPlan, setNewMealPlan] = useState({
+        planName: '',
+        mealPlan: '',
+        keyPoints: [''],  // To store multiple key points
+        description: ''
+    });
 
     useEffect(() => {
         if (mealPlanData?.name) {
             setMealPlanName(mealPlanData?.name);
         }
     }, [mealPlanData]);
- 
 
     // Handle Edit mode toggle
     const handleEdit = () => {
         setIsEditing(true);  // Enable edit mode
     };
 
+    const [updateProtocol] = useUpdateProtocolMutation();
+
     // Handle Save edited value
-    const handleSave = () => {
-        setIsEditing(false);  // Disable edit mode
-        // Here you can call an API or handle saving the new value
-        console.log("New Meal Plan Name:", mealPlanName);
+    const handleSave = async () => {
+        const data = {
+            name: mealPlanName
+        }
+        try {
+            const res = await updateProtocol({ protocolId, data });
+            console.log(res);
+            if (res?.data?.code == 200) {
+                toast.success(res?.data?.message);
+                setIsEditing(false);
+            }
+            else {
+                toast.error(res?.data?.message);
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error(error?.data?.message || "Failed to update protocol");
+        }
+    };
+
+    // Open/Close Modal
+    const toggleModal = () => {
+        setIsModalOpen(!isModalOpen);
+    };
+
+    // Handle form input changes
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setNewMealPlan(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
+
+    // Handle multiple key points addition
+    const handleKeyPointChange = (index, value) => {
+        const updatedKeyPoints = [...newMealPlan.keyPoints];
+        updatedKeyPoints[index] = value;
+        setNewMealPlan(prevState => ({
+            ...prevState,
+            keyPoints: updatedKeyPoints
+        }));
+    };
+
+    const addKeyPoint = () => {
+        setNewMealPlan(prevState => ({
+            ...prevState,
+            keyPoints: [...prevState.keyPoints, '']
+        }));
+    };
+
+    const removeKeyPoint = (index) => {
+        const updatedKeyPoints = newMealPlan.keyPoints.filter((_, i) => i !== index);
+        setNewMealPlan(prevState => ({
+            ...prevState,
+            keyPoints: updatedKeyPoints
+        }));
+    };
+
+    // Handle form submission
+    const handleCreateMealPlan = (e) => {
+        e.preventDefault();
+        // Here you can call an API to create the new meal plan
+        console.log('New Meal Plan Data:', newMealPlan);
+        toast.success("Meal Plan Created Successfully!");
+        toggleModal(); // Close the modal after submission
     };
 
     return (
         <div className="flex lg:flex-row flex-col py-10">
+            <Toaster />
             {/* Left Sidebar */}
             <div className="lg:w-1/4 bg-white p-4 border border-gray-100 rounded-lg">
                 <h2 className="text-xl font-bold flex items-center gap-3 cursor-pointer">
@@ -58,29 +131,23 @@ const Page = () => {
                         </button>
                     )}
                 </h2>
-                <div className="py-2 px-5 rounded-lg cursor-pointer  my-2 flex items-center gap-5 hover:bg-gray-100">
-                    <div className="text-sm font-semibold">1</div>
-                    <div className="  rounded mt-1 ">Meal plan</div>
-                </div>
-                <div className="py-2 px-5 rounded-lg cursor-pointer my-2 flex items-center gap-5 hover:bg-gray-100">
-                    <div className="text-sm font-semibold">2</div>
-                    <div className=" rounded mt-1 w-full ">Workout</div>
-                </div>
-                <div className="py-2 px-5 rounded-lg cursor-pointer my-2 flex items-center gap-5 hover:bg-gray-100">
-                    <div className="text-sm font-semibold">3</div>
-                    <div className=" rounded mt-1 w-full  ">Supplement</div>
-                </div>
-                <div className="py-2 px-5 rounded-lg cursor-pointer my-2 flex items-center gap-5 hover:bg-gray-100">
-                    <div className="text-sm font-semibold">4</div>
-                    <div className=" rounded mt-1 w-full ">Life style changes</div>
-                </div>
+                {/* Static Plan Types */}
+                {['Meal plan', 'Workout', 'Supplement', 'Life style changes'].map((plan, index) => (
+                    <div key={index} className="py-2 px-5 rounded-lg cursor-pointer my-2 flex items-center gap-5 hover:bg-gray-100">
+                        <div className="text-sm font-semibold">{index + 1}</div>
+                        <div className="rounded mt-1 w-full">{plan}</div>
+                    </div>
+                ))}
             </div>
 
             {/* Right Content */}
-            <div className="w-3/4 p-8">
+            <div className="lg:w-3/4 p-8">
                 <div className="flex justify-between items-center">
                     <h3 className="text-2xl font-semibold">Meal Plan</h3>
-                    <button className="px-4 py-2 bg-red-600 text-white rounded-lg flex items-center gap-2 ">
+                    <button
+                        className="px-4 py-2 bg-red-600 text-white rounded-lg flex items-center gap-2"
+                        onClick={toggleModal} // Open the modal when "Create New" is clicked
+                    >
                         <CiCirclePlus className='text-2xl' /> Create New
                     </button>
                 </div>
@@ -96,18 +163,86 @@ const Page = () => {
                         <CiSearch className="absolute text-[#b8b8b8] top-2 text-2xl left-2" />
                     </div>
                 </div>
-                <div className="mt-6 px-4 py-2 border border-gray-200 rounded">
-                    <div className="flex items-center gap-10 py-3">
-                        <div className="font-semibold">Meal Plan 1</div>
-                        <div className="text-sm">5 key points</div>
-                    </div>
-                    <div className="flex items-center gap-10 py-3">
-                        <div className="font-semibold">Meal Plan 2</div>
-                        <div className="text-sm">5 key points</div>
+                {/* More content... */}
+            </div>
+
+            {/* Modal for Creating New Meal Plan */}
+            {isModalOpen && (
+                <div  className="fixed inset-0 z-[999999] bg-gray-600 bg-opacity-50 px-10 flex justify-center items-center">
+                    <div className="bg-white p-8 rounded-lg lg:w-1/3 w-full ">
+                        <h3 className="text-2xl font-semibold mb-4">Create New Meal Plan</h3>
+                        <form onSubmit={handleCreateMealPlan}>
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium mb-2" htmlFor="planName">Plan Name *</label>
+                                <input
+                                    type="text"
+                                    id="planName"
+                                    name="planName"
+                                    value={newMealPlan.planName}
+                                    onChange={handleInputChange}
+                                    className="border border-gray-300 rounded p-2 w-full"
+                                    required
+                                />
+                            </div>
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium mb-2" htmlFor="keyPoints">Key Points *</label>
+                                {newMealPlan.keyPoints.map((keyPoint, index) => (
+                                    <div key={index} className="flex gap-2 mb-2">
+                                        <input
+                                            type="text"
+                                            name="keyPoints"
+                                            value={keyPoint}
+                                            onChange={(e) => handleKeyPointChange(index, e.target.value)}
+                                            className="border border-gray-300 rounded p-2 w-full"
+                                            required
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => removeKeyPoint(index)}
+                                            className="text-red-500"
+                                        >
+                                            Remove
+                                        </button>
+                                    </div>
+                                ))}
+                                <button
+                                    type="button"
+                                    onClick={addKeyPoint}
+                                    className="text-blue-500"
+                                >
+                                    Add Key Point
+                                </button>
+                            </div>
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium mb-2" htmlFor="description">Description *</label>
+                                <textarea
+                                    id="description"
+                                    name="description"
+                                    value={newMealPlan.description}
+                                    onChange={handleInputChange}
+                                    className="border border-gray-300 rounded p-2 w-full"
+                                    required
+                                />
+                            </div>
+                            <div className="flex justify-between">
+                                <button
+                                    type="button"
+                                    className="px-4 py-2 bg-gray-500 text-white rounded-lg"
+                                    onClick={toggleModal} // Close the modal
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    className="px-4 py-2 bg-blue-500 text-white rounded-lg"
+                                >
+                                    Add New
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
-
-            </div>
+            )}
         </div>
     );
 }
