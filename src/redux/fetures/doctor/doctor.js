@@ -65,6 +65,13 @@ const doctor = apiSlice.injectEndpoints({
                 method: "GET"
             }),
         }),
+        createPlane: builder.mutation({
+            query: (data) => ({
+                url: `/plan-by-doc`,
+                method: "POST",
+                body: data
+            }),
+        }),
 
         // comment : assign specialist to patient
         assignSpecialistPatient: builder.mutation({
@@ -82,7 +89,6 @@ const doctor = apiSlice.injectEndpoints({
         }),
 
 
-
     }),
 });
 export const {
@@ -95,6 +101,7 @@ export const {
     useGetSingleProtocolQuery,
     useUpdateProtocolMutation,
     useSearchPlaneQuery,
+    useCreatePlaneMutation,
     useAssignSpecialistPatientMutation,
-    useGetAllSpacialistQuery
+    useGetAllSpacialistQuery,
 } = doctor;

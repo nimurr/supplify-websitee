@@ -9,6 +9,7 @@ import { FiPlusCircle } from "react-icons/fi";
 import { useAssignProtocolToPatientMutation, useAssignSpecialistPatientMutation, useGetAllProtocalsByPatientIdQuery, useGetAllSpacialistQuery } from "@/redux/fetures/doctor/doctor";
 import toast, { Toaster } from "react-hot-toast";
 import Link from "next/link";
+import url from "@/redux/api/baseUrl";
 
 const { TextArea } = Input;
 
@@ -50,11 +51,10 @@ const DoctorProtocolPage = () => {
   const urlParams = new URLSearchParams(window.location.search);
   const patientId = urlParams.get("patientId");
 
+  const { data: patientData } = useGetAllProtocalsByPatientIdQuery(patientId)
+  const fullPatientData = patientData?.data?.attributes || [];
+  console.log(fullPatientData?.extraNote?.patientId?.name);
 
-
-  const { data } = useGetAllProtocalsByPatientIdQuery(patientId);
-  const protocolData = data?.data?.attributes?.results || [];
-  // console.log(protocolData);
 
   // State for modal visibility
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -99,7 +99,7 @@ const DoctorProtocolPage = () => {
       console.log(res);
       if (res?.data?.code == 200) {
         toast.success(res?.data?.message)
-        window.location.href = `/doctorDs/doctor-protocol/create-plane?protocolId=${res?.data?.data?.attributes?._protocolId}`
+        window.location.href = `/doctorDs/doctor-protocol/create-plane?protocolId=${res?.data?.data?.attributes?._protocolId}&patientId=${patientId}`
 
       }
       else {
@@ -125,21 +125,21 @@ const DoctorProtocolPage = () => {
           <div className="flex items-center gap-3 mb-6">
             <Avatar
               size={60}
-              src="https://i.pravatar.cc/150?img=12"
+              src={url + fullPatientData?.extraNote?.patientId?.profileImage?.imageUrl}
               alt="Mahmud"
             />
-            <span className="font-semibold text-sm">Mahmud</span>
+            <span className="font-semibold capitalize text-sm">{fullPatientData?.extraNote?.patientId?.name || "No name found"}</span>
           </div>
           <div className="mb-1 text-sm font-semibold">Extra Note</div>
           <p className="text-xs text-gray-500 mb-4">
-            Feel free to add a private note for this member. Only you will be able
-            to view it.
+            {fullPatientData?.extraNote?.extraNote || "No note found"}
           </p>
           <TextArea
-            rows={12}
+            rows={6}
             placeholder="Type your note ..."
             className="resize-none rounded-md border border-gray-300"
           />
+          <button className="bg-red-600 text-white py-2 px-6 rounded-lg mt-3">Save</button>
         </div>
 
         {/* Right Content */}
@@ -159,7 +159,7 @@ const DoctorProtocolPage = () => {
             </div>
           </div>
           <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
-            {protocols.map(({ id, title, totalPlan, image }) => (
+            {fullPatientData?.results?.map(({ id, name, _protocolId }) => (
               <Card
                 key={id}
                 hoverable
@@ -168,17 +168,17 @@ const DoctorProtocolPage = () => {
               >
                 <Card.Meta
                   title={
-                    <div className="truncate font-semibold text-sm">{title}</div>
+                    <div className="truncate font-semibold text-sm capitalize">{name}</div>
                   }
                   description={
                     <div className="text-xs text-gray-600">
-                      Total Plan : {totalPlan}
+                      {/* Total Plan : { 0} */}
                     </div>
                   }
                 />
-                <button className="bg-red-600 text-white py-2 px-6 rounded-lg mt-3 w-full" size="small">
+                <Link href={`/doctorDs/doctor-protocol/create-plane?protocolId=${_protocolId}&patientId=${patientId}`} className="bg-red-600 w-full text-white py-2 px-6 rounded-lg mt-5 text-center flex items-center justify-center" size="small">
                   <EditOutlined /> Edit
-                </button>
+                </Link>
               </Card>
             ))}
           </div>

@@ -1,4 +1,5 @@
 'use client'
+import { useCreatePlaneMutation } from '@/redux/fetures/doctor/createPlane';
 import { useGetSingleProtocolQuery, useSearchPlaneQuery, useUpdateProtocolMutation } from '@/redux/fetures/doctor/doctor';
 import React, { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
@@ -8,6 +9,7 @@ const Page = () => {
     // get protocolId from URL
     const searchParams = new URLSearchParams(window.location.search);
     const protocolId = searchParams.get("protocolId");
+    const patientId = searchParams.get("patientId");
 
     const { data } = useGetSingleProtocolQuery(protocolId);
     const mealPlanData = data?.data?.attributes?.results[0] || [];
@@ -97,15 +99,40 @@ const Page = () => {
     };
     const [selectedPlan, setSelectedPlan] = useState('mealPlan');
 
+    const [createPlane] = useCreatePlaneMutation();
     // Handle form submission
-    const handleCreateMealPlan = (e) => {
+    const handleCreateMealPlan = async (e) => {
         e.preventDefault();
 
         if (!selectedPlan) return toast.error("Please select a plan type");
-        // Here you can call an API to create the new meal plan
-        console.log('New Meal Plan Data:', newMealPlan);
-        toast.success("Meal Plan Created Successfully!");
-        toggleModal(); // Close the modal after submission
+
+        const data = {
+            title: newMealPlan.planName,
+            planType: selectedPlan,
+            keyPoints: newMealPlan.keyPoints,
+            description: newMealPlan.description,
+            protocolId: protocolId,
+            patientId: patientId
+        }
+
+        try {
+            const res = await createPlane(data);
+            console.log(res);
+            if (res?.data?.code == 200) {
+                toast.success(res?.data?.message);
+                toggleModal(); // Close the modal after submission
+            }
+            else {
+                toast.error(res?.data?.message);
+            }
+
+        } catch (error) {
+            console.log(error);
+            toast.error(error?.data?.message || "Failed to create meal plan");
+
+        }
+
+
     };
 
     const [search, setSearch] = useState('');
