@@ -87,6 +87,13 @@ const doctor = apiSlice.injectEndpoints({
                 method: "GET"
             }),
         }),
+        // Earning and withdrawal all info 
+        getAllOrderHistory: builder.query({
+            query: () => ({
+                url: `/doctor-appointments/bookings/paginate`,
+                method: "GET"
+            }),
+        })
 
 
     }),
@@ -104,4 +111,6 @@ export const {
     useCreatePlaneMutation,
     useAssignSpecialistPatientMutation,
     useGetAllSpacialistQuery,
+
+    useGetAllOrderHistoryQuery
 } = doctor;

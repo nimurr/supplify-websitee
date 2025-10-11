@@ -2,13 +2,7 @@
 import React, { useState } from 'react';
 import { IoEyeOutline } from 'react-icons/io5';
 import { Modal, Button } from 'antd'; // Import Ant Design's Modal and Button components
-
-// Dummy data for table
-const data = [
-    { id: 1, orderId: '1001', orderType: 'Online', transactionId: 'TXN001', paymentMethod: 'Credit Card', totalAmount: '$100', status: 'Processing' },
-    { id: 2, orderId: '1002', orderType: 'In-Store', transactionId: 'TXN002', paymentMethod: 'Debit Card', totalAmount: '$50', status: 'Booked' },
-    { id: 3, orderId: '1003', orderType: 'Online', transactionId: 'TXN003', paymentMethod: 'Paypal', totalAmount: '$200', status: 'Booked' },
-];
+import { useGetAllOrderHistoryQuery } from '@/redux/fetures/doctor/doctor'; // Assuming you're using Redux for fetching data
 
 const Page = () => {
     const [showModal, setShowModal] = useState(false);
@@ -26,12 +20,15 @@ const Page = () => {
         setModalData(null);
     };
 
+    const { data, isLoading } = useGetAllOrderHistoryQuery();
+    const fullData = data?.data?.attributes?.results || []; // Assuming 'results' holds the data
+
     return (
         <div>
             <table border="1" className='rounded-lg' style={{ borderRadius: '10px', width: '100%', marginTop: '20px', borderCollapse: 'collapse' }}>
                 <thead>
                     <tr>
-                        <th style={{ backgroundColor: 'red', color: 'white', padding: '8px' }}>Order Id</th>
+                        <th style={{ backgroundColor: 'red', color: 'white', padding: '8px' }}>Schedule Booking Id</th>
                         <th style={{ backgroundColor: 'red', color: 'white', padding: '8px' }}>Order Type</th>
                         <th style={{ backgroundColor: 'red', color: 'white', padding: '8px' }}>Transaction Id</th>
                         <th style={{ backgroundColor: 'red', color: 'white', padding: '8px' }}>Payment Method</th>
@@ -41,17 +38,18 @@ const Page = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {data.map((row) => (
-                        <tr className='border-b border-gray-200 py-2' key={row.id}>
-                            <td className='text-center' style={{ padding: '10px' }}>{row.orderId}</td>
-                            <td className='text-center' style={{ padding: '10px' }}>{row.orderType}</td>
-                            <td className='text-center' style={{ padding: '10px' }}>{row.transactionId}</td>
-                            <td className='text-center' style={{ padding: '10px' }}>{row.paymentMethod}</td>
-                            <td className='text-center' style={{ padding: '10px' }}>{row.totalAmount}</td>
-                            <td className={`${row.status === 'Processing' ? 'text-yellow-600' : 'text-green-600'}`} style={{ padding: '10px' }}>
-                                {row.status}
-                                </td>
-                            <td className='text-center' style={{ padding: '10px' }}>
+                    {isLoading && <tr><td colSpan={7} className='text-center'>Loading...</td></tr>}
+                    {fullData?.map((row) => (
+                        <tr className='border-b border-gray-200 py-2' key={row._DoctorPatientScheduleBookingId}>
+                            <td className='text-center' style={{ padding: '10px' }}>{row._DoctorPatientScheduleBookingId || 'N/A'}</td>
+                            <td className='text-center' style={{ padding: '10px' }}>{row.patientId?.subscriptionType || 'N/A'}</td>
+                            <td className='text-center' style={{ padding: '10px' }}>{row.paymentTransactionId || 'N/A'}</td>
+                            <td className='text-center' style={{ padding: '10px' }}>{row.paymentMethod || 'N/A'}</td>
+                            <td className='text-center' style={{ padding: '10px' }}>${row.price}</td>
+                            <td className={`text-center ${row.paymentStatus === 'unpaid' ? 'text-yellow-600' : 'text-green-600'}`} style={{ padding: '10px' }}>
+                                {row.paymentStatus}
+                            </td>
+                            <td className='text-center flex items-center justify-center' style={{ padding: '10px' }}>
                                 <button onClick={() => openModal(row)}><IoEyeOutline /></button>
                             </td>
                         </tr>
@@ -72,12 +70,15 @@ const Page = () => {
             >
                 {modalData && (
                     <div className='space-y-2'>
-                        <p className='flex items-center justify-between gap-5'><strong>Order Id:</strong> {modalData.orderId}</p>
-                        <p className='flex items-center justify-between gap-5'><strong>Order Type:</strong> {modalData.orderType}</p>
-                        <p className='flex items-center justify-between gap-5'><strong>Transaction Id:</strong> {modalData.transactionId}</p>
-                        <p className='flex items-center justify-between gap-5'><strong>Payment Method:</strong> {modalData.paymentMethod}</p>
-                        <p className='flex items-center justify-between gap-5'><strong>Total Amount:</strong> {modalData.totalAmount}</p>
-                        <p className='flex items-center justify-between gap-5'><strong>Status:</strong> {modalData.status}</p>
+                        <p className='flex items-center justify-between gap-5'><strong>Order Id:</strong> {modalData._DoctorPatientScheduleBookingId}</p>
+                        <p className='flex items-center justify-between gap-5'><strong>Order Type:</strong> {modalData.patientId?.subscriptionType}</p>
+                        <p className='flex items-center justify-between gap-5'><strong>Transaction Id:</strong> {modalData.paymentTransactionId !== null ? modalData.paymentTransactionId : 'N/A'}</p>
+                        <p className='flex items-center justify-between gap-5'><strong>Payment Method:</strong> {modalData.paymentMethod || 'N/A'}</p>
+                        <p className='flex items-center justify-between gap-5'><strong>Total Amount:</strong> ${modalData.price}</p>
+                        <p className='flex items-center justify-between gap-5'><strong>Payment Status:</strong> {modalData.paymentStatus}</p>
+                        <p className='flex items-center justify-between gap-5'><strong>Patient Name:</strong> {modalData.patientId?.name}</p>
+                        <p className='flex items-center justify-between gap-5'><strong>Schedule Date:</strong> {new Date(modalData.scheduleDate).toLocaleDateString()}</p>
+                        <p className='flex items-center justify-between gap-5'><strong>Created At:</strong> {new Date(modalData.createdAt).toLocaleString()}</p>
                     </div>
                 )}
             </Modal>
