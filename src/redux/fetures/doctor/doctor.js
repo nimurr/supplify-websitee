@@ -93,13 +93,39 @@ const doctor = apiSlice.injectEndpoints({
                 url: `/doctor-appointments/bookings/paginate`,
                 method: "GET"
             }),
+            providesTags: ["OrderHistory"]
         }),
         getBankInfo: builder.query({
             query: () => ({
                 url: `/bank-info/paginate`,
                 method: "GET"
             }),
+            providesTags: ["OrderHistory"]
         }),
+        addBankInfo: builder.mutation({
+            query: (data) => ({
+                url: `/bank-info/create-or-update`,
+                method: "PUT",
+                body: data
+            }),
+            invalidatesTags: ["OrderHistory"]
+        }),
+        withDrawRequest: builder.mutation({
+            query: (data) => ({
+                url: `/withdrawal-requst`,
+                method: "POST",
+                body: data
+            }),
+            invalidatesTags: ["OrderHistory"]
+        }),
+        withDrawRequestTnxHistory : builder.query({
+            query: () => ({
+                url: `/withdrawal-requst/paginate`,
+                method: "GET"
+            }),
+            providesTags: ["OrderHistory"]
+        }),
+
 
 
     }),
@@ -119,5 +145,8 @@ export const {
     useGetAllSpacialistQuery,
 
     useGetAllOrderHistoryQuery,
-    useGetBankInfoQuery
+    useGetBankInfoQuery,
+    useAddBankInfoMutation,
+    useWithDrawRequestMutation,
+    useWithDrawRequestTnxHistoryQuery
 } = doctor;
