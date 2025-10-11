@@ -2,11 +2,16 @@
 import React, { useState } from 'react';
 import { BsBank } from "react-icons/bs";
 import { Modal, Button, Form, Input, Switch } from 'antd'; // Import necessary components from Ant Design
+import { useGetBankInfoQuery } from '@/redux/fetures/doctor/doctor';
 
 
 const Page = () => {
     const [showModal, setShowModal] = useState(false); // State to control modal visibility
     const [form] = Form.useForm(); // To handle form fields
+
+    const { data: bankInfo, isLoading } = useGetBankInfoQuery();
+    const fullBankInof = bankInfo?.data?.attributes?.results?.[0];
+    console.log(fullBankInof?.bankRoutingNumber);
 
     // Function to open the modal
     const openModal = () => setShowModal(true);
@@ -23,7 +28,7 @@ const Page = () => {
     return (
         <div className='my-20'>
             <div className='relative'>
-                <img className='w-1/2 mx-auto' src="/images/erning-bg.png" alt="" />
+                <img className='lg:w-1/2 mx-auto' src="/images/erning-bg.png" alt="" />
                 <div className='absolute mt-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
                     <p className='text-center font-medium mb-2'>Total Balance</p>
                     <h2 className='text-2xl font-semibold text-red-600 text-center'>$1200</h2>
@@ -59,7 +64,7 @@ const Page = () => {
                 visible={showModal}
                 onCancel={closeModal}
                 footer={[
-                    <button  key="cancel" onClick={closeModal} className='bg-gray-500 mr-2 !py-2 px-8 rounded-md text-white'>
+                    <button key="cancel" onClick={closeModal} className='bg-gray-500 mr-2 !py-2 px-8 rounded-md text-white'>
                         Cancel
                     </button>,
                     <button form="bankForm" key="submit" htmlType="submit" className='bg-red-600 !py-2 px-8 rounded-md text-white'>
@@ -127,14 +132,6 @@ const Page = () => {
                         <Input className='py-2' placeholder="Enter bank name" />
                     </Form.Item>
 
-                    {/* Visibility Switch for Profile */}
-                    {/* <Form.Item
-                        label="Visibility"
-                        name="visibility"
-                        valuePropName="checked"
-                    >
-                        <Switch checkedChildren="Visible" unCheckedChildren="Hide" />
-                    </Form.Item> */}
                 </Form>
             </Modal>
         </div>
