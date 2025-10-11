@@ -1,17 +1,37 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BsBank } from "react-icons/bs";
 import { Modal, Button, Form, Input, Switch } from 'antd'; // Import necessary components from Ant Design
-import { useGetBankInfoQuery } from '@/redux/fetures/doctor/doctor';
-
+import { useGetBankInfoQuery } from '@/redux/fetures/doctor/doctor'; // Redux query hook to get bank info
 
 const Page = () => {
     const [showModal, setShowModal] = useState(false); // State to control modal visibility
     const [form] = Form.useForm(); // To handle form fields
 
+    const [bankdata, setBankdata] = useState({
+        bankAccountHolderName: '',
+        bankAccountNumber: '',
+        bankAccountType: '',
+        bankBranch: '',
+        bankName: '',
+        bankRoutingNumber: ''
+    });
+
     const { data: bankInfo, isLoading } = useGetBankInfoQuery();
-    const fullBankInof = bankInfo?.data?.attributes?.results?.[0];
-    console.log(fullBankInof?.bankRoutingNumber);
+    const fullBankInfo = bankInfo?.data?.attributes?.results?.[0];
+
+    useEffect(() => {
+        if (fullBankInfo) {
+            setBankdata({
+                bankAccountHolderName: fullBankInfo.bankAccountHolderName,
+                bankAccountNumber: fullBankInfo.bankAccountNumber,
+                bankAccountType: fullBankInfo.bankAccountType,
+                bankBranch: fullBankInfo.bankBranch,
+                bankName: fullBankInfo.bankName,
+                bankRoutingNumber: fullBankInfo.bankRoutingNumber
+            });
+        }
+    }, [fullBankInfo]);
 
     // Function to open the modal
     const openModal = () => setShowModal(true);
@@ -42,6 +62,7 @@ const Page = () => {
                 <button className='w-full bg-red-600 text-white py-2 rounded-lg '>Withdraw</button>
                 <button className='w-full bg-red-600 text-white py-2 rounded-lg ' onClick={openModal}>ADD BANK INFORMATION</button>
             </div>
+
             {/* Table for showing recent withdrawals */}
             <div className='mt-8'>
                 <div className='flex justify-between items-center gap-5 '>
@@ -77,11 +98,12 @@ const Page = () => {
                     id="bankForm"
                     onFinish={handleSubmit}
                     layout="vertical"
+                    initialValues={bankdata} // Set the initial values to bankdata
                 >
                     {/* Bank Account Number */}
                     <Form.Item
                         label="Bank Account Number"
-                        name="accountNumber"
+                        name="bankAccountNumber"
                         rules={[{ required: true, message: 'Please enter your bank account number!' }]}
                     >
                         <Input className='py-2' placeholder="Enter your bank account number" />
@@ -90,7 +112,7 @@ const Page = () => {
                     {/* Routing Number */}
                     <Form.Item
                         label="Routing Number"
-                        name="routingNumber"
+                        name="bankRoutingNumber"
                         rules={[{ required: true, message: 'Please enter your routing number!' }]}
                     >
                         <Input className='py-2' placeholder="Enter your routing number" />
@@ -99,7 +121,7 @@ const Page = () => {
                     {/* Account Holder Name */}
                     <Form.Item
                         label="Account Holder Name"
-                        name="accountHolderName"
+                        name="bankAccountHolderName"
                         rules={[{ required: true, message: 'Please enter the account holder name!' }]}
                     >
                         <Input className='py-2' placeholder="Enter account holder name" />
@@ -108,8 +130,8 @@ const Page = () => {
                     {/* Account Type */}
                     <Form.Item
                         label="Account Type"
-                        name="accountType"
-                        rules={[{ required: true, message: 'Please select the account type!' }]}
+                        name="bankAccountType"
+                        rules={[{ required: true, message: 'Please enter the account type!' }]}
                     >
                         <Input className='py-2' placeholder="Enter account type" />
                     </Form.Item>
@@ -117,7 +139,7 @@ const Page = () => {
                     {/* Branch Name */}
                     <Form.Item
                         label="Branch Name"
-                        name="branchName"
+                        name="bankBranch"
                         rules={[{ required: true, message: 'Please enter the branch name!' }]}
                     >
                         <Input className='py-2' placeholder="Enter branch name" />
@@ -131,7 +153,6 @@ const Page = () => {
                     >
                         <Input className='py-2' placeholder="Enter bank name" />
                     </Form.Item>
-
                 </Form>
             </Modal>
         </div>
