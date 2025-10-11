@@ -115,7 +115,7 @@ export default function Login() {
 
               <h1 className=''>
                 Don’t have an Account?
-                <Link href="/auth/selectRole">
+                <Link href="/auth/SelectRole">
                   <span className="text-blue-500 hover:underline"> Create Account</span>               </Link>
               </h1>
             </div>
