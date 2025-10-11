@@ -180,7 +180,7 @@ import { FaUserDoctor } from "react-icons/fa6";
 import { FaCalendarAlt, FaRegClock, FaSkating } from "react-icons/fa";
 import { HiOutlineCurrencyDollar } from "react-icons/hi2";
 import { AiFillEdit } from "react-icons/ai";
-import { LuShoppingCart } from "react-icons/lu";
+import { LuCircleDollarSign, LuShoppingCart } from "react-icons/lu";
 import { TiMessageTyping } from "react-icons/ti";
 import { RiVideoDownloadLine } from "react-icons/ri";
 
@@ -188,6 +188,7 @@ import { RiVideoDownloadLine } from "react-icons/ri";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { CiDollar } from "react-icons/ci";
 
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
@@ -309,6 +310,18 @@ export default function Sidebar() {
         icon: <FaRegClock />,
         label: "Upcoming Schedule",
         path: "/doctorDs/upcoming-schedule",
+      },
+      {
+        key: "/doctorDs/appointment-history",
+        icon: <FaRegClock />,
+        label: "Appointment History ",
+        path: "/doctorDs/appointment-history",
+      },
+      {
+        key: "/doctorDs/earning",
+        icon: <LuCircleDollarSign className="!text-xl" />,
+        label: "Earning ",
+        path: "/doctorDs/earning",
       },
       {
         key: "/doctorDs/schedule",

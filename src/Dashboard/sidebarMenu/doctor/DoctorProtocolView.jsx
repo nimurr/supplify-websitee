@@ -184,6 +184,7 @@ const DoctorProtocolPage = () => {
           </div>
         </div>
       </div>
+      
 
       {/* Assign Specialist Modal */}
       <Modal
