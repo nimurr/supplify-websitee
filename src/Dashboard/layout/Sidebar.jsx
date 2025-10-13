@@ -293,7 +293,7 @@ export default function Sidebar() {
       {
         key: "/specialistDs/earning",
         icon: <HiOutlineCurrencyDollar />,
-        label: "Earning",
+        label: "Wallet",
         path: "/specialistDs/earning",
       },
       {

@@ -5,6 +5,7 @@ import { Card, Typography, Badge, Tooltip } from 'antd';
 import { CalendarOutlined, ClockCircleOutlined, LinkOutlined, CopyOutlined } from '@ant-design/icons';
 import { useGetUpcommingSchedulesQuery } from '@/redux/fetures/doctor/doctor';
 import moment from 'moment';
+import Link from 'next/link';
 
 const { Title, Text } = Typography;
 
@@ -83,64 +84,66 @@ export default function UpcomingSchedule() {
             bodyStyle={{ padding: '1rem' }}
           >
             <div className="flex justify-between items-start mb-1">
-              <Title level={5} className="m-0 capitalize">{schedule?.doctorSchedule?.scheduleName}</Title>
-              <Badge
-                count={schedule.price}
-                className="font-medium"
-                style={{
-                  backgroundColor: 'transparent',
-                  color: '#ef4444',
-                  boxShadow: 'none',
-                  fontSize: '16px'
-                }}
-              />
+              <Title level={5} className="m-0 capitalize text-xl">{schedule?.doctorSchedule?.scheduleName}</Title>
+              <div className="text-red-600 font-semibold">
+                {schedule?.price}$ <Text delete type="secondary" className="ml-1">{schedule?.doctorSchedule?.oldPrice}</Text>
+              </div>
             </div>
+            <p className='text-red-600 font-semibold text-center'>{schedule?.remainingText}</p>
 
-            <div className="mb-2">
-              <Text className={`font-semibold capitalize ${schedule.paymentStatus !== 'unpaid' ? 'text-green-600' : 'text-red-600'}`}>{schedule.paymentStatus}</Text>
-            </div>
 
             <div className="mb-4">
-              <Text className="block">Booked by {schedule?.patient?.name}</Text>
+              <Text className="block font-semibold text-center text-xl">Booked by {schedule?.patient?.name}</Text>
             </div>
 
-            <div className="flex items-center mb-2">
-              <CalendarOutlined className="text-gray-500 mr-2" />
-              <Text className="text-gray-500">Date</Text>
+            <div className="mb-2 flex items-center justify-between">
+              <p>Status </p>
+              <Text className={`font-semibold capitalize ${schedule.paymentStatus !== 'unpaid' ? 'text-green-600' : 'text-red-600'}`}>{schedule.paymentStatus}</Text>
             </div>
-            <div className="ml-6 mb-3">
-              <Text>{moment(schedule.scheduleDate).format('DD-MM-YYYY')}</Text>
+            <div className='flex items-center justify-between gap-2'>
+              <div className="flex items-center mb-2">
+                <CalendarOutlined className="text-gray-500 mr-2" />
+                <Text className="text-gray-500">Date</Text>
+              </div>
+              <div className="ml-6 mb-3">
+                <span>{moment(schedule.scheduleDate).format('dddd, MMMM Do YYYY')}</span>
+              </div>
             </div>
 
-            <div className="flex mb-2">
-              <div className="flex items-center mr-6">
+            <div className="flex justify-between mb-2">
+              <div className="flex items-center">
                 <ClockCircleOutlined className="text-gray-500 mr-2" />
                 <Text className="text-gray-500">Start Time</Text>
               </div>
+              <span className=" ">{moment(schedule.startTime).format('hh:mm A')}</span>
+            </div>
+
+            <div className="flex justify-between items-center mb-4">
               <div className="flex items-center">
                 <ClockCircleOutlined className="text-gray-500 mr-2" />
                 <Text className="text-gray-500">End Time</Text>
               </div>
-            </div>
-
-            <div className="flex mb-4">
-              <Text className="mr-10 ml-6">{moment(schedule.startTime).format('hh:mm A')}</Text>
-              <Text className="ml-6">{moment(schedule.endTime).format('hh:mm A')}</Text>
+              <span className="ml-6">{moment(schedule.endTime).format('hh:mm A')}</span>
             </div>
 
             <div className="mb-4">
-              <Text className="text-gray-700 text-sm">{schedule.description}</Text>
+              <span className="text-gray-700 text-sm">
+                {schedule?.doctorSchedule?.description?.length > 100
+                  ? `${schedule.doctorSchedule.description.slice(0, 100)}...`
+                  : schedule?.doctorSchedule?.description}
+              </span>
+
             </div>
 
             <div className="mb-2">
-              <Text className="text-gray-500 text-sm">Type of link : {schedule?.doctorSchedule?.typeOfLink}</Text>
+              <Link href={schedule?.doctorSchedule?.meetingLink} className="text-gray-500 text-sm cursor-pointer">Type of link : {schedule?.doctorSchedule?.typeOfLink}</Link>
             </div>
 
             <div className="flex items-center">
               <Text className="text-blue-500 text-sm mr-1">link : </Text>
-              <Text className="text-blue-500 text-sm truncate flex-1">
+              <Link href={schedule?.doctorSchedule?.meetingLink} className="text-blue-500 text-sm truncate flex-1">
                 {schedule?.doctorSchedule?.meetingLink}
-              </Text>
+              </Link>
               <Tooltip title="Copy link">
                 <CopyOutlined
                   className="text-gray-500 cursor-pointer ml-2"

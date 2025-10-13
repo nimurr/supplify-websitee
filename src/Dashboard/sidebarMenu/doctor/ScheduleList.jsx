@@ -21,22 +21,22 @@ const ScheduleCard = ({ schedule, onEdit, onDelete }) => {
       </div>
 
       <Space direction="vertical" size={4} className="text-gray-600 text-sm mb-4">
-        <div className="flex items-center gap-5 justify-between my-2">
+        <div className="flex items-center gap-5 justify-between my-1">
           <Space size={6}><CalendarOutlined /> Date</Space>
           {/* day Name month and year */}
           <Text className="pl-5 font-semibold">{moment(schedule.scheduleDate).format("dddd, MMMM Do YYYY")}</Text>
         </div>
-        <div className="flex items-center gap-5 justify-between my-2">
+        <div className="flex items-center gap-5 justify-between my-1">
           <Space size={6}><ClockCircleOutlined /> Start Time</Space>
           <Text className="pl-5 font-semibold">{moment(schedule.startTime).format("hh:mm A")}</Text>
         </div>
-        <div className="flex items-center gap-5 justify-between my-2">
+        <div className="flex items-center gap-5 justify-between my-1">
           <Space size={6}><ClockCircleOutlined /> End Time</Space>
           <Text className="pl-5 font-semibold">{moment(schedule.endTime).format("hh:mm A")}</Text>
         </div>
 
 
-        <Text className=" text-xs mt-2 cursor-pointer text-gray-400 my-2">{schedule.description > 50 ? `${schedule.description.slice(0, 50)}...` : schedule.description}</Text>
+        <Text className=" text-xs mt-2 cursor-pointer text-gray-400 my-1">{schedule.description > 50 ? `${schedule.description.slice(0, 50)}...` : schedule.description}</Text>
       </Space>
 
       <Space>
