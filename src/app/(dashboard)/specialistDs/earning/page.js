@@ -22,6 +22,7 @@ const Page = () => {
     const { data: bankInfo, isLoading } = useGetBankInfoQuery();
     const fullBankInfo = bankInfo?.data?.attributes?.results?.[0];
 
+
     useEffect(() => {
         if (fullBankInfo) {
             setBankdata({
@@ -93,6 +94,7 @@ const Page = () => {
     const { data } = useWithDrawRequestTnxHistoryQuery();
     const withdrawalRequestHistories = data?.data?.attributes?.result?.results;
     const walletAmount = data?.data?.attributes?.walletAmount;
+    console.log(withdrawalRequestHistories);
 
     const [detailsData, setDetailsData] = useState(null);
 
@@ -230,6 +232,12 @@ const Page = () => {
             >
                 {detailsData && (
                     <div className='space-y-2'>
+                        <h2 className='text-xl font-semibold'>Proof of Payment</h2>
+                        <img className='w-full max-h-[250px]' src={detailsData?.proofOfPayment[0]?.attachment} alt="" />
+                        {
+                            !detailsData?.proofOfPayment[0]?.attachment &&
+                            <p className='text-red-600 text-center'>No proof of payment uploaded</p>
+                        }
                         <p className='flex items-center justify-between'><strong>Account Holder Name:</strong> {detailsData.bankAccountHolderName}</p>
                         <p className='flex items-center justify-between'><strong>Account Number:</strong> {detailsData.bankAccountNumber}</p>
                         <p className='flex items-center justify-between'><strong>Account Type:</strong> {detailsData.bankAccountType}</p>
@@ -237,7 +245,14 @@ const Page = () => {
                         <p className='flex items-center justify-between'><strong>Bank Name:</strong> {detailsData.bankName}</p>
                         <p className='flex items-center justify-between'><strong>Routing Number:</strong> {detailsData.bankRoutingNumber}</p>
                         <p className='flex items-center justify-between'><strong>Requested Amount:</strong> ${detailsData.requestedAmount}</p>
-                        <p className='flex items-center justify-between'><strong>Processed At:</strong> {new Date(detailsData.processedAt).toLocaleString()}</p>
+                        <p className={`flex items-center justify-between capitalize  
+                            ${detailsData.status === 'completed' && 'text-green-600'} 
+                            ${detailsData.status === 'processing' && 'text-blue-600'} 
+                            ${detailsData.status === 'requested' && 'text-yellow-600'}
+                            ${detailsData.status === 'failed' && 'text-red-600'}
+                            `}><strong>Status:</strong> {detailsData.status}</p>
+                        <p className='flex items-center justify-between'><strong>Requested At:</strong> {new Date(detailsData?.requestedAt).toLocaleString()}</p>
+                        <p className='flex items-center justify-between'><strong>Processed At:</strong> {detailsData.processedAt && new Date(detailsData.processedAt).toLocaleString() || "Null"}</p>
                     </div>
                 )}
             </Modal>

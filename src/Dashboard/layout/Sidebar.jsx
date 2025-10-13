@@ -171,7 +171,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { Menu } from "antd";
-import { MdFlightClass, MdOutlineSupportAgent } from "react-icons/md";
+import { MdFlightClass, MdOutlineHistory, MdOutlineSupportAgent } from "react-icons/md";
 import { TbPrescription } from "react-icons/tb";
 import { GrUserManager } from "react-icons/gr";
 import { GiSwipeCard } from "react-icons/gi";
@@ -283,6 +283,12 @@ export default function Sidebar() {
         icon: <MdFlightClass />,
         label: "Workout Class",
         path: "/specialistDs/workoutClass",
+      },
+      {
+        key: "/specialistDs/appointment-history",
+        icon: <MdOutlineHistory />,
+        label: "booked",
+        path: "/specialistDs/appointment-history",
       },
       {
         key: "/specialistDs/earning",

@@ -16,30 +16,36 @@ const ScheduleCard = ({ schedule, onEdit, onDelete }) => {
       <div className="flex justify-between items-start mb-3">
         <Title level={5} className="mb-0">{schedule.scheduleName}</Title>
         <div className="text-red-600 font-semibold">
-          {schedule.price} <Text delete type="secondary" className="ml-1">{schedule.oldPrice}</Text>
+          {schedule.price}$ <Text delete type="secondary" className="ml-1">{schedule.oldPrice}</Text>
         </div>
       </div>
 
       <Space direction="vertical" size={4} className="text-gray-600 text-sm mb-4">
-        <Space size={6}><CalendarOutlined /> Date</Space>
-        <Text className="pl-5">{moment(schedule.scheduleDate).format("DD-MM-YYYY")}</Text>
+        <div className="flex items-center gap-5 justify-between my-2">
+          <Space size={6}><CalendarOutlined /> Date</Space>
+          {/* day Name month and year */}
+          <Text className="pl-5 font-semibold">{moment(schedule.scheduleDate).format("dddd, MMMM Do YYYY")}</Text>
+        </div>
+        <div className="flex items-center gap-5 justify-between my-2">
+          <Space size={6}><ClockCircleOutlined /> Start Time</Space>
+          <Text className="pl-5 font-semibold">{moment(schedule.startTime).format("hh:mm A")}</Text>
+        </div>
+        <div className="flex items-center gap-5 justify-between my-2">
+          <Space size={6}><ClockCircleOutlined /> End Time</Space>
+          <Text className="pl-5 font-semibold">{moment(schedule.endTime).format("hh:mm A")}</Text>
+        </div>
 
-        <Space size={6}><ClockCircleOutlined /> Start Time</Space>
-        <Text className="pl-5">{moment(schedule.startTime).format("hh:mm A")}</Text>
 
-        <Space size={6}><ClockCircleOutlined /> End Time</Space>
-        <Text className="pl-5">{moment(schedule.endTime).format("hh:mm A")}</Text>
-
-        <Text className=" text-xs mt-2 cursor-pointer ">{schedule.description}</Text>
+        <Text className=" text-xs mt-2 cursor-pointer text-gray-400 my-2">{schedule.description > 50 ? `${schedule.description.slice(0, 50)}...` : schedule.description}</Text>
       </Space>
 
       <Space>
         <Button
           onClick={() => router.push('/doctorDs/schedule/edit-schedule')}
-          type="primary" danger icon={<EditOutlined />}  >
+          type="primary" className="!font-semibold" danger icon={<EditOutlined />}  >
           Edit
         </Button>
-        <Button type="default" danger icon={<DeleteOutlined />} onClick={onDelete}>
+        <Button type="default" className="!font-semibold" danger icon={<DeleteOutlined />} onClick={onDelete}>
           Delete
         </Button>
       </Space>
