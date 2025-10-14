@@ -182,13 +182,14 @@ import { HiOutlineCurrencyDollar } from "react-icons/hi2";
 import { AiFillEdit } from "react-icons/ai";
 import { LuCircleDollarSign, LuShoppingCart } from "react-icons/lu";
 import { TiMessageTyping } from "react-icons/ti";
-import { RiVideoDownloadLine } from "react-icons/ri";
+import { RiExchangeDollarLine, RiVideoDownloadLine } from "react-icons/ri";
 
 
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CiDollar } from "react-icons/ci";
+import { CiCreditCard1, CiDollar } from "react-icons/ci";
+import { IoBookmarksOutline } from "react-icons/io5";
 
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
@@ -292,15 +293,21 @@ export default function Sidebar() {
       },
       {
         key: "/specialistDs/booked-workout-class",
-        icon: <MdOutlineHistory />,
+        icon: <IoBookmarksOutline />,
         label: "Booked Workout Class",
         path: "/specialistDs/booked-workout-class",
       },
       {
         key: "/specialistDs/earning",
-        icon: <HiOutlineCurrencyDollar />,
+        icon: <CiCreditCard1 />,
         label: "Wallet",
         path: "/specialistDs/earning",
+      },
+      {
+        key: "/specialistDs/transaction-history",
+        icon: <RiExchangeDollarLine />,
+        label: "Transaction History",
+        path: "/specialistDs/transaction-history",
       },
       {
         key: "/specialistDs/information-video",
@@ -334,6 +341,12 @@ export default function Sidebar() {
         icon: <LuCircleDollarSign className="!text-xl" />,
         label: "Wallet ",
         path: "/doctorDs/earning",
+      },
+      {
+        key: "/doctorDs/transaction-history",
+        icon: <LuCircleDollarSign className="!text-xl" />,
+        label: "Transaction History",
+        path: "/doctorDs/transaction-history",
       },
       {
         key: "/doctorDs/schedule",

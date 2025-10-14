@@ -134,7 +134,20 @@ const doctor = apiSlice.injectEndpoints({
             }),
             providesTags: ["OrderHistory"]
         }),
-
+        getAllBookedWorkoutClass: builder.query({
+            query: () => ({
+                url: `/workout-schedules/bookings/paginate`,
+                method: "GET"
+            }),
+            providesTags: ["OrderHistory"]
+        }),
+        getAllTrasecitonHistory: builder.query({
+            query: () => ({
+                url: `/wallet-transactions/paginate`,
+                method: "GET"
+            }),
+            providesTags: ["OrderHistory"]
+        }),
 
     }),
 });
@@ -159,7 +172,10 @@ export const {
     useWithDrawRequestTnxHistoryQuery,
 
     // all book history for Spacialist
-    useGetAllBookTraningProgramQuery
+    useGetAllBookTraningProgramQuery,
+    useGetAllBookedWorkoutClassQuery,
+    useGetAllTrasecitonHistoryQuery
+
 
 
 } = doctor;
