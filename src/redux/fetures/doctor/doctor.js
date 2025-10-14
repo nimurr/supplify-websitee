@@ -126,6 +126,14 @@ const doctor = apiSlice.injectEndpoints({
             providesTags: ["OrderHistory"]
         }),
 
+        // all book history for Spacialist
+        getAllBookTraningProgram: builder.query({
+            query: () => ({
+                url: `/training-programs/purchase/paginate`,
+                method: "GET"
+            }),
+            providesTags: ["OrderHistory"]
+        }),
 
 
     }),
@@ -148,5 +156,10 @@ export const {
     useGetBankInfoQuery,
     useAddBankInfoMutation,
     useWithDrawRequestMutation,
-    useWithDrawRequestTnxHistoryQuery
+    useWithDrawRequestTnxHistoryQuery,
+
+    // all book history for Spacialist
+    useGetAllBookTraningProgramQuery
+
+
 } = doctor;

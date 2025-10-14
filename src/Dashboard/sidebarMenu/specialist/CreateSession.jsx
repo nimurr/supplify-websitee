@@ -190,7 +190,7 @@ export default function CreateSession() {
               </div>
 
               {/* Total Days */}
-              <div>
+              {/* <div>
                 <Form.Item
                   label={<span className="font-medium">Total day</span>}
                   name="totalDays"
@@ -198,7 +198,7 @@ export default function CreateSession() {
                 >
                   <Input placeholder="5" />
                 </Form.Item>
-              </div>
+              </div> */}
             </div>
 
             {/* Benefits */}

@@ -287,8 +287,14 @@ export default function Sidebar() {
       {
         key: "/specialistDs/appointment-history",
         icon: <MdOutlineHistory />,
-        label: "booked",
+        label: "Booked Training Program",
         path: "/specialistDs/appointment-history",
+      },
+      {
+        key: "/specialistDs/booked-workout-class",
+        icon: <MdOutlineHistory />,
+        label: "Booked Workout Class",
+        path: "/specialistDs/booked-workout-class",
       },
       {
         key: "/specialistDs/earning",
@@ -326,7 +332,7 @@ export default function Sidebar() {
       {
         key: "/doctorDs/earning",
         icon: <LuCircleDollarSign className="!text-xl" />,
-        label: "Earning ",
+        label: "Wallet ",
         path: "/doctorDs/earning",
       },
       {

@@ -57,9 +57,9 @@ export default function ProgramView() {
   return (
     <div>
       <BackHeader title={"Session"} />
-      <div className="min-h-screen flex xl:flex-row flex-col gap-5 p-6 bg-gray-50">
+      <div className="min-h-screen flex items-start xl:flex-row flex-col gap-5 p-6 bg-gray-50">
         {/* Left Panel: Trainer Info */}
-        <div className="w-64 bg-white rounded-md shadow p-4 flex flex-col items-center gap-4">
+        <div className="w-64  bg-white rounded-md shadow p-4 flex flex-col items-center gap-4">
           <img
             src={url + programs?.specialistInfo?.profileImage?.imageUrl}
             alt="Trainer"
@@ -128,14 +128,14 @@ export default function ProgramView() {
                   />
                   <div className="flex w-full justify-between items-center">
                     <div>
-                      <p className="text-sm mb-2">
-                        Session :-  {session.sessionCount}
+                      <p className="text-sm text-gray-400 mb-2">
+                        Session :  {session.sessionCount}
                       </p>
-                      <p className="my-2">
-                        Push-ups :- {session.tokenCount}
+                      <p className="my-2 text-xl font-semibold">
+                     {session.title}
                       </p>
                       <Space size="small" className="text-xs text-gray-600">
-                        <Text><span className="font-semibold">Duration :-</span> {session.duration}</Text>
+                        <Text><span className="font-semibold">Duration :</span> {session.duration}</Text>
                         <Text>{session.durationUnit}</Text>
                       </Space>
                     </div>
@@ -169,20 +169,20 @@ export default function ProgramView() {
                 className="w-full h-40 object-cover rounded mb-4"
               />
               <div>
-                <Text type="secondary" className="text-xs">
-                  Session :-  {selectedSession.sessionCount}
+                <Text type="secondary" className="text-[18px] ">
+                  Session :  {selectedSession.sessionCount}
                 </Text>
-                <Title level={5} className="mb-0">
-                  Total Count :- {selectedSession.tokenCount}
+                <Title level={5} className="mb-0 text-[22px]">
+                  {selectedSession.title}
                 </Title>
                 <Space size="small" className="text-xs text-gray-600">
-                  <Text><span className="font-semibold">Duration :-</span> {selectedSession.duration}</Text>
+                  <Text><span className="font-semibold">Duration :</span> {selectedSession.duration}</Text>
                   <Text>{selectedSession.durationUnit}</Text>
                 </Space>
               </div>
 
               <Text className="mt-2" strong>Benefits</Text>
-              <ul className="list-disc list-inside text-xs text-gray-700 mb-4">
+              <ul className="list-disc space-y-2 mt-2 list-inside text-xs text-gray-700 mb-4">
                 {
                   selectedSession.benefits.map((benefit, index) => (
                     <li className="flex items-center" key={index}>
@@ -197,7 +197,7 @@ export default function ProgramView() {
                 size="small"
                 danger
                 type="default"
-                className="mt-auto"
+                className="mt-auto h-14"
               >
                 Edit
               </Button>

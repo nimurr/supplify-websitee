@@ -7,6 +7,8 @@ import CustomButton from '@/components/customComponent/CustomButton';
 import { useRouter } from 'next/navigation';
 import { useGetAllTrainingProgramQuery } from '@/redux/fetures/Specialist/traningProgram';
 import Link from 'next/link';
+import { PiVideo } from "react-icons/pi";
+
 
 export default function TrainingPrograms() {
 
@@ -34,7 +36,7 @@ export default function TrainingPrograms() {
       }
 
       {/* Cards grid */}
-      <div className="grid xl:grid-cols-5 md:grid-cols-3 sm:grid-cols-2 gap-4">
+      <div className="grid xl:grid-cols-5 border border-gray-200 p-5 rounded-md md:grid-cols-3 sm:grid-cols-2 gap-4">
         {programs?.map((program, idx) => (
           <Card
             key={idx}
@@ -45,27 +47,26 @@ export default function TrainingPrograms() {
                 alt={program.programName}
                 width={280}
                 height={180}
-                className="rounded-t-md w-full object-cover"
+                className="rounded-t-md w-full rounded-lg p-2 object-cover"
               />
             }
-            className="rounded-md shadow-sm"
-            bodyStyle={{ padding: '12px' }}
+            className="rounded-md shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-200"
+            bodyStyle={{ padding: '12px'  }}
           >
-            <h4 className="font-semibold text-gray-800 mb-2">{program.programName}</h4>
+            <h4 className="font-semibold text-[20px] capitalize text-gray-800 mb-2">{program.programName}</h4>
 
-            <div className="flex items-center text-gray-600 text-sm gap-3 mb-1">
-              <ClockCircleOutlined />
-              <span>{program.totalSessionCount}</span>
+            <div className="flex items-center justify-between text-gray-600 text-sm gap-3 mb-1">
+              <div className='flex items-center gap-2'>
+                <PiVideo  />
+                <span>{program.totalSessionCount} Sessions</span>
+              </div>
+              <span>${program.price}</span>
             </div>
-
-            <div className="flex items-center text-gray-600 text-sm gap-3 mb-1">
-              <DollarOutlined />
-              <span>{program.price}$</span>
-            </div>
+ 
 
             <div className="flex items-center text-gray-600 text-sm gap-3 mb-3">
-              <CalendarOutlined />
-              <span>{program.durationInMonths}</span>
+              <ClockCircleOutlined />
+              <span>{program.durationInMonths} Months</span>
             </div>
             <div className='flex items-center justify-between gap-4'>
               <CustomButton

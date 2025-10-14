@@ -76,8 +76,8 @@ const WorkoutSpecialistClass = () => {
 
                   {/* Workout Title */}
                   <div className="flex justify-between items-center">
-                    <p className="text-xl font-semibold text-center">{item?.scheduleName}</p>
-                    <p className="text-lg text-gray-900 font-semibold">
+                    <p className="text-xl font-semibold">{item?.scheduleName}</p>
+                    <p className="text-lg flex items-center gap-2 font-semibold text-red-600">
                       ${item?.price} <span className="line-through text-gray-500">$200</span>
                     </p>
                   </div>
@@ -89,29 +89,31 @@ const WorkoutSpecialistClass = () => {
                   </div>
 
                   {/* Start Date and Platform */}
-                  <div className="grid grid-cols-2 gap-4 text-sm text-gray-600 mb-4">
+                  <div className="grid grid-cols-2 gap-4 text-base text-gray-600 mb-4">
                     <p><strong>Start Date:</strong> {moment(item?.startTime).format('DD MMM YYYY')}</p>
                     <p className='capitalize'><strong>Platform:</strong> {item?.typeOfLink}</p>
                   </div>
 
                   {/* Start and End Time */}
-                  <div className="grid grid-cols-2 gap-4 text-sm text-gray-600 mb-4">
+                  <div className="grid grid-cols-2 gap-4 text-base text-gray-600 mb-4">
                     <p><strong>Start Time:</strong> {moment(item?.startTime).format('hh:mm A')}</p>
                     <p><strong>End Time:</strong> {moment(item?.endTime).format('hh:mm A')}</p>
                   </div>
 
                   {/* Description */}
-                  <p className="text-xs text-gray-500 mb-4">
-                    {item?.description}
+                  <p className="text-base text-gray-500 mb-4">
+                    {item?.description?.length > 100 ? item?.description?.slice(0, 100) + '...' : item?.description}
                   </p>
 
                   {/* Booking Info */}
                   <div className="flex justify-between items-center mb-4">
                     <p className={` text-xl font-semibold underline capitalize ${item?.status === 'available' ? 'text-green-600' : 'text-red-600'}`}>{item?.status}</p>
-                    <tag className={`text-xs  px-2 py-1 rounded-md capitalize ${item?.sessionType !== 'private' ? 'bg-green-200 text-green-600' : 'bg-red-200 text-red-600'}`}>{item?.sessionType}</tag>
+                    <tag className={`text-base font-semibold  px-2 py-1 rounded-md capitalize ${item?.sessionType !== 'private' ? 'bg-green-200 text-green-600' : 'bg-red-200 text-red-600'}`}>{item?.sessionType}</tag>
                   </div>
 
-                  <Link href={item?.meetingLink} className="text-xl flex items-center cursor-pointer gap-2 text-purple-400  mb-4">
+                  <span className='mt-2 block text-red-600 font-semibold'>{item?.bookingCount} Booked</span>
+
+                  <Link href={item?.meetingLink} className="text-xl flex items-center cursor-pointer gap-2 text-purple-700  mb-4">
                     <IoDocumentTextOutline /> {item?.meetingLink?.slice(0, 40) + '...'}
                   </Link>
 
