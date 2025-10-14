@@ -389,7 +389,7 @@ export default function Sidebar() {
       <div className="flex justify-between items-center p-4">
         <div
           className={`text-xl flex font-bold text-center ${collapsed ? "hidden" : "block"
-            }`}
+            }`} 
         >
           <Link href="/" className="flex items-center">
             <img
