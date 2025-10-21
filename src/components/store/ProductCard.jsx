@@ -4,14 +4,13 @@ import { Card, Button } from 'antd';
 import { ShoppingCartOutlined } from '@ant-design/icons';
 
 const ProductCard = ({ product, onViewDetails }) => {
-    console.log(product)
   return (
     <Card
       className="overflow-hidden"
       cover={
         <div className="relative bg-red-500 h-48">
           <img 
-            src={product.image} 
+            src={product?.attachments && product.attachments.length > 0 ? product.attachments[0]?.attachment : '/placeholder.png'} 
             alt={product.name} 
             className="w-full h-full object-cover"
           />

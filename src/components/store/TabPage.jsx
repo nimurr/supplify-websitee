@@ -43,13 +43,13 @@
 //     product.image,
 //     product.image
 //   ];
-  
+
 //   return (
 //     <div className="mt-4">
 //       <Button onClick={onBack} className="mb-4">
 //         ← Back to Products
 //       </Button>
-      
+
 //       <div className="bg-white rounded-lg shadow-sm p-6">
 //         <div className="flex flex-col md:flex-row gap-8">
 //           {/* Left side - Product image */}
@@ -59,13 +59,13 @@
 //               alt={product.name} 
 //               className="w-full h-64 md:h-80 object-cover bg-red-500"
 //             />
-            
+
 //             {/* Thumbnail carousel */}
 //             <div className="relative mt-4">
 //               <button className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-1 shadow-md z-10">
 //                 &lt;
 //               </button>
-              
+
 //               <div className="flex overflow-x-auto gap-2 px-6">
 //                 {productImages.map((img, index) => (
 //                   <div 
@@ -76,19 +76,19 @@
 //                   </div>
 //                 ))}
 //               </div>
-              
+
 //               <button className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-1 shadow-md z-10">
 //                 &gt;
 //               </button>
 //             </div>
 //           </div>
-          
+
 //           {/* Right side - Product details */}
 //           <div className="w-full md:w-1/2">
 //             <h2 className="text-2xl font-bold mb-1">{product.category.charAt(0).toUpperCase() + product.category.slice(1)}</h2>
-            
+
 //             <p className="text-gray-600 mb-4">Description</p>
-            
+
 //             <div className="text-gray-700 mb-6">
 //               <p className="mb-2">
 //                 Lorem ipsum dolor sit amet consectetur. Massa risus eget justo vel urna sapien posuere. Mauris magna egestas vestibulum cum egestas etiam pulvinar dolor. Massa curabitur quis felis ultricies netus eget facilisi auctor nunc. Aliquam lacus ut adipisci sollicitudin viverra eu dignissim. Arcu eget posuere pretium sit porttitor leo id. Libero proin euismod eget sed nulla ornare mattis.
@@ -97,7 +97,7 @@
 //                 Velit ac quam in locus. Ultrices sapien risus quam diam porttitor feugiat. Eget consequat viverra turpis mi consequat duis felis congue gravida labore turpis pellentesque. Et consectetur sollicitudin blandit ridiculus sed. Nulla fermentum sit augue nibh eros ultricies. Vitae tempus bibendum nunc sed in commodo interdum mi aliquet. Nibh porttitor lacus a vel turpis. Velit non cursus et velit. Facilisi blandit sit pretium cum odio id. Urna non posuere odio sed hendrerit purus. Facilisi est in maecenas eget nibh bibendum a orci.
 //               </p>
 //             </div>
-            
+
 //             <Button 
 //               type="primary" 
 //               icon={<ShoppingCartOutlined />} 
@@ -155,15 +155,15 @@
 // // Individual Category Pages
 // export const SupplementsPage = () => {
 //   const [selectedProduct, setSelectedProduct] = useState(null);
-  
+
 //   const handleViewDetails = (product) => {
 //     setSelectedProduct(product);
 //   };
-  
+
 //   const handleBackToProducts = () => {
 //     setSelectedProduct(null);
 //   };
-  
+
 //   return (
 //     <div>
 //       {selectedProduct ? (
@@ -173,7 +173,7 @@
 //           <div className="flex justify-between items-center mb-4">
 //             <h2 className="text-2xl font-bold">Supplements</h2>
 //           </div>
-          
+
 //           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 //             {productData.supplements.map(product => (
 //               <ProductCard key={product.id} product={product} onViewDetails={handleViewDetails} />
@@ -187,15 +187,15 @@
 
 // export const FitnessPage = () => {
 //   const [selectedProduct, setSelectedProduct] = useState(null);
-  
+
 //   const handleViewDetails = (product) => {
 //     setSelectedProduct(product);
 //   };
-  
+
 //   const handleBackToProducts = () => {
 //     setSelectedProduct(null);
 //   };
-  
+
 //   return (
 //     <div>
 //       {selectedProduct ? (
@@ -205,7 +205,7 @@
 //           <div className="flex justify-between items-center mb-4">
 //             <h2 className="text-2xl font-bold">Fitness</h2>
 //           </div>
-          
+
 //           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 //             {productData.fitness.map(product => (
 //               <ProductCard key={product.id} product={product} onViewDetails={handleViewDetails} />
@@ -219,15 +219,15 @@
 
 // export const WellnessPage = () => {
 //   const [selectedProduct, setSelectedProduct] = useState(null);
-  
+
 //   const handleViewDetails = (product) => {
 //     setSelectedProduct(product);
 //   };
-  
+
 //   const handleBackToProducts = () => {
 //     setSelectedProduct(null);
 //   };
-  
+
 //   return (
 //     <div>
 //       {selectedProduct ? (
@@ -237,7 +237,7 @@
 //           <div className="flex justify-between items-center mb-4">
 //             <h2 className="text-2xl font-bold">Wellness</h2>
 //           </div>
-          
+
 //           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 //             {productData.wellness.map(product => (
 //               <ProductCard key={product.id} product={product} onViewDetails={handleViewDetails} />
@@ -251,15 +251,15 @@
 
 // export const LifestylePage = () => {
 //   const [selectedProduct, setSelectedProduct] = useState(null);
-  
+
 //   const handleViewDetails = (product) => {
 //     setSelectedProduct(product);
 //   };
-  
+
 //   const handleBackToProducts = () => {
 //     setSelectedProduct(null);
 //   };
-  
+
 //   return (
 //     <div>
 //       {selectedProduct ? (
@@ -269,7 +269,7 @@
 //           <div className="flex justify-between items-center mb-4">
 //             <h2 className="text-2xl font-bold">Lifestyle</h2>
 //           </div>
-          
+
 //           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 //             {productData.lifestyle.map(product => (
 //               <ProductCard key={product.id} product={product} onViewDetails={handleViewDetails} />
@@ -283,15 +283,15 @@
 
 // export const LabTestPage = () => {
 //   const [selectedProduct, setSelectedProduct] = useState(null);
-  
+
 //   const handleViewDetails = (product) => {
 //     setSelectedProduct(product);
 //   };
-  
+
 //   const handleBackToProducts = () => {
 //     setSelectedProduct(null);
 //   };
-  
+
 //   return (
 //     <div>
 //       {selectedProduct ? (
@@ -301,7 +301,7 @@
 //           <div className="flex justify-between items-center mb-4">
 //             <h2 className="text-2xl font-bold">Lab Tests</h2>
 //           </div>
-          
+
 //           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 //             {productData.labtest.map(product => (
 //               <ProductCard key={product.id} product={product} onViewDetails={handleViewDetails} />
@@ -316,17 +316,17 @@
 // // Main Tab Component that imports and uses individual category pages
 // export default function ProductTabComponent() {
 //   const [activeTab, setActiveTab] = useState('all');
-  
+
 //   // Handle tab change
 //   const handleTabChange = (key) => {
 //     setActiveTab(key);
 //   };
-  
+
 //   // Handle see more click for category
 //   const handleSeeMoreClick = (category) => {
 //     setActiveTab(category.toLowerCase());
 //   };
-  
+
 //   // Tab items configuration
 //   const tabItems = [
 //     { key: 'all', label: 'All' },
@@ -336,7 +336,7 @@
 //     { key: 'lifestyle', label: 'Lifestyle' },
 //     { key: 'labtest', label: 'Lab test' },
 //   ];
-  
+
 //   // Render content based on active tab
 //   const renderTabContent = () => {
 //     switch (activeTab) {
@@ -364,7 +364,7 @@
 //                   See More <span className="ml-1">→</span>
 //                 </button>
 //               </div>
-              
+
 //               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
 //                 {productData.supplements.slice(0, 4).map(product => (
 //                   <ProductCard 
@@ -375,7 +375,7 @@
 //                 ))}
 //               </div>
 //             </div>
-            
+
 //             <div>
 //               <div className="flex justify-between items-center mb-4">
 //                 <h2 className="text-2xl font-bold">Fitness</h2>
@@ -386,7 +386,7 @@
 //                   See More <span className="ml-1">→</span>
 //                 </button>
 //               </div>
-              
+
 //               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
 //                 {productData.fitness.slice(0, 4).map(product => (
 //                   <ProductCard 
@@ -403,13 +403,13 @@
 
 //             <WellnessPage />
 //             </div>
-            
+
 //             {/* Add other categories similarly */}
 //           </div>
 //         );
 //     }
 //   };
-  
+
 //   return (
 //     <div className="container mx-auto px-4 py-6">
 //       {/* Navigation header */}
@@ -420,14 +420,14 @@
 //           items={tabItems}
 //           className="mb-4 md:mb-0"
 //         />
-        
+
 //         <div className="flex items-center">
 //           <Input 
 //             placeholder="Search" 
 //             prefix={<SearchOutlined />} 
 //             className="w-64 mr-4"
 //           />
-          
+
 //           <div className="flex items-center">
 //             <Badge count={28} overflowCount={99}>
 //               <Button icon={<ShoppingCartOutlined />} size="large" />
@@ -436,7 +436,7 @@
 //           </div>
 //         </div>
 //       </div>
-      
+
 //       {/* Content area */}
 //       <div>
 //         {renderTabContent()}
@@ -453,58 +453,40 @@ import { Tabs, Input, Badge, Button } from 'antd';
 import { SearchOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 
 // Import individual category pages
- 
+
 
 // Import product data and shared components
-import {productData} from './productData'
+import { productData } from './productData'
 import ProductCard from './ProductCard';
 import SupplementsPage from './Suppliment';
 import FitnessPage from './Fintness';
 import WellnessPage from './Wellness';
 import LabTestPage from './Labtest';
+import { useGetAllCategoriesQuery } from '@/redux/fetures/landing/landing';
 
 
 
 export default function ProductTabComponent() {
 
-   const supplements = [
-        { id: 1, category: 'supplements', name: 'Protein Powder', price: 250, image: '/images/supliment.png' },
-        { id: 6, category: 'supplements', name: 'BCAA Capsules', price: 250, image: '/images/supliment.png' },
-        { id: 7, category: 'supplements', name: 'Creatine Powder', price: 250, image: '/images/supliment.png' },
-        { id: 8, category: 'supplements', name: 'Fish Oil Capsules', price: 250, image: '/images/supliment.png' },
-      ]
-      
-    const fitness= [
-        { id: 2, category: 'fitness', name: 'Resistance Bands', price: 150, image: '/images/fitnesss.png' },
-        { id: 9, category: 'fitness', name: 'Dumbbells', price: 300, image: '/images/fitnesss.png' },
-      ]
-
-      const labtest = [
-        { id: 5, category: 'labtest', name: 'Blood Test Kit', price: 350, image: '/images/lab.png' },
-        { id: 12, category: 'labtest', name: 'DNA Test Kit', price: 450, image: '/images/lab.png' },
-      ]
-      const wellness = [
-        { id: 3, category: 'wellness', name: 'Vitamin Complex', price: 180, image: '/images/wellness.png' },
-        { id: 10, category: 'wellness', name: 'Essential Oils', price: 120, image: '/images/wellness.png' },
-      ]
-
-
+  const { data, isLoading } = useGetAllCategoriesQuery();
+  const fullCategories = data?.data?.attributes || [];
+  console.log(fullCategories);
 
 
 
   const [activeTab, setActiveTab] = useState('all');
-  
+
   console.log(productData)
   // Handle tab change
   const handleTabChange = (key) => {
     setActiveTab(key);
   };
-  
+
   // Handle see more click for category
   const handleSeeMoreClick = (category) => {
     setActiveTab(category.toLowerCase());
   };
-  
+
   // Tab items configuration
   const tabItems = [
     { key: 'all', label: 'All' },
@@ -514,18 +496,18 @@ export default function ProductTabComponent() {
     // { key: 'lifestyle', label: 'Lifestyle' },
     { key: 'labtest', label: 'Lab test' },
   ];
-  
+
   // Render content based on active tab
   const renderTabContent = () => {
     switch (activeTab) {
       case 'supplements':
-        return <SupplementsPage />;
+        return <SupplementsPage products={fullCategories[0]?.products} />;
       case 'fitness':
         return <FitnessPage />;
       case 'wellness':
         return <WellnessPage />;
-    //   case 'lifestyle':
-    //     return <LifestylePage />;
+      //   case 'lifestyle':
+      //     return <LifestylePage />;
       case 'labtest':
         return <LabTestPage />;
       default:
@@ -535,68 +517,84 @@ export default function ProductTabComponent() {
             <div>
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl font-bold">Supplements</h2>
-                <button 
-                  onClick={() => handleSeeMoreClick('supplements')} 
+                <button
+                  onClick={() => handleSeeMoreClick('supplements')}
                   className="text-blue-500 flex items-center"
                 >
                   See More <span className="ml-1">→</span>
                 </button>
               </div>
-              
+
               <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-8">
-                {supplements?.slice(0, 4).map(product => (
-                  <ProductCard 
-                    key={product.id} 
-                    product={product} 
-                    onViewDetails={() => handleSeeMoreClick('supplements')} 
+                {fullCategories[2]?.products?.slice(0, 4).map(product => (
+                  <ProductCard
+                    isLoading={isLoading}
+                    key={product.id}
+                    product={product}
+                    onViewDetails={() => handleSeeMoreClick('supplements')}
                   />
                 ))}
+                {
+                  !fullCategories[2]?.products && fullCategories[2]?.products.length !== 0 && (
+                    <p className='text-red-600 font-semibold'>No products available in this category.</p>
+                  )
+                }
               </div>
             </div>
-            
+
             {/* Fitness section */}
             <div>
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl font-bold">Fitness</h2>
-                <button 
-                  onClick={() => handleSeeMoreClick('fitness')} 
+                <button
+                  onClick={() => handleSeeMoreClick('fitness')}
                   className="text-blue-500 flex items-center"
                 >
                   See More <span className="ml-1">→</span>
                 </button>
               </div>
-              
+
               <div className="grid grid-cols-1  lg:grid-cols-4 gap-4 mb-8">
-                {fitness.slice(0, 4).map(product => (
-                  <ProductCard 
-                    key={product.id} 
-                    product={product} 
-                    onViewDetails={() => handleSeeMoreClick('fitness')} 
+                {fullCategories[3]?.products?.slice(0, 4).map(product => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    onViewDetails={() => handleSeeMoreClick('fitness')}
                   />
                 ))}
+                {
+                  !fullCategories[3]?.products && fullCategories[3]?.products.length !== 0 && (
+                    <p className='text-red-600 font-semibold'>No products available in this category.</p>
+                  )
+                }
               </div>
             </div>
-            
+
             {/* Wellness category */}
             <div>
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl font-bold">Welness</h2>
-                <button 
-                  onClick={() => handleSeeMoreClick('wellness')} 
+                <button
+                  onClick={() => handleSeeMoreClick('wellness')}
                   className="text-blue-500 flex items-center"
                 >
                   See More <span className="ml-1">→</span>
                 </button>
               </div>
-              
+
               <div className="grid grid-cols-1  lg:grid-cols-4 gap-4 mb-8">
-                {wellness.slice(0, 4).map(product => (
-                  <ProductCard 
-                    key={product.id} 
-                    product={product} 
-                    onViewDetails={() => handleSeeMoreClick('wellness')} 
+                {fullCategories[2]?.products?.slice(0, 4).map(product => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    onViewDetails={() => handleSeeMoreClick('wellness')}
                   />
                 ))}
+                {
+                  !fullCategories[2]?.products && fullCategories[2]?.products.length !== 0 && (
+                    <p className='text-red-600 font-semibold'>No products available in this category.</p>
+                  )
+                }
               </div>
             </div>
 
@@ -604,49 +602,54 @@ export default function ProductTabComponent() {
             <div>
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl font-bold">Lab Test</h2>
-                <button 
-                  onClick={() => handleSeeMoreClick('labtest')} 
+                <button
+                  onClick={() => handleSeeMoreClick('labtest')}
                   className="text-blue-500 flex items-center"
                 >
                   See More <span className="ml-1">→</span>
                 </button>
               </div>
-              
+
               <div className="grid grid-cols-1  lg:grid-cols-4 gap-4 mb-8">
-                {labtest.slice(0, 4).map(product => (
-                  <ProductCard 
-                    key={product.id} 
-                    product={product} 
-                    onViewDetails={() => handleSeeMoreClick('labtest')} 
+                {fullCategories[0]?.products?.slice(0, 4).map(product => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    onViewDetails={() => handleSeeMoreClick('labtest')}
                   />
                 ))}
+                {
+                  !fullCategories[0]?.products && fullCategories[0]?.products.length !== 0 && (
+                    <p className='text-red-600 font-semibold'>No products available in this category.</p>
+                  )
+                }
               </div>
             </div>
-          
-        
+
+
           </div>
         );
     }
   };
-  
+
   return (
     <div className="container mx-auto px-4 py-6">
       {/* Navigation header */}
       <div className="flex flex-col md:flex-row justify-between items-center mb-6">
-        <Tabs 
-          activeKey={activeTab} 
-          onChange={handleTabChange} 
+        <Tabs
+          activeKey={activeTab}
+          onChange={handleTabChange}
           items={tabItems}
           className="mb-4 md:mb-0"
         />
-        
+
         <div className="flex items-center">
-          <Input 
-            placeholder="Search" 
-            prefix={<SearchOutlined />} 
+          <Input
+            placeholder="Search"
+            prefix={<SearchOutlined />}
             className="w-64 mr-4"
           />
-          
+
           <div className="flex items-center">
             <Badge count={28} overflowCount={99}>
               <Button icon={<ShoppingCartOutlined />} size="large" />
@@ -655,7 +658,7 @@ export default function ProductTabComponent() {
           </div>
         </div>
       </div>
-      
+
       {/* Content area */}
       <div>
         {renderTabContent()}

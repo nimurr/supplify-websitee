@@ -194,7 +194,7 @@ import ProductDetail from './ProductDetail';
  
 import {productData} from './productData'
 
-const SupplementsPage = () => {
+const SupplementsPage = ({products}) => {
 
     const supplements = [
         { id: 1, category: 'supplements', name: 'Protein Powder', price: 250, image: '/images/supliment.png' },
