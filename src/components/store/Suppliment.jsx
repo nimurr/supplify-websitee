@@ -1,4 +1,4 @@
- 
+
 // "use client"
 
 // import React from 'react';
@@ -79,7 +79,7 @@
 //           <Heart size={20} className="text-gray-500" />
 //         </button>
 //       </div>
-      
+
 //       {/* Product Info */}
 //       <div className="p-3">
 //         <div className="text-sm text-gray-600 mb-1">{product.name}</div>
@@ -142,40 +142,40 @@
 //             />
 //           </div>
 //         </div>
-        
+
 //         {/* Product Details */}
 //         <div className="md:w-1/2">
 //           <h1 className="text-2xl font-bold mb-2">{product.name}</h1>
 //           <div className="text-3xl font-bold text-red-500 mb-6">${product.price}</div>
-          
+
 //           <p className="text-gray-700 mb-6">{product.fullDescription}</p>
-          
+
 //           <h3 className="font-medium mb-2">Features:</h3>
 //           <ul className="list-disc pl-5 mb-4">
 //             {product.features.map((feature, index) => (
 //               <li key={index} className="text-gray-600 mb-1">{feature}</li>
 //             ))}
 //           </ul>
-          
+
 //           <h3 className="font-medium mb-2">Recommended Usage:</h3>
 //           <p className="text-gray-600 mb-8">{product.usage}</p>
-          
+
 //           <div className="flex gap-4 mb-8">
 //             <div className="border rounded-md flex items-center">
 //               <button className="px-3 py-2 text-xl">-</button>
 //               <span className="px-4 py-2 border-l border-r">1</span>
 //               <button className="px-3 py-2 text-xl">+</button>
 //             </div>
-            
+
 //             <button className="bg-red-500 text-white px-8 py-3 rounded-md font-medium hover:bg-red-600 flex-grow">
 //               Add to Cart
 //             </button>
-            
+
 //             <button className="border border-gray-300 p-3 rounded-md hover:bg-gray-100">
 //               <Heart size={24} className="text-gray-500" />
 //             </button>
 //           </div>
-          
+
 //           <div className="border-t pt-4">
 //             <div className="text-sm text-gray-500">SKU: SUPP-001</div>
 //             <div className="text-sm text-gray-500">Category: Supplements</div>
@@ -191,30 +191,31 @@
 import React, { useState } from 'react';
 import ProductCard from './ProductCard';
 import ProductDetail from './ProductDetail';
- 
-import {productData} from './productData'
 
-const SupplementsPage = ({products}) => {
+import { productData } from './productData'
 
-    const supplements = [
-        { id: 1, category: 'supplements', name: 'Protein Powder', price: 250, image: '/images/supliment.png' },
-        { id: 6, category: 'supplements', name: 'BCAA Capsules', price: 250, image: '/images/supliment.png' },
-        { id: 7, category: 'supplements', name: 'Creatine Powder', price: 250, image: '/images/supliment.png' },
-        { id: 8, category: 'supplements', name: 'Fish Oil Capsules', price: 250, image: '/images/supliment.png' },
-      ]
+const SupplementsPage = ({ products }) => {
+
+  const supplements = [
+    { id: 1, category: 'supplements', name: 'Protein Powder', price: 250, image: '/images/supliment.png' },
+    { id: 6, category: 'supplements', name: 'BCAA Capsules', price: 250, image: '/images/supliment.png' },
+    { id: 7, category: 'supplements', name: 'Creatine Powder', price: 250, image: '/images/supliment.png' },
+    { id: 8, category: 'supplements', name: 'Fish Oil Capsules', price: 250, image: '/images/supliment.png' },
+  ]
 
 
 
   const [selectedProduct, setSelectedProduct] = useState(null);
-  
+
   const handleViewDetails = (product) => {
     setSelectedProduct(product);
   };
-  
+
   const handleBackToProducts = () => {
     setSelectedProduct(null);
   };
-  
+
+
   return (
     <div>
       {selectedProduct ? (
@@ -224,7 +225,7 @@ const SupplementsPage = ({products}) => {
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-bold">Supplements</h2>
           </div>
-          
+
           <div className="grid grid-cols-1  lg:grid-cols-4 gap-4">
             {supplements?.map(product => (
               <ProductCard key={product?.id} product={product} onViewDetails={handleViewDetails} />
