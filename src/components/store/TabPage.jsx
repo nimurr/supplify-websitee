@@ -462,7 +462,7 @@ import SupplementsPage from './Suppliment';
 import FitnessPage from './Fintness';
 import WellnessPage from './Wellness';
 import LabTestPage from './Labtest';
-import { useGetAllCategoriesQuery } from '@/redux/fetures/landing/landing';
+import { useGetAddToCartLangthQuery, useGetAllCategoriesQuery } from '@/redux/fetures/landing/landing';
 
 
 
@@ -470,7 +470,15 @@ export default function ProductTabComponent() {
 
   const { data, isLoading } = useGetAllCategoriesQuery();
   const fullCategories = data?.data?.attributes || [];
-  console.log(fullCategories);
+  const supplementCategories = fullCategories?.filter((category) => category.category === 'supplement');
+  const wellnessCategories = fullCategories?.filter((category) => category.category === 'wellness');
+  const labTestCategories = fullCategories?.filter((category) => category.category === 'labTest');
+  const fitnessCategories = fullCategories?.filter((category) => category.category === 'fitness');
+
+  // console.log(fullCategories);
+
+  const { data: cartLengthData } = useGetAddToCartLangthQuery();
+  console.log(cartLengthData?.data?.attributes?.totalResults);
 
 
 
@@ -526,7 +534,7 @@ export default function ProductTabComponent() {
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-8">
-                {fullCategories[2]?.products?.slice(0, 4).map(product => (
+                {supplementCategories[0]?.products?.slice(0, 4).map(product => (
                   <ProductCard
                     isLoading={isLoading}
                     key={product.id}
@@ -535,7 +543,7 @@ export default function ProductTabComponent() {
                   />
                 ))}
                 {
-                  !fullCategories[2]?.products && fullCategories[2]?.products.length !== 0 && (
+                  !supplementCategories[0]?.products && supplementCategories[0]?.products?.length !== 0 && (
                     <p className='text-red-600 font-semibold'>No products available in this category.</p>
                   )
                 }
@@ -555,7 +563,7 @@ export default function ProductTabComponent() {
               </div>
 
               <div className="grid grid-cols-1  lg:grid-cols-4 gap-4 mb-8">
-                {fullCategories[3]?.products?.slice(0, 4).map(product => (
+                {fitnessCategories[0]?.products?.slice(0, 4).map(product => (
                   <ProductCard
                     key={product.id}
                     product={product}
@@ -563,7 +571,7 @@ export default function ProductTabComponent() {
                   />
                 ))}
                 {
-                  !fullCategories[3]?.products && fullCategories[3]?.products.length !== 0 && (
+                  !fitnessCategories[0]?.products && fitnessCategories[0]?.products?.length !== 0 && (
                     <p className='text-red-600 font-semibold'>No products available in this category.</p>
                   )
                 }
@@ -583,7 +591,7 @@ export default function ProductTabComponent() {
               </div>
 
               <div className="grid grid-cols-1  lg:grid-cols-4 gap-4 mb-8">
-                {fullCategories[2]?.products?.slice(0, 4).map(product => (
+                {wellnessCategories[0]?.products?.slice(0, 4).map(product => (
                   <ProductCard
                     key={product.id}
                     product={product}
@@ -591,7 +599,7 @@ export default function ProductTabComponent() {
                   />
                 ))}
                 {
-                  !fullCategories[2]?.products && fullCategories[2]?.products.length !== 0 && (
+                  !wellnessCategories[0]?.products && wellnessCategories[0]?.products.length !== 0 && (
                     <p className='text-red-600 font-semibold'>No products available in this category.</p>
                   )
                 }
@@ -611,7 +619,7 @@ export default function ProductTabComponent() {
               </div>
 
               <div className="grid grid-cols-1  lg:grid-cols-4 gap-4 mb-8">
-                {fullCategories[0]?.products?.slice(0, 4).map(product => (
+                {labTestCategories[0]?.products?.slice(0, 4).map(product => (
                   <ProductCard
                     key={product.id}
                     product={product}
@@ -619,7 +627,7 @@ export default function ProductTabComponent() {
                   />
                 ))}
                 {
-                  !fullCategories[0]?.products && fullCategories[0]?.products.length !== 0 && (
+                  !labTestCategories[0]?.products && labTestCategories[0]?.products.length !== 0 && (
                     <p className='text-red-600 font-semibold'>No products available in this category.</p>
                   )
                 }
@@ -651,7 +659,7 @@ export default function ProductTabComponent() {
           />
 
           <div className="flex items-center">
-            <Badge count={28} overflowCount={99}>
+            <Badge count={cartLengthData?.data?.attributes?.totalResults > 0 ? cartLengthData?.data?.attributes?.totalResults : 0} overflowCount={99}>
               <Button icon={<ShoppingCartOutlined />} size="large" />
             </Badge>
             <Button icon="🔍" size="large" className="ml-2" />
