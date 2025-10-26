@@ -479,7 +479,7 @@ export default function ProductTabComponent() {
   // console.log(fullCategories);
 
   const { data: cartLengthData } = useGetAddToCartLangthQuery();
-  console.log(cartLengthData?.data?.attributes?.totalResults);
+  console.log(cartLengthData?.data?.attributes?.results[0]?.itemCount);
 
 
 
@@ -660,7 +660,7 @@ export default function ProductTabComponent() {
           />
           <div className="flex items-center">
             <Button icon="🔍" size="large" className="mr-2" />
-            <Badge count={cartLengthData?.data?.attributes?.totalResults > 0 ? cartLengthData?.data?.attributes?.totalResults : 0} overflowCount={99}>
+            <Badge count={cartLengthData?.data?.attributes?.results[0]?.itemCount ? cartLengthData?.data?.attributes?.results[0]?.itemCount : 0} overflowCount={99}>
               <Link href="/viewcarts" className="ml-2">
                 <Button icon={<ShoppingCartOutlined />} size="large" />
               </Link>
