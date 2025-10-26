@@ -16,7 +16,7 @@
 //             left: 0,
 //             right: 0,
 //             bottom: 0,
-        
+
 //             zIndex: -1
 //           }}
 //         />
@@ -62,21 +62,49 @@
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { X } from 'lucide-react'
+import { message } from 'antd'
+import toast, { Toaster } from 'react-hot-toast'
+import { useTakeFreeTrialMutation } from '@/redux/fetures/subscription/subscription'
 
 export default function Banner() {
   const [showModal, setShowModal] = useState(false)
+  const [user, setUser] = useState(null)
+
 
   // Show modal when component mounts
   useEffect(() => {
     setShowModal(true)
+    const user = localStorage.getItem('user')
+    if (user) {
+      setUser(JSON.parse(user))
+    }
   }, [])
 
   const closeModal = () => {
     setShowModal(false)
   }
 
+  const [freeTrial] = useTakeFreeTrialMutation();
+
+  const handleFreeTrial = async () => {
+    if (!user) {
+      toast.error('Please login to continue')
+      return
+    }
+    else {
+      try {
+        const res = await freeTrial().unwrap();
+        console.log(res);
+
+      } catch (error) {
+        toast.error(error?.data?.message || "Failed to take free trial");
+      }
+    }
+  }
+
   return (
     <>
+      <Toaster  />
       {/* Video Modal */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
@@ -88,7 +116,7 @@ export default function Banner() {
             >
               <X size={32} />
             </button>
-            
+
             {/* Video Container */}
             <div className="relative bg-black rounded-lg overflow-hidden">
               <video
@@ -103,7 +131,7 @@ export default function Banner() {
                 <source src="/videos/intro-video.webm" type="video/webm" />
                 Your browser does not support the video tag.
               </video>
-              
+
               {/* Alternative: YouTube/Vimeo Embed */}
               {/* 
               <iframe
@@ -124,7 +152,7 @@ export default function Banner() {
       <div className="relative h-screen flex items-center justify-start">
         {/* Background Image with Overlay */}
         <div className="absolute inset-0 z-0">
-          <div 
+          <div
             className="w-full h-full bg-[url('/images/bgimage.png')] bg-cover bg-center"
             style={{
               position: 'absolute',
@@ -147,12 +175,12 @@ export default function Banner() {
             Expert-guided workouts, Nutrition Plans, and wellness advice to help <br /> you achieve your goals
           </p>
           <div className="flex gap-4">
-            <Link
-              href="/consultation"
+            <button
+              onClick={handleFreeTrial}
               className="bg-primary hover:bg-primary-dark text-white font-bold py-3 px-6 rounded-full transition"
             >
-              Free Trial 
-            </Link>
+              Free Trial
+            </button>
             <Link
               href="/visit"
               className="bg-transparent hover:bg-white/10 text-white font-bold py-3 px-6 border-2 border-white rounded-full transition"
