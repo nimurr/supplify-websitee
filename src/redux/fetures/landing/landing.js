@@ -4,13 +4,22 @@ const landing = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getAllCategories: builder.query({
             query: () => `/products/by/category`,
-            providesTags: [{ type: "Landing" }]
+            providesTags: ["Landing"]
         }),
         getAddToCartLangth: builder.query({
             query: () => ({
                 url: `/carts/paginate`,
                 method: 'GET',
-            })
+            }),
+            providesTags: ["Landing"]
+        }),
+        addTocartProduct: builder.mutation({
+            query: (data) => ({
+                url: `/cart-items/create`,
+                method: 'POST',
+                body: data
+            }),
+            invalidatesTags: ["Landing"]
         })
     })
 })
@@ -18,5 +27,6 @@ const landing = apiSlice.injectEndpoints({
 
 export const {
     useGetAllCategoriesQuery,
-    useGetAddToCartLangthQuery
+    useGetAddToCartLangthQuery,
+    useAddTocartProductMutation
 } = landing

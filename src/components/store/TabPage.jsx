@@ -463,6 +463,7 @@ import FitnessPage from './Fintness';
 import WellnessPage from './Wellness';
 import LabTestPage from './Labtest';
 import { useGetAddToCartLangthQuery, useGetAllCategoriesQuery } from '@/redux/fetures/landing/landing';
+import Link from 'next/link';
 
 
 
@@ -655,14 +656,15 @@ export default function ProductTabComponent() {
           <Input
             placeholder="Search"
             prefix={<SearchOutlined />}
-            className="w-64 mr-4"
+            className="w-64 mr-4 h-10"
           />
-
           <div className="flex items-center">
+            <Button icon="🔍" size="large" className="mr-2" />
             <Badge count={cartLengthData?.data?.attributes?.totalResults > 0 ? cartLengthData?.data?.attributes?.totalResults : 0} overflowCount={99}>
-              <Button icon={<ShoppingCartOutlined />} size="large" />
+              <Link href="/viewcarts" className="ml-2">
+                <Button icon={<ShoppingCartOutlined />} size="large" />
+              </Link>
             </Badge>
-            <Button icon="🔍" size="large" className="ml-2" />
           </div>
         </div>
       </div>

@@ -84,7 +84,7 @@ export default function Banner() {
     setShowModal(false)
   }
 
-  const [freeTrial] = useTakeFreeTrialMutation();
+  const [freeTrial, { isLoading }] = useTakeFreeTrialMutation();
 
   const handleFreeTrial = async () => {
     if (!user) {
@@ -94,8 +94,15 @@ export default function Banner() {
     else {
       try {
         const res = await freeTrial().unwrap();
-        console.log(res);
-
+        if (res?.code == 200) {
+          toast.success(res?.message);
+          setTimeout(() => {
+            window.location.href = `${res.data?.attributes}`
+          }, 1000);
+        }
+        else {
+          toast.error(res?.message);
+        }
       } catch (error) {
         toast.error(error?.data?.message || "Failed to take free trial");
       }
@@ -104,7 +111,7 @@ export default function Banner() {
 
   return (
     <>
-      <Toaster  />
+      <Toaster />
       {/* Video Modal */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
@@ -179,7 +186,7 @@ export default function Banner() {
               onClick={handleFreeTrial}
               className="bg-primary hover:bg-primary-dark text-white font-bold py-3 px-6 rounded-full transition"
             >
-              Free Trial
+              Free Trial {isLoading && "..."}
             </button>
             <Link
               href="/visit"
