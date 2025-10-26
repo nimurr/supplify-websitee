@@ -66,25 +66,25 @@ const schedules = [
 ];
 
 export default function DoctorPage() {
-    const router = useRouter()
+  const router = useRouter()
   // Select the first doctor from "yourDoctors" by default for full view
   const ViewFull = (id) => {
-      console.log('cliceddd')
-        console.log(id)
-        router.push(`/dashboard/doctor/view-full/${id}`)
+    console.log('cliceddd')
+    console.log(id)
+    router.push(`/dashboard/doctor/view-full/${id}`)
 
-    }
+  }
 
   return (
     <div className=" mx-auto p-6 space-y-10">
       {/* Doctors Tabs: Your Doctor & Others Doctor */}
       <Tabs defaultActiveKey="your" size="middle" tabBarGutter={50}>
         <TabPane
-          tab={<span className="text-red-600 font-semibold">Your Doctor</span>}
+          tab={<span className=" font-semibold">Your Doctor</span>}
           key="your"
         >
-         <div className="grid md:grid-cols-4 grid-cols-1 gap-4">
-            {otherDoctors.slice(0,2).map((doc) => (
+          <div className="grid md:grid-cols-4 grid-cols-1 gap-4">
+            {otherDoctors.slice(0, 2).map((doc) => (
               <Card
                 key={doc.id}
                 hoverable
@@ -106,18 +106,18 @@ export default function DoctorPage() {
                   {doc.description}{" "}
                   <span className="font-semibold">...see more</span>
                 </p>
-                <CustomButton 
-                   onClick={() => ViewFull(doc.id)}
+                <CustomButton
+                  onClick={() => ViewFull(doc.id)}
                   text="View Full"
                   className="p-2"
-                  />
+                />
               </Card>
             ))}
           </div>
         </TabPane>
 
         <TabPane
-          tab={<span className="text-gray-600">Others Doctor</span>}
+          tab={<span className="font-semibold">Others Doctor</span>}
           key="others"
         >
           <div className="grid md:grid-cols-4 grid-cols-1 gap-4">
@@ -143,11 +143,11 @@ export default function DoctorPage() {
                   {doc.description}{" "}
                   <span className="font-semibold">...see more</span>
                 </p>
-                <CustomButton 
-                   onClick={() => ViewFull(doc.id)}
+                <CustomButton
+                  onClick={() => ViewFull(doc.id)}
                   text="View Full"
                   className="p-2"
-                  />
+                />
               </Card>
             ))}
           </div>
