@@ -8,6 +8,7 @@ import { useGetAllWorkoutClassQuery } from '@/redux/fetures/Specialist/workoutCl
 import url from '@/redux/api/baseUrl';
 import moment from 'moment/moment';
 import Link from 'next/link';
+import { FaRegEdit } from 'react-icons/fa';
 
 const { p, Text, Paragraph } = Typography;
 
@@ -70,8 +71,11 @@ const WorkoutSpecialistClass = () => {
               fullData?.results.map((item, index) => (
                 <div className="space-y-5 border border-gray-200 rounded-md p-6 bg-white shadow-lg hover:shadow-xl transition-all duration-300">
                   {/* Icon Placeholder */}
-                  <div className="mb-4">
+                  <div className="mb-4 flex items-start justify-between gap-5 ">
                     <LuMonitorPlay className="text-6xl text-gray-800" />
+                    <Link href={`/specialistDs/workoutClass/update?id=${item?._id}`}>
+                      <FaRegEdit className='text-green-500 text-4xl cursor-pointer' />
+                    </Link>
                   </div>
 
                   {/* Workout Title */}

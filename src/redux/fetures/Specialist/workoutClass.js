@@ -3,7 +3,11 @@ import { apiSlice } from "../../api/apiSlice";
 const workoutClass = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getAllWorkoutClass: builder.query({
-            query: () => "/workout-schedules/paginate",
+            query: () => ({
+                url: "/workout-schedules",
+                method: "GET",
+            }),
+            providesTags: ["WorkoutClass"],
         }),
         createWorkoutClass: builder.mutation({
             query: (data) => ({
@@ -11,8 +15,24 @@ const workoutClass = apiSlice.injectEndpoints({
                 method: "POST",
                 body: data,
             }),
+            invalidatesTags: ["WorkoutClass"],
+        }),
+        updateWorkoutClass: builder.mutation({
+            query: ({ submissionData, id }) => ({
+                url: `/workout-schedules/${id}`,
+                method: "PUT",
+                body: submissionData,
+            }),
+            invalidatesTags: ["WorkoutClass"],
+        }),
+        getSingleWorkoutClass: builder.query({
+            query: (id) => ({
+                url: `/workout-schedules/${id}`,
+                method: "GET",
+            }),
+            providesTags: ["WorkoutClass"],
         }),
     }),
 });
 
-export const { useGetAllWorkoutClassQuery, useCreateWorkoutClassMutation } = workoutClass;
+export const { useGetAllWorkoutClassQuery, useCreateWorkoutClassMutation, useUpdateWorkoutClassMutation , useGetSingleWorkoutClassQuery } = workoutClass;
