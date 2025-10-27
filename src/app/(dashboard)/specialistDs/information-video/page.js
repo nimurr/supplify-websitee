@@ -1,11 +1,16 @@
 'use client'
-import { useCreateInformationVideoMutation, useGetAllInformationVideoQuery } from '@/redux/fetures/Specialist/informationVideo';
+import { useCreateInformationVideoMutation, useDeleteInformationVideoMutation, useGetAllInformationVideoQuery } from '@/redux/fetures/Specialist/informationVideo';
 import React, { useState, useRef } from 'react';
 import toast from 'react-hot-toast';
 import { CiSearch } from 'react-icons/ci';
+import { FaRegEdit } from 'react-icons/fa';
 import { IoIosAddCircleOutline } from 'react-icons/io';
+import { MdOutlineDeleteForever } from 'react-icons/md';
 
 const Page = () => {
+    const { data, isLoading: loading, refetch } = useGetAllInformationVideoQuery();
+    const fullData = data?.data?.attributes?.results;
+
     // State to control modal visibility and form fields
     const [isModalOpen, setModalOpen] = useState(false);
     const [photo, setPhoto] = useState(null);
@@ -13,6 +18,7 @@ const Page = () => {
     const [link, setLink] = useState('');
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
+    const [searchTerm, setSearchTerm] = useState(''); // State for search term
 
     // Reference to modal content to detect clicks inside
     const modalContentRef = useRef();
@@ -71,13 +77,16 @@ const Page = () => {
             // Send form data
             const response = await createInformationVideo(formData); // your API call
             console.log(response);
+            refetch();
 
             if (response?.error?.data?.message) {
                 toast.error(response?.error?.data?.message);
+                refetch();
             }
             if (response?.data?.message) {
                 toast.success(response?.data?.message);
                 setModalOpen(false); // Close modal
+                refetch();
             }
         } catch (error) {
             console.log(error?.data);
@@ -86,9 +95,35 @@ const Page = () => {
     };
 
 
-    const { data, isLoading: loading } = useGetAllInformationVideoQuery();
-    const fullData = data?.data?.attributes?.results;
-    console.log(fullData);
+
+    // Filter the full data based on search term
+    const filteredData = fullData?.filter((item) => {
+        const itemTitle = item?.title?.toLowerCase() || '';
+        const itemDescription = item?.description?.toLowerCase() || '';
+        const searchQuery = searchTerm.toLowerCase();
+        return itemTitle.includes(searchQuery) || itemDescription.includes(searchQuery);
+    });
+
+    console.log(filteredData);
+
+    const [deleteInformationVideo] = useDeleteInformationVideoMutation();
+
+    const handleDelete = async (id) => {
+
+        console.log(id);
+        try {
+            const res = await deleteInformationVideo(id).unwrap();
+            console.log(res);
+            if (res?.code == 200) {
+                toast.success(res?.message || "Deleted successfully!");
+                refetch();
+            }
+        } catch (error) {
+            toast.error(error?.data?.message || "Failed to delete");
+        }
+
+
+    }
 
     return (
         <div className='sm:p-0 p-4'>
@@ -100,6 +135,8 @@ const Page = () => {
                             type="text"
                             placeholder='Search Here ...'
                             className='py-2 px-3 border-2 pr-8 border-gray-300 rounded-xl focus:border-blue-300 outline-none'
+                            value={searchTerm} // Bind the value of input to searchTerm state
+                            onChange={(e) => setSearchTerm(e.target.value)} // Update searchTerm state
                         />
                         <CiSearch className='absolute top-3 right-3 text-xl' />
                     </label>
@@ -115,18 +152,17 @@ const Page = () => {
             {
                 loading && <h2 className='text-2xl font-semibold text-center'>Loading...</h2>
             }
+
             <div className='grid xl:grid-cols-5 md:grid-cols-3 grid-cols-2 my-5 gap-5'>
-                {fullData?.map((item, index) => {
+                {filteredData?.map((item, index) => {
                     return (
                         <div onClick={() => handleEdit(item)} className='border-2 border-gray-300 rounded-xl p-3' key={index}>
+
                             {item?.videoLink && (
                                 // use iframe to display video 
-
                                 <div className='w-full'>
-
                                     <iframe className='w-full' width='300' height="200"
                                         src={`${item?.videoLink}`}
-
                                         title="YouTube video player" frameborder="0"
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                                 </div>
@@ -134,7 +170,7 @@ const Page = () => {
                             <div>
                                 {item?.video?.length > 0 && item?.thumbnail?.length > 0 && (
                                     <video
-                                        className="w-full h-full"
+                                        className="w-full h-full rounded-lg"
                                         controls
                                         autoPlay
                                         muted
@@ -147,11 +183,9 @@ const Page = () => {
 
                                         {/* Fallback in case the first video is needed */}
                                         <source src={item.video[0].attachment} type="video/mp4" />
-
                                         Your browser does not support the video tag.
                                     </video>
                                 )}
-
                             </div>
                             <div className='mt-5 space-y-3'>
                                 <h2 className='text-2xl font-semibold'>{item?.title}</h2>
@@ -159,11 +193,15 @@ const Page = () => {
                                     {item?.description?.slice(0, 100) + '...'}
                                 </p>
                             </div>
+                            <div className='flex items-center justify-end gap-3 mt-2'>
+                                <button onClick={() => handleDelete(item?._informationVideoId)} className='h-10 w-10 cursor-pointer bg-red-500 flex items-center justify-center rounded-lg text-white'>
+                                    <MdOutlineDeleteForever className='text-2xl' />
+                                </button>
+                            </div>
                         </div>
                     );
                 })}
             </div>
-
 
             {/* Modal */}
             {isModalOpen && (
@@ -250,7 +288,7 @@ const Page = () => {
                                     Cancel
                                 </button>
                                 <button type='submit' className="bg-red-700 py-2 px-6 rounded-xl text-white">
-                                    Create
+                                    Create{isLoading ? '...' : 'Session'}
                                 </button>
                             </div>
                         </form>

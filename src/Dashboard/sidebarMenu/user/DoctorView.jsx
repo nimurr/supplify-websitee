@@ -1,6 +1,7 @@
 
 "use client"
 import CustomButton from '@/components/customComponent/customButton';
+import url from '@/redux/api/baseUrl';
 import { useDoctorAppoinmentBookedMutation, useGetFullDataQuery } from '@/redux/fetures/patient/patient';
 import { LeftOutlined } from '@ant-design/icons';
 import { Button, Image } from 'antd';
@@ -11,9 +12,10 @@ import toast, { Toaster } from 'react-hot-toast';
 
 export default function AppointmentScheduler({ doctorId }) {
 
-  const { data } = useGetFullDataQuery(doctorId)
+  const { data, isLoading } = useGetFullDataQuery(doctorId)
   const fullData = data?.data?.attributes?.result?.results;
-  console.log(fullData);
+  const profile = data?.data?.attributes?.doctorProfile;
+  console.log(profile);
 
   // Sample data for schedules
   const router = useRouter()
@@ -29,28 +31,26 @@ export default function AppointmentScheduler({ doctorId }) {
       </h1>
       <div className="bg-gray-50 min-h-screen lg:flex gap-4 p-6">
         {/* Header Section */}
-        <div className=" lg:w-[35%] mb-8">
+        <div className=" lg:w-[20%] mb-8">
           <div className="rounded-lg shadow-md bg-white border border-gray-200 overflow-hidden font-sans">
 
             <div className="relative w-full h-60">
-              <Image
-                src="/images/doc.jpg"
+              <img
+                src={url + profile?.profileImage?.imageUrl}
                 alt="doctor"
-                layout="fill"
-                objectFit="cover"
-                className="rounded-t-lg" // optional styling
+                className="w-full h-full " // optional styling
               />
             </div>
 
             <div className="p-4">
-              <h3 className="text-center font-semibold text-lg mb-1">Sakib Ahmed</h3>
-              <p className="text-center text-sm text-gray-500 mb-4">New York, America</p>
+              <h3 className="text-center font-semibold text-lg mb-1">{profile?.name}</h3>
+              <p className="text-center text-sm text-gray-500 mb-4">{profile?.address || "N/A"}</p>
               <hr className="border-gray-200 mb-4" />
               <h4 className="font-semibold text-sm mb-2">Description</h4>
               <p className="text-sm text-gray-700 mb-6 leading-relaxed">
-                Lorem ipsum dolor sit amet consectetur. Massa risus eget justo vel urna sapien posuere. Mauris magna egestas vestibulum cum egestas etiam pulvinar dolor.
+                {profile?.profileId?.description}
               </p>
-              <div className="md:flex md:gap-3">
+              {/* <div className="md:flex md:gap-3">
 
                 <CustomButton
                   text='Book Now'
@@ -63,17 +63,24 @@ export default function AppointmentScheduler({ doctorId }) {
                 >
                   Message
                 </Button>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
 
-        <div className='lg:w-[65%]'>
+        <div className='lg:w-[80%]'>
 
           <div className="ml-auto flex items-center justify-between mb-2">
             <div className="text-sm text-gray-500">Available Schedules</div>
             <div className="font-bold text-gray-800">Total Schedules: 10</div>
           </div>
+          {
+            isLoading && (
+              <h1 className='text-2xl font-semibold flex items-center gap-2 my-12'>
+                Loading...
+              </h1>
+            )
+          }
           {/* Schedules Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-start gap-6">
             {fullData?.map((schedule) => (
@@ -184,7 +191,7 @@ function ScheduleCard({ schedule }) {
         )
       }
       {
-        schedule.patientBookings?.status == "pending" && (
+        schedule.patientBookings?.status == "pending" && schedule.scheduleStatus !== "available" && (
           <button onClick={handleBooked} className="w-full bg-red-500 text-white py-2 rounded-md">
             Book Now
           </button>

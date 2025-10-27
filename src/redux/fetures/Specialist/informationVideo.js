@@ -17,7 +17,14 @@ const informationVideo = apiSlice.injectEndpoints({
             }),
             providesTags: ["InformationVideo"]
         }),
+        deleteInformationVideo: builder.mutation({
+            query: (id) => ({
+                url: `/information-videos/softDelete/${id}`,
+                method: "PUT"
+            }),
+            InvalidatesTags: ["InformationVideo"]
+        }),
     }),
 });
 
-export const { useCreateInformationVideoMutation, useGetAllInformationVideoQuery } = informationVideo
+export const { useCreateInformationVideoMutation, useGetAllInformationVideoQuery , useDeleteInformationVideoMutation } = informationVideo
