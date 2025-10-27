@@ -4,7 +4,7 @@ const workoutClass = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getAllWorkoutClass: builder.query({
             query: () => ({
-                url: "/workout-schedules",
+                url: "/workout-schedules/paginate",
                 method: "GET",
             }),
             providesTags: ["WorkoutClass"],
@@ -35,4 +35,4 @@ const workoutClass = apiSlice.injectEndpoints({
     }),
 });
 
-export const { useGetAllWorkoutClassQuery, useCreateWorkoutClassMutation, useUpdateWorkoutClassMutation , useGetSingleWorkoutClassQuery } = workoutClass;
+export const { useGetAllWorkoutClassQuery, useCreateWorkoutClassMutation, useUpdateWorkoutClassMutation, useGetSingleWorkoutClassQuery } = workoutClass;
