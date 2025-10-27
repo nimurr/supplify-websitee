@@ -28,6 +28,13 @@ const landing = apiSlice.injectEndpoints({
             }),
             providesTags: ["Landing"]
         }),
+        startVideo: builder.query({
+            query: () => ({
+                url: `/settings/?type=introductionVideo`,
+                method: 'GET',
+            }),
+            providesTags: ["Landing"]
+        }),
     })
 })
 
@@ -36,5 +43,8 @@ export const {
     useGetAllCategoriesQuery,
     useGetAddToCartLangthQuery,
     useAddTocartProductMutation,
-    useGetAllcartProductsQuery
+    useGetAllcartProductsQuery,
+
+
+    useStartVideoQuery
 } = landing

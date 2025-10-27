@@ -471,6 +471,7 @@ export default function ProductTabComponent() {
 
   const { data, isLoading } = useGetAllCategoriesQuery();
   const fullCategories = data?.data?.attributes || [];
+  console.log(fullCategories);
   const supplementCategories = fullCategories?.filter((category) => category.category === 'supplement');
   const wellnessCategories = fullCategories?.filter((category) => category.category === 'wellness');
   const labTestCategories = fullCategories?.filter((category) => category.category === 'labTest');

@@ -65,8 +65,14 @@ import { X } from 'lucide-react'
 import { message } from 'antd'
 import toast, { Toaster } from 'react-hot-toast'
 import { useTakeFreeTrialMutation } from '@/redux/fetures/subscription/subscription'
+import { useStartVideoQuery } from '@/redux/fetures/landing/landing'
 
 export default function Banner() {
+
+  const { data } = useStartVideoQuery();
+  const fullData = data?.data?.attributes[0]?.introductionVideo?.attachment;
+  console.log(fullData);
+
   const [showModal, setShowModal] = useState(false)
   const [user, setUser] = useState(null)
 
@@ -115,7 +121,7 @@ export default function Banner() {
       {/* Video Modal */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
-          <div className="relative w-[60%]  mx-auto">
+          <div className="relative w-[60%] mx-auto">
             {/* Close Button */}
             <button
               onClick={closeModal}
@@ -126,30 +132,16 @@ export default function Banner() {
 
             {/* Video Container */}
             <div className="relative bg-black rounded-lg overflow-hidden">
-              <video
-                className="w-full h-full"
-                controls
-                autoPlay
-                muted
-                poster="/images/videof.mp4" // Add your video thumbnail
-              >
-                <source src="/images/videof.mp4" type="video/mp4" />
-                {/* You can add multiple source formats */}
-                <source src="/videos/intro-video.webm" type="video/webm" />
-                Your browser does not support the video tag.
-              </video>
-
-              {/* Alternative: YouTube/Vimeo Embed */}
-              {/* 
-              <iframe
-                className="w-full aspect-video"
-                src="https://www.youtube.com/embed/YOUR_VIDEO_ID?autoplay=1&mute=1"
-                title="Fitness Introduction Video"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              ></iframe>
-              */}
+              {fullData ? (
+                <div key={fullData} className="relative overflow-hidden ">
+                  <video autoPlay controls className="rounded-lg border-2 border-[#eee] w-full mx-auto h-auto">
+                    <source src={fullData} type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video> 
+                </div>
+              ) : (
+                <p className="text-center text-gray-500">No video selected. Please upload a video.</p>
+              )}
             </div>
           </div>
         </div>
