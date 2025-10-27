@@ -6,11 +6,14 @@ import React from 'react';
 import { Toaster } from 'react-hot-toast';
 
 const Page = () => {
-    const { data } = useGetAllcartProductsQuery();
+    const { data, refetch, isLoading } = useGetAllcartProductsQuery();
     const fullData = data?.data?.attributes;
     console.log(data?.data?.attributes);
     return (
         <div className='py-28 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 container mx-auto px-4 '>
+            {
+                isLoading && <h1>Loading...</h1>
+            }
             {
                 fullData?.map((product, index) => (
                     <Card

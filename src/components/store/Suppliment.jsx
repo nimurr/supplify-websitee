@@ -196,6 +196,10 @@ import { productData } from './productData'
 
 const SupplementsPage = ({ products }) => {
 
+
+  const fullData = products[0]?.products;
+
+  console.log(products[0]?.products);
   const supplements = [
     { id: 1, category: 'supplements', name: 'Protein Powder', price: 250, image: '/images/supliment.png' },
     { id: 6, category: 'supplements', name: 'BCAA Capsules', price: 250, image: '/images/supliment.png' },
@@ -218,21 +222,24 @@ const SupplementsPage = ({ products }) => {
 
   return (
     <div>
-      {selectedProduct ? (
-        <ProductDetail product={selectedProduct} onBack={handleBackToProducts} />
-      ) : (
+      {fullData && (
         <>
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-bold">Supplements</h2>
           </div>
 
           <div className="grid grid-cols-1  lg:grid-cols-4 gap-4">
-            {supplements?.map(product => (
+            {fullData?.map(product => (
               <ProductCard key={product?.id} product={product} onViewDetails={handleViewDetails} />
             ))}
           </div>
         </>
       )}
+      {
+        !fullData && (
+          <h2>No products found</h2>
+        )
+      }
     </div>
   );
 };

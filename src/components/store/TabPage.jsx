@@ -471,16 +471,14 @@ export default function ProductTabComponent() {
 
   const { data, isLoading } = useGetAllCategoriesQuery();
   const fullCategories = data?.data?.attributes || [];
-  console.log(fullCategories);
   const supplementCategories = fullCategories?.filter((category) => category.category === 'supplement');
   const wellnessCategories = fullCategories?.filter((category) => category.category === 'wellness');
   const labTestCategories = fullCategories?.filter((category) => category.category === 'labTest');
   const fitnessCategories = fullCategories?.filter((category) => category.category === 'fitness');
 
-  // console.log(fullCategories);
+  console.log(labTestCategories);
 
   const { data: cartLengthData } = useGetAddToCartLangthQuery();
-  console.log(cartLengthData?.data?.attributes?.results[0]?.itemCount)
 
   const [activeTab, setActiveTab] = useState('all');
 
@@ -509,15 +507,15 @@ export default function ProductTabComponent() {
   const renderTabContent = () => {
     switch (activeTab) {
       case 'supplements':
-        return <SupplementsPage products={fullCategories[0]?.products} />;
+        return <SupplementsPage products={supplementCategories} />;
       case 'fitness':
-        return <FitnessPage />;
+        return <FitnessPage products={fitnessCategories} />;
       case 'wellness':
-        return <WellnessPage />;
+        return <WellnessPage products={wellnessCategories} />;
       //   case 'lifestyle':
       //     return <LifestylePage />;
       case 'labtest':
-        return <LabTestPage />;
+        return <LabTestPage products={labTestCategories} />;
       default:
         return (
           <div>
@@ -533,7 +531,7 @@ export default function ProductTabComponent() {
                 </button>
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-8">
+              <div className="grid grid-cols-1 lg:grid-cols-4 items-start gap-4 mb-8">
                 {supplementCategories[0]?.products?.slice(0, 4).map(product => (
                   <ProductCard
                     isLoading={isLoading}
@@ -562,7 +560,7 @@ export default function ProductTabComponent() {
                 </button>
               </div>
 
-              <div className="grid grid-cols-1  lg:grid-cols-4 gap-4 mb-8">
+              <div className="grid grid-cols-1  lg:grid-cols-4 items-start gap-4 mb-8">
                 {fitnessCategories[0]?.products?.slice(0, 4).map(product => (
                   <ProductCard
                     key={product.id}
@@ -590,7 +588,7 @@ export default function ProductTabComponent() {
                 </button>
               </div>
 
-              <div className="grid grid-cols-1  lg:grid-cols-4 gap-4 mb-8">
+              <div className="grid grid-cols-1  lg:grid-cols-4 items-start gap-4 mb-8">
                 {wellnessCategories[0]?.products?.slice(0, 4).map(product => (
                   <ProductCard
                     key={product.id}
@@ -618,7 +616,7 @@ export default function ProductTabComponent() {
                 </button>
               </div>
 
-              <div className="grid grid-cols-1  lg:grid-cols-4 gap-4 mb-8">
+              <div className="grid grid-cols-1  lg:grid-cols-4 items-start gap-4 mb-8">
                 {labTestCategories[0]?.products?.slice(0, 4).map(product => (
                   <ProductCard
                     key={product.id}
@@ -652,13 +650,13 @@ export default function ProductTabComponent() {
         />
 
         <div className="flex items-center">
-          <Input
+          {/* <Input
             placeholder="Search"
             prefix={<SearchOutlined />}
             className="w-64 mr-4 h-10"
-          />
+          /> */}
           <div className="flex items-center">
-            <Button icon="🔍" size="large" className="mr-2" />
+            {/* <Button icon="🔍" size="large" className="mr-2" /> */}
             <Badge count={cartLengthData?.data?.attributes?.results[0]?.itemCount ? cartLengthData?.data?.attributes?.results[0]?.itemCount : 0} overflowCount={99}>
               <Link href="/viewcarts" className="ml-2">
                 <Button icon={<ShoppingCartOutlined />} size="large" />

@@ -76,7 +76,7 @@
 //           <Heart size={20} className="text-gray-500" />
 //         </button> */}
 //       </div>
-      
+
 //       {/* Product Info */}
 //       <div className="p-3">
 //         <div className="text-sm text-gray-600 mb-1">{name}</div>
@@ -106,42 +106,48 @@ import ProductCard from './ProductCard';
 import ProductDetail from './ProductDetail';
 import { productData } from './productData';
 
-const FitnessPage = () => {
+const FitnessPage = ({ products }) => {
 
-    const fitness= [
-        { id: 2, category: 'fitness', name: 'Resistance Bands', price: 150, image: '/images/fitnesss.png' },
-        { id: 9, category: 'fitness', name: 'Dumbbells', price: 300, image: '/images/fitnesss.png' },
-      ]
+  const fullData = products[0]?.products;
+  console.log(fullData);
+
+  const fitness = [
+    { id: 2, category: 'fitness', name: 'Resistance Bands', price: 150, image: '/images/fitnesss.png' },
+    { id: 9, category: 'fitness', name: 'Dumbbells', price: 300, image: '/images/fitnesss.png' },
+  ]
 
 
 
   const [selectedProduct, setSelectedProduct] = useState(null);
-  
+
   const handleViewDetails = (product) => {
     setSelectedProduct(product);
   };
-  
+
   const handleBackToProducts = () => {
     setSelectedProduct(null);
   };
-  
+
   return (
     <div>
-      {selectedProduct ? (
-        <ProductDetail product={selectedProduct} onBack={handleBackToProducts} />
-      ) : (
+      {fullData && (
         <>
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-bold">Fitness</h2>
           </div>
-          
+
           <div className="grid grid-cols-1  lg:grid-cols-4 gap-4">
-            {fitness?.map(product => (
+            {fullData?.map(product => (
               <ProductCard key={product.id} product={product} onViewDetails={handleViewDetails} />
             ))}
           </div>
         </>
       )}
+      {
+        !fullData && (
+          <h2>No products found</h2>
+        )
+      }
     </div>
   );
 };

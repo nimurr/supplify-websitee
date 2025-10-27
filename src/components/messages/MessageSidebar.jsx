@@ -11,7 +11,7 @@ const MessageSidebar = () => {
                 <input className='py-3 w-full pl-10 px-2 rounded-lg right-0 focus:border-blue-300 outline-none border-2 border-gray-200' type="text" placeholder='Search Here...' />
             </div>
 
-            <div className='my-5 bg-gray-100'>
+            <div className='my-5 bg-gray-100 rounded'>
                 {
                     [...Array(6)].map((_, index) => (
                         <Link href={`/chat/${index}`} key={index} className='px-2 py-5 rounded-lg flex items-start hover:bg-red-100 cursor-pointer justify-between gap-1'>
@@ -24,7 +24,6 @@ const MessageSidebar = () => {
                         </Link>
                     ))
                 }
-
             </div>
 
 
