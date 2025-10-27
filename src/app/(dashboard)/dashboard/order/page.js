@@ -2,6 +2,7 @@
 import React from 'react';
 import { Table } from 'antd';
 import { IoEyeOutline } from "react-icons/io5";
+import { useGetAllOrdersQuery } from '@/redux/fetures/patient/order';
 
 // Your data
 const data = [
@@ -60,9 +61,8 @@ const columns = [
         key: 'status',
         render: (text, record) => (
             <h3
-                className={`${
-                    record.status === 'Processing' ? "text-[#e88c31]" : "text-[#009914e8]"
-                } px-2 py-1 rounded text-center `}
+                className={`${record.status === 'Processing' ? "text-[#e88c31]" : "text-[#009914e8]"
+                    } px-2 py-1 rounded text-center `}
             >
                 {record.status}
             </h3>
@@ -80,11 +80,22 @@ const columns = [
     },
 ];
 
-const CompositionEvent = ({ header }) => {
+const CompositionEvent = () => {
+
+    const user = localStorage.getItem("user");
+    const { id } = JSON.parse(user)
+
+    console.log(id);
+
+    const { data } = useGetAllOrdersQuery(id);
+    const fullData = data?.data?.attributes?.results;
+
+    console.log(fullData);
+    
     return (
         <div>
             <Table
-                dataSource={data}
+                dataSource={fullData}
                 columns={columns}
                 pagination={false}
                 style={{

@@ -129,7 +129,7 @@ export default function DoctorPage() {
           tab={<span className="font-semibold">Others Doctor</span>}
           key="others"
         >
-          <div className="grid xl:grid-cols-4 grid-cols-1 gap-4">
+          <div className="grid xl:grid-cols-4 grid-cols-1 md:grid-cols-2 gap-4">
             {othersFullData?.map((doc) => (
               <Card
                 key={doc._id}
