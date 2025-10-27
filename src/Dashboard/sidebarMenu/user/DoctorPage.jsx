@@ -1,6 +1,8 @@
 "use client";
 
 import CustomButton from "@/components/customComponent/customButton";
+import url from "@/redux/api/baseUrl";
+import { useGetAllOthersQuery, useGetAllYourDoctorsQuery } from "@/redux/fetures/patient/patient";
 import { Card, Button, Radio, Row, Col, Divider, Tabs, Image } from "antd";
 import { useRouter } from "next/navigation";
 
@@ -68,6 +70,15 @@ const schedules = [
 export default function DoctorPage() {
   const router = useRouter()
   // Select the first doctor from "yourDoctors" by default for full view
+
+  const { data } = useGetAllYourDoctorsQuery()
+  const yourFullData = data?.data?.attributes?.results
+
+  const { data: data2 } = useGetAllOthersQuery()
+  const othersFullData = data2?.data?.attributes?.results;
+  console.log(othersFullData);
+
+
   const ViewFull = (id) => {
     console.log('cliceddd')
     console.log(id)
@@ -83,28 +94,25 @@ export default function DoctorPage() {
           tab={<span className=" font-semibold">Your Doctor</span>}
           key="your"
         >
-          <div className="grid md:grid-cols-4 grid-cols-1 gap-4">
-            {otherDoctors.slice(0, 2).map((doc) => (
+          <div className="grid xl:grid-cols-4 grid-cols-1 md:grid-cols-2 gap-4">
+            {yourFullData?.map((doc) => (
               <Card
                 key={doc.id}
                 hoverable
                 className="rounded-lg shadow-md cursor-pointer"
                 cover={
                   <div className="relative rounded-t-lg overflow-hidden">
-                    <Image
-                      src={doc.imageUrl}
-                      alt={doc.name}
-                      layout="fill"
-                      objectFit="cover"
-                      className=" object-cover aspect-auto"
+                    <img
+                      src={url + doc?.doctorId?.profileImage.imageUrl}
+                      alt={doc?.doctorId?.name}
+                      className=" w-full "
                     />
                   </div>
                 }
               >
-                <h3 className="font-semibold text-lg mb-1">{doc.name}</h3>
+                <h3 className="font-semibold text-lg mb-1">{doc?.doctorId?.name}</h3>
                 <p className="text-gray-600 text-sm mb-1">
-                  {doc.description}{" "}
-                  <span className="font-semibold">...see more</span>
+                  {doc.extraNote}
                 </p>
                 <CustomButton
                   onClick={() => ViewFull(doc.id)}
@@ -120,28 +128,25 @@ export default function DoctorPage() {
           tab={<span className="font-semibold">Others Doctor</span>}
           key="others"
         >
-          <div className="grid md:grid-cols-4 grid-cols-1 gap-4">
-            {otherDoctors.map((doc) => (
+          <div className="grid xl:grid-cols-4 grid-cols-1 gap-4">
+            {othersFullData?.map((doc) => (
               <Card
                 key={doc.id}
                 hoverable
                 className="rounded-lg shadow-md cursor-pointer"
                 cover={
                   <div className="relative rounded-t-lg overflow-hidden">
-                    <Image
-                      src={doc.imageUrl}
+                    <img
+                      src={url + doc?.profileImage.imageUrl}
                       alt={doc.name}
-                      layout="fill"
-                      objectFit="cover"
-                      className=" object-cover aspect-auto"
+                      className="  w-full "
                     />
                   </div>
                 }
               >
-                <h3 className="font-semibold text-lg mb-1">{doc.name}</h3>
+                <h3 className="font-semibold text-lg mb-1">{doc?.name}</h3>
                 <p className="text-gray-600 text-sm mb-1">
-                  {doc.description}{" "}
-                  <span className="font-semibold">...see more</span>
+                  {doc.extraNote}
                 </p>
                 <CustomButton
                   onClick={() => ViewFull(doc.id)}

@@ -20,10 +20,16 @@ const traningProgram = apiSlice.injectEndpoints({
         updateTrainingProgram: builder.mutation({
             query: ({ id, data }) => ({
                 url: `/training-programs/${id}`,
-                method: "PATCH",
+                method: "PUT",
                 body: data,
             }),
             invalidatesTags: ["TrainingProgram"],
+        }),
+        getTrainingProgramById: builder.query({
+            query: (id) => ({
+                url: `/training-programs/${id}`,
+                method: "GET",
+            })
         }),
         deleteTrainingProgram: builder.mutation({
             query: (id) => ({
@@ -53,4 +59,7 @@ export const {
     useCreateTrainingProgramMutation,
     useGetAllTrainingProgramQuery,
     useUpdateTrainingProgramMutation,
-    useDeleteTrainingProgramMutation, useGetAllProgramBySpecialistIdQuery , useCreateTrainingSessionMutation } = traningProgram;
+    useGetTrainingProgramByIdQuery,
+    useDeleteTrainingProgramMutation,
+    useGetAllProgramBySpecialistIdQuery,
+    useCreateTrainingSessionMutation } = traningProgram;

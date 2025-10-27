@@ -51,18 +51,18 @@ export default function TrainingPrograms() {
               />
             }
             className="rounded-md shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-200"
-            bodyStyle={{ padding: '12px'  }}
+            bodyStyle={{ padding: '12px' }}
           >
             <h4 className="font-semibold text-[20px] capitalize text-gray-800 mb-2">{program.programName}</h4>
 
             <div className="flex items-center justify-between text-gray-600 text-sm gap-3 mb-1">
               <div className='flex items-center gap-2'>
-                <PiVideo  />
+                <PiVideo />
                 <span>{program.totalSessionCount} Sessions</span>
               </div>
               <span>${program.price}</span>
             </div>
- 
+
 
             <div className="flex items-center text-gray-600 text-sm gap-3 mb-3">
               <ClockCircleOutlined />
@@ -71,7 +71,7 @@ export default function TrainingPrograms() {
             <div className='flex items-center justify-between gap-4'>
               <CustomButton
                 text='Edit'
-
+                onClick={() => router.push(`/specialistDs/program/edit-traning-program/${program._TrainingProgramId}?specialistId=${program.createdBy}`)}
               />
 
               <CustomButton
