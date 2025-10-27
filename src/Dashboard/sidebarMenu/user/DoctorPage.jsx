@@ -76,7 +76,8 @@ export default function DoctorPage() {
 
   const { data: data2 } = useGetAllOthersQuery()
   const othersFullData = data2?.data?.attributes?.results;
-  console.log(othersFullData);
+
+  console.log(yourFullData);
 
 
   const ViewFull = (id) => {
@@ -112,10 +113,10 @@ export default function DoctorPage() {
               >
                 <h3 className="font-semibold text-lg mb-1">{doc?.doctorId?.name}</h3>
                 <p className="text-gray-600 text-sm mb-1">
-                  {doc.extraNote}
+                  {doc?.doctorId?.profileId?.description || "No description available"}
                 </p>
                 <CustomButton
-                  onClick={() => ViewFull(doc.id)}
+                  onClick={() => ViewFull(doc?.doctorId?._userId)}
                   text="View Full"
                   className="p-2"
                 />
@@ -131,7 +132,7 @@ export default function DoctorPage() {
           <div className="grid xl:grid-cols-4 grid-cols-1 gap-4">
             {othersFullData?.map((doc) => (
               <Card
-                key={doc.id}
+                key={doc._id}
                 hoverable
                 className="rounded-lg shadow-md cursor-pointer"
                 cover={
@@ -146,10 +147,10 @@ export default function DoctorPage() {
               >
                 <h3 className="font-semibold text-lg mb-1">{doc?.name}</h3>
                 <p className="text-gray-600 text-sm mb-1">
-                  {doc.extraNote}
+                  {doc.profile?.description || "No description available"}
                 </p>
                 <CustomButton
-                  onClick={() => ViewFull(doc.id)}
+                  onClick={() => ViewFull(doc._id)}
                   text="View Full"
                   className="p-2"
                 />
