@@ -480,9 +480,7 @@ export default function ProductTabComponent() {
   // console.log(fullCategories);
 
   const { data: cartLengthData } = useGetAddToCartLangthQuery();
-  console.log(cartLengthData?.data?.attributes?.results[0]?.itemCount);
-
-
+  console.log(cartLengthData?.data?.attributes?.results[0]?.itemCount)
 
   const [activeTab, setActiveTab] = useState('all');
 
