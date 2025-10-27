@@ -111,7 +111,7 @@ function ScheduleCard({ schedule }) {
       console.log(res);
       if (res?.code == 200) {
         toast.success(res?.message)
-        window.open(`${res?.data?.attributes?.url}`)
+        window.location.href = `${res?.data?.attributes?.url}`;
       }
       else {
         toast.error(res?.message)

@@ -70,10 +70,11 @@ const Page = () => {
                 totalSessions = '';
                 price = '';
                 duration = '';
+                window.location.href = `/specialistDs/program`
             }
         } catch (error) {
             console.log(error);
-            toast.error(error?.data?.message || "Something went wrong!");
+            toast.error(error?.data?.message);
         }
         // Show success message 
     }
