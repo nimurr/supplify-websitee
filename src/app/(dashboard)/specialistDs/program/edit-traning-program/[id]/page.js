@@ -2,7 +2,7 @@
 import { useCreateTrainingProgramMutation, useGetTrainingProgramByIdQuery, useUpdateTrainingProgramMutation } from '@/redux/fetures/Specialist/traningProgram';
 import { useParams, useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
-import toast from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 import { MdOutlineCancel } from 'react-icons/md';
 
 const Page = () => {
@@ -63,6 +63,7 @@ const Page = () => {
             console.log(response);
             if (response?.code == 200) {
                 toast.success(response?.message)
+
                 photo = null;
                 name = '';
                 description = '';
@@ -79,6 +80,7 @@ const Page = () => {
 
     return (
         <div className='lg:m-0 m-5' style={{ padding: '30px', maxWidth: '800px', margin: '0 auto', backgroundColor: '#f7f7f7', borderRadius: '8px' }}>
+            <Toaster />
             <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '20px' }}>Edit Training Program</h1>
 
             {/* Photo Upload Section */}
