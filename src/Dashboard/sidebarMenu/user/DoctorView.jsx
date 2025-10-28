@@ -12,7 +12,7 @@ import toast, { Toaster } from 'react-hot-toast';
 
 export default function AppointmentScheduler({ doctorId }) {
 
-  const { data, isLoading } = useGetFullDataQuery(doctorId)
+  const { data, isLoading, refetch } = useGetFullDataQuery(doctorId)
   const fullData = data?.data?.attributes?.result?.results;
   const profile = data?.data?.attributes?.doctorProfile;
   console.log(profile);
@@ -86,6 +86,7 @@ export default function AppointmentScheduler({ doctorId }) {
             {fullData?.map((schedule) => (
               <ScheduleCard
                 key={schedule._id}
+                refetch={refetch}
                 schedule={schedule}
               />
             ))}
@@ -99,7 +100,7 @@ export default function AppointmentScheduler({ doctorId }) {
   );
 }
 
-function ScheduleCard({ schedule }) {
+function ScheduleCard({ schedule, refetch }) {
   const borderClass = schedule.isFeatured
     ? "border-2 border-dashed border-red-400"
     : "border border-gray-200";
@@ -116,9 +117,13 @@ function ScheduleCard({ schedule }) {
     try {
       const res = await doctorBooked(schedule._id).unwrap();
       console.log(res);
+      refetch();
       if (res?.code == 200) {
         toast.success(res?.message)
-        window.location.href = `${res?.data?.attributes?.url}`;
+        refetch();
+        if (res?.data?.attributes?.url) {
+          window.location.href = `${res?.data?.attributes?.url}`;
+        }
       }
       else {
         toast.error(res?.message)
@@ -176,7 +181,7 @@ function ScheduleCard({ schedule }) {
         <span className="text-xs text-gray-500">Type Link: {schedule.typeOfLink}</span>
       </div>
       <div className='my-2'>
-        <span className="text-xs text-blue-500 font-semibold">Meeting Link: {schedule.meetingLink?.slice(0, 20)}</span>
+        <span onClick={() => navigator.clipboard.writeText(schedule.meetingLink)} className="text-xs cursor-pointer text-blue-500 font-semibold">Meeting Link: {schedule.meetingLink}</span>
       </div>
 
       <div className="text-xs text-gray-500 mb-4">
