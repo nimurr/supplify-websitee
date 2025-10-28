@@ -8,7 +8,7 @@ import { useGetAllProtocalQuery } from '@/redux/fetures/patient/protocal';
 
 const { Title, Text } = Typography;
 
-export default function ProtocolPage() {
+export default function ProtocolPage() { 
   const router = useRouter();
 
   // State to hold the current planType (this can come from URL params, for example)
