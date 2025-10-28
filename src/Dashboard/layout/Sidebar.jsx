@@ -176,7 +176,7 @@ import { TbPrescription } from "react-icons/tb";
 import { GrUserManager } from "react-icons/gr";
 import { GiSwipeCard } from "react-icons/gi";
 import { SlUserFollowing } from "react-icons/sl";
-import { FaUserDoctor } from "react-icons/fa6";
+import { FaSackDollar, FaUserDoctor } from "react-icons/fa6";
 import { FaCalendarAlt, FaRegClock, FaSkating } from "react-icons/fa";
 import { HiOutlineCurrencyDollar } from "react-icons/hi2";
 import { AiFillEdit } from "react-icons/ai";
@@ -298,6 +298,12 @@ export default function Sidebar() {
         path: "/specialistDs/booked-workout-class",
       },
       {
+        key: "/specialistDs/earning/all",
+        icon: <FaSackDollar />,
+        label: "Earning",
+        path: "/specialistDs/earning/all",
+      },
+      {
         key: "/specialistDs/earning",
         icon: <CiCreditCard1 />,
         label: "Wallet",
@@ -366,11 +372,17 @@ export default function Sidebar() {
         label: "Create Plan",
         path: "/doctorDs/create-plan",
       },
+      // {
+      //   key: "/doctorDs/doctor-earning",
+      //   icon: <GiSwipeCard />, // Replace with correct icon
+      //   label: "Earning",
+      //   path: "/doctorDs/doctor-earning",
+      // },
       {
-        key: "/doctorDs/doctor-earning",
-        icon: <GiSwipeCard />, // Replace with correct icon
+        key: "/doctorDs/all",
+        icon: <FaSackDollar />,
         label: "Earning",
-        path: "/doctorDs/doctor-earning",
+        path: "/doctorDs/all",
       },
     ],
   };
@@ -389,7 +401,7 @@ export default function Sidebar() {
       <div className="flex justify-between items-center p-4">
         <div
           className={`text-xl flex font-bold text-center ${collapsed ? "hidden" : "block"
-            }`} 
+            }`}
         >
           <Link href="/" className="flex items-center">
             <img
