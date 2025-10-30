@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Input, Image, Space } from "antd";
 import { useRouter } from "next/navigation";
 import url from "@/redux/api/baseUrl";
+import { useGetUserProfileQuery } from "@/redux/fetures/user/getUsers";
 
 
 const PatientProfile = () => {
@@ -13,13 +14,14 @@ const PatientProfile = () => {
         router.push("/profile/editProfile");
     };
 
-    const [user, setUser] = useState({})
-
+    const [userData, setUserData] = useState({})
     useEffect(() => {
-        setUser(JSON.parse(localStorage.getItem("user")))
+        setUserData(JSON.parse(localStorage.getItem("user")))
     }, [])
-
-    console.log(user);
+    const { data: user } = useGetUserProfileQuery(userData.id)
+    const fullUser = user?.data?.attributes;
+    
+    console.log(fullUser);
 
 
 
@@ -34,15 +36,14 @@ const PatientProfile = () => {
                     <Space size={12}>
                         <Image
                             width={200}
-                            src={url + user?.profileImage?.imageUrl}
-                            alt={`${user.name}'s profile picture`}
+                            src={url + fullUser?.profileImage?.imageUrl}
                             className="rounded-lg"
                         />
                     </Space>
 
                     <div className="flex-1 w-full">
-                        <h2 className="text-xl font-semibold text-gray-800">{user.fullName}</h2>
-                        <p className="text-gray-600">{user.email}</p>
+                        <h2 className="text-xl font-semibold text-gray-800">{fullUser?.name}</h2>
+                        <p className="text-gray-600">{fullUser?.email}</p>
                     </div>
                 </div>
 
