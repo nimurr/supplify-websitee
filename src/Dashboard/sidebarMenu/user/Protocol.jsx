@@ -10,8 +10,7 @@ const { Title, Text } = Typography;
 
 export default function ProtocolPage() { 
   const router = useRouter();
-
-  // State to hold the current planType (this can come from URL params, for example)
+ 
   const [planType, setPlanType] = useState('mealPlan'); // Default to mealPlan or use dynamic value
   const [filteredPlanes, setFilteredPlanes] = useState([]); // State to hold filtered planes based on planType
 
