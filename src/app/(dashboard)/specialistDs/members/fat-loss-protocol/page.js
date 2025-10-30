@@ -25,7 +25,8 @@ const Page = () => {
 
     return (
         <div>
-            <h2 className='text-2xl font-semibold my-5'>Fat Loss Protocol</h2>
+            <h2 className='text-2xl font-semibold my-5'>All Plans</h2>
+            <p>Click a Plan to give a suggestion </p>
             <div className=' bg-white rounded-lg shadow p-8'>
                 {
                     mealPlanData?.map((plan) => (

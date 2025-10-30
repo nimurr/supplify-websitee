@@ -38,6 +38,7 @@ export default function MealPlan() {
 
   const { data, isLoading } = useGetAllMealSuggestionQuery({ protocolId: planByDoctorId });
   const fullMealPlanData = data?.data?.attributes[0] || [];
+  console.log(fullMealPlanData);
 
   useEffect(() => {
     if (fullMealPlanData?.specialistSuggestions) {
@@ -108,24 +109,26 @@ export default function MealPlan() {
       if (res?.data?.code === 200) {
         // alert("Data saved successfully!");
         toast.success("New Suggestions Added Successfully");
-        setNewSuggestions([]); 
+        setNewSuggestions([]);
       }
 
 
     } catch (error) {
       console.error("Error saving changes:", error);
+      toast.error(error?.data?.message || "Failed to save changes.");
     }
   };
 
   return (
-    <div className="max-w-4xl mx-auto bg-white rounded-lg shadow p-8">
+    <div className="max-w-6xl mx-auto bg-white rounded-lg border border-gray-200 p-8">
       <Toaster
         position="top-right"
         reverseOrder={false}
       />
       <BackHeader title={"View full"} />
-      <h1 className="text-xl font-semibold mb-4">
-        {fullMealPlanData?.planType === "mealPlan" ? "Meal Plan" : "No plan type available."}
+      <h2 className="text-2xl font-semibold">{fullMealPlanData?.title}</h2>
+      <h1 className="text-base font-semibold capitalize border mt-1  w-auto inline-block border-gray-200 rounded-full py-1.5 px-5 bg-gray-50 mb-10">
+        {fullMealPlanData?.planType}
       </h1>
 
       <div className="mb-6">
@@ -160,7 +163,7 @@ export default function MealPlan() {
             </thead>
             <tbody>
               {rows.map((row, index) => (
-                <tr key={index}>
+                <tr className="items-start" key={index}>
                   <td className="border px-4 py-2">{row.id}</td>
                   <td className="border px-4 py-2">{row.keyPoint}</td>
                   <td className="border px-4 py-2">{row.solutionName}</td>
@@ -196,31 +199,36 @@ export default function MealPlan() {
                 <tr key={index}>
                   <td className="border px-4 py-2">{index + 1}</td>
                   <td className="border px-4 py-2">
-                    <input
+                    <textarea
                       type="text"
                       placeholder="Enter key point"
-                      className="w-full border border-gray-50 focus:outline-none px-2 py-1 focus:ring-1 focus:ring-blue-500 rounded-md"
+                      className="w-full border border-gray-200 focus:outline-none px-2 py-1 focus:ring-1 focus:ring-blue-500 rounded-md"
                       value={row.keyPoint}
+                      rows={4}
                       onChange={(e) => handleNewInputChange(index, "keyPoint", e.target.value)}
-                    />
+                    > </textarea>
                   </td>
                   <td className="border px-4 py-2">
-                    <input
+                    <textarea
                       type="text"
                       placeholder="Enter solution name"
-                      className="w-full border border-gray-50 focus:outline-none px-2 py-1 focus:ring-1 focus:ring-blue-500 rounded-md"
+                      className="w-full border border-gray-200 focus:outline-none px-2 py-1 focus:ring-1 focus:ring-blue-500 rounded-md"
                       value={row.solutionName}
+                      rows={4}
                       onChange={(e) => handleNewInputChange(index, "solutionName", e.target.value)}
-                    />
+                    >
+                    </textarea>
                   </td>
                   <td className="border px-4 py-2">
-                    <input
+                    <textarea
                       type="text"
                       placeholder="Paste link here"
-                      className="w-full border border-gray-50 focus:outline-none px-2 py-1 focus:ring-1 focus:ring-blue-500 rounded-md"
+                      className="w-full border border-gray-200 focus:outline-none px-2 py-1 focus:ring-1 focus:ring-blue-500 rounded-md"
                       value={row.suggestLink}
+                      rows={4}
                       onChange={(e) => handleNewInputChange(index, "suggestLink", e.target.value)}
-                    />
+                    >
+                    </textarea>
                   </td>
                   <td className="border px-4 py-2">
                     <button

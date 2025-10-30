@@ -64,6 +64,12 @@ const doctor = apiSlice.injectEndpoints({
                 method: "GET",
             })
         }),
+        assignProtacoltoPatient: builder.mutation({
+            query: ({ doctorPlanId, patientId, protocolId }) => ({
+                url: `/doctor-plans/assign-to-patient?doctorPlanId=${doctorPlanId}&patientId=${patientId}&protocolId=${protocolId}`,
+                method: "POST",
+            })
+        }),
 
         updateProtocol: builder.mutation({
             query: ({ protocolId, data }) => ({
@@ -176,8 +182,8 @@ export const {
     useGetSingleProtocolQuery,
     useGetMyPlansQuery,
 
-    useCreateSearchPlanQuery, 
-
+    useCreateSearchPlanQuery,
+    useAssignProtacoltoPatientMutation,
     useUpdateProtocolMutation,
     useSearchPlaneQuery,
     useCreatePlaneMutation,

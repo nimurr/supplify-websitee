@@ -1,6 +1,6 @@
 'use client'
 import { useCreatePlanByDocMutation, useCreatePlaneMutation } from '@/redux/fetures/doctor/createPlane';
-import { useCreateSearchPlanMutation, useCreateSearchPlanQuery, useGetMyPlansQuery, useGetSingleProtocolQuery, useSearchPlaneQuery, useUpdateProtocolMutation } from '@/redux/fetures/doctor/doctor';
+import { useAssignProtacoltoPatientMutation, useCreateSearchPlanMutation, useCreateSearchPlanQuery, useGetMyPlansQuery, useGetSingleProtocolQuery, useSearchPlaneQuery, useUpdateProtocolMutation } from '@/redux/fetures/doctor/doctor';
 import React, { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { CiCirclePlus, CiEdit, CiSearch } from 'react-icons/ci';
@@ -137,8 +137,20 @@ const Page = () => {
     // Filter myAllPlans based on selectedPlan
     const filteredPlans = myAllPlans?.filter(plan => plan?.planType === selectedPlan);
 
+    const [assignPlan] = useAssignProtacoltoPatientMutation();
 
     const handleAssginPlan = async (planId) => {
+        console.log(planId?._DoctorPlanId);
+
+        try {
+            const res = await assignPlan({ doctorPlanId: planId?._DoctorPlanId, patientId: patientId, protocolId: protocolId });
+            console.log(res);
+            if (res?.data?.code === 200) {
+                toast.success(res?.data?.message);
+            }
+        } catch (error) {
+            toast.error(error?.data?.message || "Failed to assign plan");
+        }
 
     }
 
@@ -207,7 +219,7 @@ const Page = () => {
                         <div className="my-4">
                             <h2 className='font-semibold py-1 border-b flex gap-2 items-center'>Search Result <p className='font-normal'>(Select a plan to assign to this patient.)</p></h2>
                             {fullData?.map((item, index) => (
-                                <div key={index} onClick={handleAssginPlan} className="flex cursor-pointer capitalize justify-between p-2 rounded bg-slate-50 my-2">
+                                <div key={index} onClick={() => handleAssginPlan(item)} className="flex cursor-pointer capitalize justify-between p-2 rounded bg-slate-50 my-2">
                                     <h3>{item?.title}</h3>
                                     <p>{item?.totalKeyPoints} key points</p>
                                 </div>
