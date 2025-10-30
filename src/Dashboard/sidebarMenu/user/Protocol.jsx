@@ -1,10 +1,11 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Card, Button, Table, Typography } from 'antd';
+import { Card, Button, Table, Typography, Avatar } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import { FiPlus } from 'react-icons/fi';
-import { useGetAllProtocalQuery } from '@/redux/fetures/patient/protocal';
+import { useGetAllPlanThisUserQuery, useGetAllProtocalQuery } from '@/redux/fetures/patient/protocal';
+import url from '@/redux/api/baseUrl';
 
 const { Title, Text } = Typography;
 
@@ -13,20 +14,24 @@ export default function ProtocolPage() {
 
   const [planType, setPlanType] = useState('mealPlan'); // Default to mealPlan or use dynamic value
   const [filteredPlanes, setFilteredPlanes] = useState([]); // State to hold filtered planes based on planType
+  const [doctorId, setDoctorId] = useState(null);
+  const [pasaintId, setPatientId] = useState(null);
 
   const { data } = useGetAllProtocalQuery();
   const fullPlane = data?.data?.attributes?.results || [];
-  console.log(fullPlane);
 
 
 
-  // Static demo data for planes
-  const protocolData = [
-    { key: '1', slNo: 1, type: 'mealPlan', planName: 'Meal plan', keyPoint: 2 },
-    { key: '2', slNo: 2, type: 'workOut', planName: 'Workout', keyPoint: 2 },
-    { key: '3', slNo: 3, type: 'suppliment', planName: 'Supplement', keyPoint: 2 },
-    { key: '4', slNo: 4, type: 'lifeStyleChanges', planName: 'Lifestyle changes', keyPoint: 2 }
-  ];
+  const { data: planeData } = useGetAllPlanThisUserQuery({ doctorId, pasaintId });
+
+  console.log(planeData?.data?.attributes);
+
+  useEffect(() => {
+    const pasaintId = localStorage.getItem('user');
+    const { id } = JSON.parse(pasaintId);
+    setPatientId(id);
+  }, [planType]);
+
 
   // Static demo data for all planes
   const allPlane = [
@@ -57,26 +62,30 @@ export default function ProtocolPage() {
   const columns = [
     {
       title: 'Sl No',
-      dataIndex: 'slNo',
-      key: 'slNo',
-      width: '20%',
+      render: (text, record, idx) => <span className="font-semibold">{idx + 1}</span>,  // Ensure correct index is displayed
     },
     {
-      title: 'Plan Name',
-      dataIndex: 'planName',
-      key: 'planName',
-      width: '50%',
+      title: 'Doctor Name',
+      dataIndex: 'doctorName',
+      key: 'doctorName',
+      render: (_, record) => (
+        <div className="flex items-center gap-3">
+          <Avatar size={32} src={url + record?.doctorProfileImage?.imageUrl} />
+          <span>{record?.doctorName}</span>
+        </div>
+      ),
+    },
+    {
+      title: 'Protocol Count',
+      dataIndex: 'protocolCount',
+      key: 'protocolCount',
+      render: (text, record) => <span className="font-semibold">{record?.protocolCount}</span>,
     }
   ];
 
   // Handle row click to change planType and filter the planes based on the selected type
   const handleRowClick = (record) => {
-    const selectedPlanType = record.type; // Dynamically set the planType (e.g., 'mealPlan', 'lifeStyleChanges')
-    setPlanType(selectedPlanType);
-    // Filter the planes based on the selected type
-    const filteredData = allPlane.filter(plan => plan.type === selectedPlanType);
-    setFilteredPlanes(filteredData);
-    console.log(selectedPlanType);
+    setDoctorId(record.doctorId);
   };
 
   // Initialize filteredPlanes with 'mealPlan' data by default when the component mounts
@@ -93,7 +102,7 @@ export default function ProtocolPage() {
           <Card title={<Title level={5} className="m-0">Protocols</Title>} className="shadow-sm" bodyStyle={{ padding: 0 }}>
             <Table
               columns={columns}
-              dataSource={protocolData}
+              dataSource={fullPlane}
               pagination={false}
               size="small"
               rowClassName={() => "bg-pink-50 py-2 cursor-pointer"}
@@ -106,17 +115,17 @@ export default function ProtocolPage() {
 
         <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 items-start">
           {
-            filteredPlanes.length > 0 ? (
-              filteredPlanes.map((plan) => (
+            planeData?.data?.attributes?.length > 0 ? (
+              planeData?.data?.attributes?.map((plan) => (
                 <Card key={plan.id} className="shadow-sm" bodyStyle={{ padding: '1rem' }}>
                   <div className="mb-1">
-                    <Text className="capitalize" strong>{plan.title}</Text>
+                    <Text className="capitalize" strong>{plan?.name}</Text>
                   </div>
                   <div className="mb-3">
-                    <Text className="text-gray-500 capitalize">Key Points: {plan.totalKeyPoints}</Text>
+                    <Text className="text-gray-500 capitalize">Key Points: {plan.totalPlanCount}</Text>
                   </div>
                   <Button
-                    onClick={() => router.push(`/dashboard/protocol/details?id=${plan._DoctorPlanId}`)}
+                    onClick={() => router.push(`/dashboard/protocol/details?id=${plan._id}`)}
                     type="primary"
                     className="w-full bg-red-600 hover:bg-red-700 border-red-600"
                   >
@@ -126,7 +135,7 @@ export default function ProtocolPage() {
               ))
             ) : (
               <div className="flex justify-center w-full">
-                <p className="text-2xl font-semibold text-red-600 capitalize">No Plan Found!</p>
+                <p className="text-2xl font-semibold text-red-600 capitalize">Please Selecet a Doctor!</p>
               </div>
             )
           }
