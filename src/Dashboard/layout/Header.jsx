@@ -1,6 +1,6 @@
 
 "use client";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Avatar, Dropdown, Modal, Form, Input } from 'antd';
 import {
   UserOutlined,
@@ -15,6 +15,8 @@ import {
   EyeInvisibleOutlined
 } from '@ant-design/icons';
 import { Header } from 'antd/es/layout/layout';
+import { useGetUserProfileQuery } from '@/redux/fetures/user/getUsers';
+import url from '@/redux/api/baseUrl';
 
 export default function DashboardHeader({ collapsed }) {
   // State for modals and mobile menu
@@ -65,8 +67,6 @@ export default function DashboardHeader({ collapsed }) {
     closePasswordModal();
   };
 
-
-
   // User dropdown menu items
   const userMenuItems = [
     {
@@ -88,6 +88,15 @@ export default function DashboardHeader({ collapsed }) {
       onClick: openLogoutModal,
     },
   ];
+
+  const [userData, setUserData] = useState({})
+  useEffect(() => {
+    setUserData(JSON.parse(localStorage.getItem("user")))
+  }, [])
+  const { data: user } = useGetUserProfileQuery(userData.id)
+  const fullUser = user?.data?.attributes;
+
+  console.log(fullUser);
 
   return (
     <div className=''>
@@ -123,9 +132,9 @@ export default function DashboardHeader({ collapsed }) {
             placement="bottomRight"
             trigger={["click"]}
           >
-            <div className="flex items-center cursor-pointer">
-              <Avatar src="/images/user4.jpg" className='h-12 w-12' icon={<UserOutlined />} />
-              <span className="ml-2 sm:inline">John Doe</span>
+            <div className="flex items-center cursor-pointer border border-gray-200 rounded-lg px-5">
+              <Avatar src={url + fullUser?.profileImage?.imageUrl} className='h-10 w-10' icon={<UserOutlined />} />
+              <span className="ml-2 sm:inline capitalize font-semibold">{fullUser?.name}</span>
 
             </div>
           </Dropdown>

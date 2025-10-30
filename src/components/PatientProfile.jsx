@@ -20,7 +20,7 @@ const PatientProfile = () => {
     }, [])
     const { data: user } = useGetUserProfileQuery(userData.id)
     const fullUser = user?.data?.attributes;
-    
+
     console.log(fullUser);
 
 
@@ -31,8 +31,8 @@ const PatientProfile = () => {
                 My Profile
             </h1>
 
-            <div className="bg-white border border-gray-200 py-10 rounded-lg p-6">
-                <div className="flex flex-col md:flex-row items-center gap-6">
+            <div className="bg-white border max-w-[400px] mx-auto border-gray-200 py-10 rounded-lg p-6">
+                <div className="flex flex-col justify-center md:flex-row items-center gap-6">
                     <Space size={12}>
                         <Image
                             width={200}
@@ -41,10 +41,10 @@ const PatientProfile = () => {
                         />
                     </Space>
 
-                    <div className="flex-1 w-full">
-                        <h2 className="text-xl font-semibold text-gray-800">{fullUser?.name}</h2>
-                        <p className="text-gray-600">{fullUser?.email}</p>
-                    </div>
+                </div>
+                <div className="flex-1 w-full flex items-center flex-col justify-center mt-2">
+                    <h2 className="text-xl font-semibold capitalize text-gray-800">{fullUser?.name}</h2>
+                    <p className="text-gray-600">{fullUser?.email}</p>
                 </div>
 
                 <div className="text-right mt-6">
