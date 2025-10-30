@@ -15,7 +15,7 @@ const Members = () => {
     return (
       <div className="max-w-full px-4 sm:px-6 lg:px-8">
         <h1 className="text-2xl font-semibold">Suggest Specialist</h1>
-        <div className="p-6 bg-white rounded-lg shadow-md mx-auto mt-10">
+        <div className="p-6 bg-white rounded-lg border border-gray-200 mx-auto mt-10">
           <Alert
             message="Error fetching data"
             description={error?.message || "Something went wrong while loading the data."}
@@ -86,7 +86,7 @@ const Members = () => {
   return (
     <div className="max-w-full px-4 sm:px-6 lg:px-8">
       <h1 className="text-2xl font-semibold">Suggest Specialist</h1>
-      <div className="p-6 bg-white rounded-lg shadow-md mx-auto mt-10 overflow-x-auto">
+      <div className="p-6 bg-white rounded-lg border border-gray-200 mx-auto mt-10 overflow-x-auto">
         {isLoading ? (
           <div className="flex justify-center items-center h-full">
             <Spin size="large" />
