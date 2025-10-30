@@ -142,7 +142,6 @@ export default function Page() {
                                 )
                             }
 
-
                             <div className="mb-3">
                                 <Text className="text-gray-500">{plan.description}</Text>
                             </div>
