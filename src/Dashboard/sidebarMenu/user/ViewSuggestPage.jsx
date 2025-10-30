@@ -40,6 +40,7 @@ const ViewSuggestPage = () => {
             </div>
             <Button
               type="primary"
+              href={`/dashboard/suggest-specialist/protacal?protocolId=${plan._id}`}
               className="w-full bg-red-600 hover:bg-red-700 border-red-600"
             >
               View

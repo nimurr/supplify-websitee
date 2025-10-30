@@ -11,9 +11,15 @@ const specialist = apiSlice.injectEndpoints({
                 method: "GET",
             }),
         }),
+        getAllSuggestionByProtocalId: builder.query({
+            query: ({ protocolId, type }) => ({
+                url: `/plan-by-doc/with-suggestions/get-all?protocolId=${protocolId}&planType=${type}`,
+                method: "GET",
+            }),
+        }),
     }),
 });
 
 
 
-export const { useGetSpecialistQuery, useGetAlldoctorPatientsProtacolQuery } = specialist;
+export const { useGetSpecialistQuery, useGetAlldoctorPatientsProtacolQuery , useGetAllSuggestionByProtocalIdQuery } = specialist;
