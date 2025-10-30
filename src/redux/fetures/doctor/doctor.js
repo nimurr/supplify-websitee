@@ -51,6 +51,20 @@ const doctor = apiSlice.injectEndpoints({
             }),
             providesTags: ["DoctorProtocol"]
         }),
+        getMyPlans: builder.query({
+            query: ({ protocolId, patientId, selectedPlan }) => ({
+                url: `/plan-by-doc/paginate?planType=${selectedPlan}&patientId=${patientId}&protocolId=${protocolId}`,
+                method: "GET"
+            }),
+        }),
+
+        createSearchPlan: builder.query({
+            query: ({ type, title }) => ({
+                url: `/doctor-plans/paginate?planType=${type}&title=${title}`,
+                method: "GET",
+            })
+        }),
+
         updateProtocol: builder.mutation({
             query: ({ protocolId, data }) => ({
                 url: `/protocols/update/${protocolId}`,
@@ -118,7 +132,7 @@ const doctor = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ["OrderHistory"]
         }),
-        withDrawRequestTnxHistory : builder.query({
+        withDrawRequestTnxHistory: builder.query({
             query: () => ({
                 url: `/withdrawal-requst/paginate`,
                 method: "GET"
@@ -158,7 +172,12 @@ export const {
     useGetAllProtocalsQuery,
     useGetAllProtocalsByPatientIdQuery,
     useAssignProtocolToPatientMutation,
+
     useGetSingleProtocolQuery,
+    useGetMyPlansQuery,
+
+    useCreateSearchPlanQuery, 
+
     useUpdateProtocolMutation,
     useSearchPlaneQuery,
     useCreatePlaneMutation,

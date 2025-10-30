@@ -89,8 +89,15 @@ export default function CreateMealPlan() {
       formData.title = '';
       formData.description = '';
       formData.keyPoints = [''];
+
+      setTimeout(() => {
+        window.location.href = '/doctorDs/create-plan';
+      }, 1000);
+
+
     } catch (error) {
       console.log('Error:', error);
+      toast.error('Failed to create meal plan');
     }
   };
 
@@ -105,7 +112,7 @@ export default function CreateMealPlan() {
           Back
         </Button>
       </Link>
-      <Title level={2} className="mb-6 text-center">Meal Plan</Title>
+      <Title level={2} className="mb-6 text-center">Create Plan</Title>
       <div className="border-t border-gray-200 mb-6"></div>
 
       <Form
@@ -126,7 +133,7 @@ export default function CreateMealPlan() {
             name="title"
             value={formData.title}
             onChange={handleInputChange}
-            placeholder="LifeStyle Changes One By Doctor"
+            placeholder="Enter plan title"
             className="rounded py-2"
           />
         </Form.Item>
@@ -143,6 +150,7 @@ export default function CreateMealPlan() {
             placeholder="Select plan type"
             className="rounded py-2 h-14"
             value={formData.planType}
+            defaultValue='mealPlan'
             onChange={(value) => handleSelectChange(value, 'planType')}
           >
             <Select.Option value="mealPlan">Meal Plan</Select.Option>
@@ -203,7 +211,7 @@ export default function CreateMealPlan() {
             name="description"
             value={formData.description}
             onChange={handleInputChange}
-            placeholder="Enter description about the key point"
+            placeholder="Enter description"
             rows={4}
             className="rounded"
           />

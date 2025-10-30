@@ -8,9 +8,9 @@ import { useGetAllProtocalQuery } from '@/redux/fetures/patient/protocal';
 
 const { Title, Text } = Typography;
 
-export default function ProtocolPage() { 
+export default function ProtocolPage() {
   const router = useRouter();
- 
+
   const [planType, setPlanType] = useState('mealPlan'); // Default to mealPlan or use dynamic value
   const [filteredPlanes, setFilteredPlanes] = useState([]); // State to hold filtered planes based on planType
 

@@ -32,7 +32,15 @@ const createPlane = apiSlice.injectEndpoints({
             }),
             providesTags: ["DoctorCreatePlane"],
         }),
+        createPlanByDoc: builder.mutation({
+            query: (data) => ({
+                url: "/plan-by-doc",
+                method: "POST",
+                body: data,
+            }),
+            invalidatesTags: ["DoctorCreatePlane"],
+        })
     }),
 });
 
-export const { useCreatePlaneMutation, useUpdatePlaneMutation, useGetAllPlanesQuery, useGetSinglePlaneQuery } = createPlane;
+export const { useCreatePlaneMutation, useUpdatePlaneMutation, useGetAllPlanesQuery, useGetSinglePlaneQuery , useCreatePlanByDocMutation } = createPlane;
