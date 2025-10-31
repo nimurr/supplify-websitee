@@ -96,7 +96,11 @@ export default function DashboardHeader({ collapsed }) {
   const { data: user } = useGetUserProfileQuery(userData.id)
   const fullUser = user?.data?.attributes;
 
-  console.log(fullUser);
+  const imageUrl = fullUser?.profileImage?.imageUrl.includes("amazonaws.com")
+    ? fullUser?.profileImage?.imageUrl
+    : url + fullUser?.profileImage?.imageUrl;
+
+  // console.log(fullUser);
 
   return (
     <div className=''>
@@ -133,7 +137,7 @@ export default function DashboardHeader({ collapsed }) {
             trigger={["click"]}
           >
             <div className="flex items-center cursor-pointer border border-gray-200 rounded-lg px-5">
-              <Avatar src={url + fullUser?.profileImage?.imageUrl} className='h-10 w-10' icon={<UserOutlined />} />
+              <Avatar src={imageUrl} className='h-10 w-10' icon={<UserOutlined />} />
               <span className="ml-2 sm:inline capitalize font-semibold">{fullUser?.name}</span>
 
             </div>

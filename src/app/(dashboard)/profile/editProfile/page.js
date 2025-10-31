@@ -1,11 +1,13 @@
- 
+
 import EditProfile from '@/components/EditProfile';
+import PatientProfileEdit from '@/components/PatientProfileEdit';
 import React from 'react';
 
 const page = () => {
     return (
         <div>
-            <EditProfile /> 
+            <PatientProfileEdit />
+            {/* <EditProfile /> */}
         </div>
     );
 };
