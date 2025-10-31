@@ -194,6 +194,7 @@ const PatientProfileEdit = () => {
                                     },
                                 },
                             ]}
+                            className="flex items-center gap-5 flex-wrap"
                         >
                             {(fields, { add, remove }) => (
                                 <>
