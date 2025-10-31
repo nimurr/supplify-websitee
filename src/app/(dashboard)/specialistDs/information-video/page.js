@@ -1,6 +1,6 @@
 'use client'
 import { useCreateInformationVideoMutation, useDeleteInformationVideoMutation, useGetAllInformationVideoQuery } from '@/redux/fetures/Specialist/informationVideo';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { CiSearch } from 'react-icons/ci';
 import { FaRegEdit } from 'react-icons/fa';
@@ -34,7 +34,7 @@ const Page = () => {
     };
 
     // Adding the event listener for clicks outside of modal when it is open
-    React.useEffect(() => {
+    useEffect(() => {
         if (isModalOpen) {
             document.addEventListener('click', handleClickOutside);
         }

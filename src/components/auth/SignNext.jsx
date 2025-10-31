@@ -1,48 +1,47 @@
-"use client";
+'use client';
 
-import { useRouter, useSearchParams } from "next/navigation";
-import { Upload, Button, Form, message } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
-import { useSignUpMutation } from "@/redux/fetures/auth/signUp";
-import toast from "react-hot-toast";
+import React, { Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Upload, Button, Form, message } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
+import { useSignUpMutation } from '@/redux/fetures/auth/signUp';
+import toast from 'react-hot-toast';
 
-export default function SignUpNext() {
-  const router = useRouter()
+/** ✅ Content wrapped safely for client-side rendering */
+function SignUpNextContent() {
+  const router = useRouter();
   const searchParams = useSearchParams();
-  const role = searchParams.get("role") || "";
-  const email = searchParams.get("email") || "";
-  const name = searchParams.get("name") || "";
-  const password = searchParams.get("password") || "";
+
+  const role = searchParams.get('role') || '';
+  const email = searchParams.get('email') || '';
+  const name = searchParams.get('name') || '';
+  const password = searchParams.get('password') || '';
 
   const [register, { isLoading }] = useSignUpMutation();
 
   const onFinish = async (values) => {
     const formData = new FormData();
     values.documents.forEach((file) => {
-      formData.append("attachments", file.originFileObj);
+      formData.append('attachments', file.originFileObj);
     });
-    formData.append("role", role);
-    formData.append("email", email);
-    formData.append("name", name);
-    formData.append("password", password);
-
+    formData.append('role', role);
+    formData.append('email', email);
+    formData.append('name', name);
+    formData.append('password', password);
 
     try {
-
       const res = await register(formData).unwrap();
-      // console.log(res?.data?.code);
-      if (res?.code == 201) {
-        // console.log(res);
-        toast.success(res?.message)
-        message.success(res?.message || "Registration successful!");
-        router.push("/auth/signup-success");
-        // router.push(`/auth/login`);
+      if (res?.code === 201) {
+        toast.success(res?.message);
+        message.success(res?.message || 'Registration successful!');
+        router.push('/auth/signup-success');
+      } else {
+        toast.error(res?.message || 'Something went wrong');
       }
-
     } catch (error) {
-      console.error("Error during submission:", error);
+      console.error('Error during submission:', error);
+      toast.error(error?.data?.message || 'Failed to register');
     }
-
   };
 
   return (
@@ -57,8 +56,8 @@ export default function SignUpNext() {
             name="documents"
             label="Upload Certification"
             valuePropName="fileList"
-            getValueFromEvent={(e) => e.fileList}
-            rules={[{ required: true, message: "Please upload your document" }]}
+            getValueFromEvent={(e) => e?.fileList}
+            rules={[{ required: true, message: 'Please upload your document' }]}
           >
             <Upload beforeUpload={() => false} multiple>
               <Button icon={<UploadOutlined />}>Add File</Button>
@@ -66,12 +65,27 @@ export default function SignUpNext() {
           </Form.Item>
 
           <Form.Item>
-            <button loading={isLoading} type="primary" htmlType="submit" block className="bg-blue-700 border-none w-full text-white py-3 rounded-lg hover:bg-blue-800 transition duration-300">
-              Submit{isLoading ? "ing..." : " Now"}
-            </button>
+            <Button
+              type="primary"
+              htmlType="submit"
+              loading={isLoading}
+              block
+              className="bg-blue-700 border-none text-white py-3 rounded-lg hover:bg-blue-800 transition duration-300"
+            >
+              {isLoading ? 'Submitting...' : 'Submit Now'}
+            </Button>
           </Form.Item>
         </Form>
       </div>
     </div>
+  );
+}
+
+/** ✅ Page wrapped in <Suspense> boundary */
+export default function SignUpNext() {
+  return (
+    <Suspense fallback={<div className="text-center py-10">Loading...</div>}>
+      <SignUpNextContent />
+    </Suspense>
   );
 }

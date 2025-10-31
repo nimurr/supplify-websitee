@@ -1,18 +1,19 @@
-// components/CustomButton.jsx
+'use client';
+
 import React from 'react';
 
-const CustomButton = ({ 
-  onClick, 
+const CustomButton = ({
+  onClick,
   text = 'Click Me',
-  style = {}, 
-  className = '' 
+  style = {},
+  className = ''
 }) => {
   const defaultStyle = {
     backgroundColor: '#EF4444',
     borderColor: '#ef4444',
     color: '#FFFF',
-    
-    
+
+
   };
 
   return (

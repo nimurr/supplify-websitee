@@ -159,9 +159,14 @@ export default function Navbar() {
   const userRole = "specialist";
   // const userRole = 'doctor';
 
+  const [user, setUser] = useState(null);
 
-  const user = JSON.parse(localStorage.getItem('user'));
- 
+  if (typeof window !== 'undefined') {
+    const user = JSON.parse(localStorage.getItem('user'));
+    setUser(user);
+  }
+
+
 
   // Map role → dashboard route
   const dashboardRoutes = {

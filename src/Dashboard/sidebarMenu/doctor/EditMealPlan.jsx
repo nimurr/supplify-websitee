@@ -1,36 +1,33 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Form, Input, Button, Typography, Tooltip, Select } from 'antd';
-import { DeleteOutlined, PlusOutlined, InfoCircleOutlined, ArrowLeftOutlined } from '@ant-design/icons';
+import { Suspense, useState, useEffect } from 'react';
+import { Form, Input, Button, Typography, Select } from 'antd';
+import { DeleteOutlined, PlusOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import Link from 'next/link';
-import { useCreatePlaneMutation, useGetSinglePlaneQuery, useUpdatePlaneMutation } from '@/redux/fetures/doctor/createPlane';
+import { useGetSinglePlaneQuery, useUpdatePlaneMutation } from '@/redux/fetures/doctor/createPlane';
 import toast, { Toaster } from 'react-hot-toast';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const { Title } = Typography;
 const { TextArea } = Input;
 
-export default function EditMealPlan() {
-  // Get the ID from the URL params
-  const searchParams = new URLSearchParams(window.location.search);
+// ✅ Wrap main logic in a separate component for Suspense
+function EditMealPlanContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams(); // CSR only hook (safe inside Suspense)
   const id = searchParams.get('id');
 
-  const navigate = useRouter();
+  // Avoid query until ID is available
+  const { data } = useGetSinglePlaneQuery(id, { skip: !id });
+  const mainData = data?.data?.attributes?.results?.[0] || {};
 
-  // Fetch data using id
-  const { data } = useGetSinglePlaneQuery(id);
-  const mainData = data?.data?.attributes?.results[0] || {}; // Safe check for data
-
-  // State management for form fields
   const [formData, setFormData] = useState({
-    planType: '',    // Plan Type: mealPlan, lifeStyleChanges, etc.
-    title: '',       // Title of the plan
-    description: '', // Description of the plan
-    keyPoints: []    // Dynamic key points array
+    planType: '',
+    title: '',
+    description: '',
+    keyPoints: [],
   });
 
-  // Set initial values for form data once the mainData is available
   useEffect(() => {
     if (mainData) {
       setFormData({
@@ -42,56 +39,38 @@ export default function EditMealPlan() {
     }
   }, [mainData]);
 
-  // Handle adding a new key point
   const addKeyPoint = () => {
-    setFormData((prevState) => ({
-      ...prevState,
-      keyPoints: [...prevState.keyPoints, ''],
+    setFormData((prev) => ({
+      ...prev,
+      keyPoints: [...prev.keyPoints, ''],
     }));
   };
 
-  // Handle removing a key point
   const removeKeyPoint = (index) => {
-    const updatedKeyPoints = [...formData.keyPoints];
-    updatedKeyPoints.splice(index, 1);
-    setFormData((prevState) => ({
-      ...prevState,
-      keyPoints: updatedKeyPoints,
+    setFormData((prev) => ({
+      ...prev,
+      keyPoints: prev.keyPoints.filter((_, i) => i !== index),
     }));
   };
 
-  // Handle change for key points
   const handleKeyPointChange = (value, index) => {
     const updatedKeyPoints = [...formData.keyPoints];
     updatedKeyPoints[index] = value;
-    setFormData((prevState) => ({
-      ...prevState,
-      keyPoints: updatedKeyPoints,
-    }));
+    setFormData((prev) => ({ ...prev, keyPoints: updatedKeyPoints }));
   };
 
-  // Handle form field change (for title, description)
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle the Select dropdown change
   const handleSelectChange = (value) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      planType: value,
-    }));
+    setFormData((prev) => ({ ...prev, planType: value }));
   };
 
-  const [createPlane, { isLoading }] = useUpdatePlaneMutation();
+  const [updatePlane, { isLoading }] = useUpdatePlaneMutation();
 
-  // Submit the form
   const onFinish = async () => {
-    // Format data for submission
     const submissionData = {
       planType: formData.planType,
       title: formData.title,
@@ -99,61 +78,46 @@ export default function EditMealPlan() {
       keyPoints: formData.keyPoints,
     };
 
-    console.log('Updated Meal Plan:', submissionData);
-
     try {
-      const res = await createPlane({ submissionData, id });  // Send the form data
-      console.log(res);
+      const res = await updatePlane({ submissionData, id });
       if (res?.data?.code === 200) {
         toast.success(res?.data?.message);
-        navigate.push('/doctorDs/create-plan');
-        setFormData({
-          planType: '',
-          title: '',
-          description: '',
-          keyPoints: [],
-        });
+        router.push('/doctorDs/create-plan');
+        setFormData({ planType: '', title: '', description: '', keyPoints: [] });
+      } else {
+        toast.error(res?.data?.message || 'Update failed');
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error(error);
       toast.error('Failed to update meal plan');
     }
   };
 
-  // Check if the form is valid (all fields must be filled)
   const isFormValid =
     formData.title &&
     formData.planType &&
     formData.description &&
-    formData.keyPoints.every((point) => point.trim() !== '');
+    formData.keyPoints.every((p) => p.trim() !== '');
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
       <Toaster />
-      <Link href="/doctorDs/create-plan" className="mr-4">
-        <Button icon={<ArrowLeftOutlined />} className="flex items-center">
-          Back
-        </Button>
+      <Link href="/doctorDs/create-plan">
+        <Button icon={<ArrowLeftOutlined />}>Back</Button>
       </Link>
-      <Title level={2} className="mb-6 text-center">Edit Meal Plan</Title>
+
+      <Title level={2} className="mb-6 text-center">
+        Edit Meal Plan
+      </Title>
       <div className="border-t border-gray-200 mb-6"></div>
 
-      <Form
-        layout="vertical"
-        onFinish={onFinish}
-        requiredMark="optional"
-      >
-        {/* Plan Title */}
-        <Form.Item
-          name="title"
-          className="mb-6"
-        >
-          <label className="block text-sm font-medium mb-2">
-            Title
-          </label>
+      <Form layout="vertical" onFinish={onFinish} requiredMark="optional">
+        {/* Title */}
+        <Form.Item name="title" className="mb-6">
+          <label className="block text-sm font-medium mb-2">Title</label>
           <Input
             name="title"
-            value={formData.title} // Bound to state
+            value={formData.title}
             onChange={handleInputChange}
             placeholder="LifeStyle Changes One By Doctor"
             className="rounded py-2"
@@ -161,15 +125,10 @@ export default function EditMealPlan() {
         </Form.Item>
 
         {/* Plan Type */}
-        <Form.Item
-          name="planType"
-          className="mb-6"
-        >
-          <label className="block text-sm font-medium mb-2">
-            Plan Type
-          </label>
+        <Form.Item name="planType" className="mb-6">
+          <label className="block text-sm font-medium mb-2">Plan Type</label>
           <Select
-            value={formData.planType} // Bound to state
+            value={formData.planType}
             onChange={handleSelectChange}
             className="rounded py-2 h-14"
           >
@@ -182,10 +141,7 @@ export default function EditMealPlan() {
 
         {/* Key Points */}
         <div className="mb-6">
-          <label className="block text-sm font-medium mb-2">
-            Key Points
-          </label>
-
+          <label className="block text-sm font-medium mb-2">Key Points</label>
           {formData.keyPoints.map((point, index) => (
             <div key={index} className="flex items-center mb-3">
               <Input
@@ -198,7 +154,7 @@ export default function EditMealPlan() {
                 type="text"
                 icon={<DeleteOutlined />}
                 onClick={() => removeKeyPoint(index)}
-                className="ml-2 text-red-500 hover:text-red-700 focus:outline-none"
+                className="ml-2 text-red-500 hover:text-red-700"
                 disabled={formData.keyPoints.length === 1}
               />
             </div>
@@ -215,16 +171,11 @@ export default function EditMealPlan() {
         </div>
 
         {/* Description */}
-        <Form.Item
-          name="description"
-          className="mb-6"
-        >
-          <label className="block text-sm font-medium mb-2">
-            Description
-          </label>
+        <Form.Item name="description" className="mb-6">
+          <label className="block text-sm font-medium mb-2">Description</label>
           <TextArea
             name="description"
-            value={formData.description} // Bound to state
+            value={formData.description}
             onChange={handleInputChange}
             placeholder="Enter description about the key point"
             rows={4}
@@ -232,18 +183,27 @@ export default function EditMealPlan() {
           />
         </Form.Item>
 
-        {/* Submit Button */}
+        {/* Submit */}
         <Form.Item>
           <Button
             type="primary"
             htmlType="submit"
-            className="bg-red-600 hover:bg-red-700 border-red-600 w-full py-2 font-semibold h-auto rounded"
-            disabled={!isFormValid} // Disable submit button if the form is not valid
+            className="bg-red-600 hover:bg-red-700 w-full py-2 font-semibold rounded"
+            disabled={!isFormValid || isLoading}
           >
-            Update
+            {isLoading ? 'Updating...' : 'Update'}
           </Button>
         </Form.Item>
       </Form>
     </div>
+  );
+}
+
+// ✅ Wrap with Suspense boundary
+export default function EditMealPlan() {
+  return (
+    <Suspense fallback={<div className="text-center p-10">Loading...</div>}>
+      <EditMealPlanContent />
+    </Suspense>
   );
 }
