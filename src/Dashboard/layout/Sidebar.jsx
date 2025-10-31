@@ -210,8 +210,16 @@ export default function Sidebar() {
 
   // Example userRole - replace with actual auth/user role
   // const userRole = 'user';
-  const user = JSON.parse(localStorage.getItem('user'));
+  const [user, setUser] = useState(null);
+  if (typeof window !== 'undefined') {
+    const user = JSON.parse(localStorage.getItem('user'));
+    setUser(user);
+  }
   const userRole = user?.role;
+
+
+
+
   // const userRole = 'doctor';
 
 

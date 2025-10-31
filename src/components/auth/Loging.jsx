@@ -25,8 +25,10 @@ export default function Login() {
       console.log(res);
       if (res?.code == 200) {
         toast.success(res?.message || "Login successful!");
-        localStorage.setItem("user", JSON.stringify(res?.data?.attributes?.userWithoutPassword));
-        localStorage.setItem("token", res?.data?.attributes?.tokens?.accessToken);
+        if (typeof window !== 'undefined') {
+          localStorage.setItem("user", JSON.stringify(res?.data?.attributes?.userWithoutPassword));
+          localStorage.setItem("token", res?.data?.attributes?.tokens?.accessToken);
+        }
 
         if (res?.data?.attributes?.userWithoutPassword?.role === "specialist") {
           router.push(`/specialistDs/members?role=${res?.data?.attributes?.userWithoutPassword?.role}`);
